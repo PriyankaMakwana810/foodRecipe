@@ -10,25 +10,67 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
-import androidx.compose.ui.graphics.toArgb
+import android.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
 private val DarkColorScheme = darkColorScheme(
     primary = primary100,
-    secondary = secondary100,
     onPrimary = white,
+    primaryContainer = primary60,
+    onPrimaryContainer = black,
+    secondary = secondary100,
     onSecondary = white,
-    surface = white,
+    secondaryContainer = secondary40,
+    onSecondaryContainer = black,
+    tertiary = primary80,
+    onTertiary = white,
+    tertiaryContainer = primary40,
+    onTertiaryContainer = black,
+    error = Warning1,
+    errorContainer = Warning2,
+    onError = white,
+    onErrorContainer = black,
+    background = transparent,
+    onBackground = black,
+    surface = primary20,
+    onSurface = primary100,
+    surfaceVariant = secondary20,
+    onSurfaceVariant = secondary100,
+    outline = gray1,
+    inverseOnSurface = gray4,
+    inverseSurface = black,
+    inversePrimary = gray2
 )
 
 private val LightColorScheme = lightColorScheme(
     primary = primary100,
-    secondary = secondary100,
     onPrimary = white,
+    primaryContainer = primary60,
+    onPrimaryContainer = black,
+    secondary = secondary100,
     onSecondary = white,
-    surface = white
+    secondaryContainer = secondary40,
+    onSecondaryContainer = black,
+    tertiary = primary80,
+    onTertiary = white,
+    tertiaryContainer = primary40,
+    onTertiaryContainer = black,
+    error = Warning1,
+    errorContainer = Warning2,
+    onError = white,
+    onErrorContainer = black,
+    background = transparent,
+    onBackground = black,
+    surface = primary20,
+    onSurface = primary100,
+    surfaceVariant = secondary20,
+    onSurfaceVariant = secondary100,
+    outline = gray1,
+    inverseOnSurface = gray4,
+    inverseSurface = black,
+    inversePrimary = gray2
 
     /* Other default colors to override
     background = Color(0xFFFFFBFE),
@@ -46,7 +88,7 @@ fun FoodRecipeBlogTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     val colorScheme = when {
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
@@ -61,11 +103,10 @@ fun FoodRecipeBlogTheme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = colorScheme.primary.toArgb()
+            window.statusBarColor = Color.TRANSPARENT
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
         }
     }
-
     MaterialTheme(
         colorScheme = colorScheme,
         typography = Typography,

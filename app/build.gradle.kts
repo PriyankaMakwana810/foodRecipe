@@ -73,6 +73,9 @@ dependencies {
 //    splash screen
     implementation("androidx.core:core-splashscreen:1.0.1")
 
-//    status bar color
-    implementation("com.google.accompanist:accompanist-systemuicontroller:0.27.0")
+//    navigation
+    implementation("androidx.navigation:navigation-compose:2.7.6")
+
+//    status bar colorn
+//    implementation("com.google.accompanist:accompanist-microcontroller:0.32.0")
 }

@@ -41,4 +41,4 @@ val Warning2 = Color(0xFFFFE1E7)
 //Green
 val success = Color(0xFF31B057)
 
-val transparent = Color(0)
+val transparent = Color(0x00000000)
