@@ -1,48 +1,70 @@
 package com.tridya.foodrecipeblog.components
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.tridya.foodrecipeblog.R
-import com.tridya.foodrecipeblog.ui.theme.gray4
-import com.tridya.foodrecipeblog.ui.theme.white
+import com.tridya.foodrecipeblog.ui.theme.gray3
 
 @Composable
 fun SocialIcons(modifier: Modifier = Modifier) {
     Row(
-        modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.Center
     ) {
-        FloatingActionButton(
-            modifier = Modifier.shadow(
-                elevation = 5.dp,
-                spotColor = Color(0x1A696969),
-                ambientColor = Color(0x1A696969)
-            ),
-            containerColor = white,
-            onClick = { },
+        Button(
+            onClick = {
+
+            },
+            colors = ButtonDefaults.buttonColors(Color.Transparent),
+            elevation = ButtonDefaults.buttonElevation() ,
+            modifier = Modifier
+                .border(
+                    width = 1.dp,
+                    color = gray3,
+                    shape = RoundedCornerShape(10.dp)
+                )
         ) {
-            Icon(painterResource(id = R.drawable.icon_google), "Floating action button.")
+            Image(
+                painter = painterResource(id = R.drawable.google_svg),
+                contentDescription = "Google Logo",
+            )
         }
-        Spacer(modifier = Modifier.width(50.dp))
-        FloatingActionButton(
-            onClick = { },
+        Spacer(modifier = Modifier.width(25.dp))
+        Button(
+            onClick = {
+
+            },
+            elevation = ButtonDefaults.buttonElevation() ,
+            colors = ButtonDefaults.buttonColors(Color.Transparent),
+            modifier = Modifier
+                .border(
+                    width = 1.dp,
+                    color = gray3,
+                    shape = RoundedCornerShape(10.dp)
+                )
         ) {
-            Icon(Icons.Filled.Add, "Floating action button.")
+            Image(
+                painter = painterResource(id = R.drawable.facebook_svg),
+                contentDescription = "Google Logo",
+            )
         }
     }
+
 }

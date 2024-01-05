@@ -1,6 +1,9 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("com.google.gms.google-services")
+    kotlin("kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -59,6 +62,7 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
+    implementation("com.google.android.libraries.identity.googleid:googleid:1.1.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
@@ -66,6 +70,7 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
 
 //    icon extended
     implementation("androidx.compose.material:material-icons-extended:1.5.4")
@@ -78,4 +83,31 @@ dependencies {
 
 //    status bar colorn
 //    implementation("com.google.accompanist:accompanist-microcontroller:0.32.0")
+//google SignIn Integration
+    implementation("com.google.android.gms:play-services-auth:20.7.0")
+
+//    firebase bom
+    implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
+    implementation("com.google.firebase:firebase-auth-ktx")
+    implementation("com.google.firebase:firebase-firestore-ktx")
+
+//    hilt for Dependency Injection
+//        Dagger - hilt
+    implementation("com.google.dagger:hilt-android:2.48")
+    kapt("com.google.dagger:hilt-android-compiler:2.48")
+    implementation("com.google.dagger:hilt-android-gradle-plugin:2.48")
+    kapt("androidx.hilt:hilt-compiler:1.1.0")
+    implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
+
+//    retrofit
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+
+//    cradential manager
+    implementation("androidx.credentials:credentials:1.3.0-alpha01")
+
+//    implementation("com.github.stevdza-san:OneTapCompose:1.0.11")
+}
+kapt {
+    correctErrorTypes = true
 }

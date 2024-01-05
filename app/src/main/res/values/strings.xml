@@ -1,5 +1,11 @@
 <resources>
     <string name="app_name">FoodReciepeBlog</string>
+    
+<!--    google Signin client id-->
+    <string name="google_cloud_server_client_id">567930687823-htugu316ksushltbvthlp0230vodampm.apps.googleusercontent.com</string>
+<!--    web client id google signIn-->
+    <string name="google_cloud_web_client_id">567930687823-6rl4rv9bclio2i5gu9ni6a340b9bu9k7.apps.googleusercontent.com</string>
+
     <string name="_100k_premium_recipe">"100K+ Premium Recipe "</string>
     <string name="get_cooking">Get\nCooking</string>
     <string name="simple_way_to_find_tasty_recipe">Simple way to find Tasty Recipe</string>
@@ -12,4 +18,5 @@
     <string name="forgot_password">Forgot Password?</string>
     <string name="sign_in">Sign In</string>
     <string name="or">Or Sign in With</string>
+    <string name="this_functionality_is_under_development">This Functionality is under development</string>
 </resources>

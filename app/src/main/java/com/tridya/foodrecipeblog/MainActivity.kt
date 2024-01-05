@@ -12,7 +12,9 @@ import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.tridya.foodrecipeblog.ui.theme.FoodRecipeBlogTheme
 import com.tridya.foodrecipeblog.viewModels.SplashScreenViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     private val splashViewModel: SplashScreenViewModel by viewModels()

@@ -1,6 +1,7 @@
 package com.tridya.foodrecipeblog.components
 
 import android.util.Log
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -8,9 +9,15 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.ClickableText
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -44,7 +51,7 @@ fun SimpleTextComponent(
         text = value,
         modifier = modifier
             .fillMaxWidth()
-            .heightIn(min = 40.dp),
+            .heightIn(),
         style = TextStyle(
             fontSize = fontSize,
             lineHeight = 60.sp,
@@ -61,7 +68,7 @@ fun NormalTextComponent(value: String) {
         text = value,
         Modifier
             .fillMaxWidth()
-            .heightIn(min = 40.dp),
+            .heightIn(),
         style = TextStyle(
             fontSize = 24.sp,
             fontWeight = FontWeight.Normal,
@@ -76,30 +83,53 @@ fun SmallTextLabel(modifier: Modifier = Modifier, value: String) {
     Text(
         text = value,
         modifier = modifier
-            .fillMaxWidth()
-            .heightIn(min = 40.dp),
+            .heightIn()
+            .padding(vertical = 10.dp),
         style = TextStyle(
             fontSize = 14.sp,
             fontWeight = FontWeight.Normal,
             fontStyle = FontStyle.Normal
-        ), color = black,
-        textAlign = TextAlign.Start
+        ),
+        color = black,
     )
 }
 
 @Composable
-fun YellowSmallText(value: String) {
+fun CheckboxComponent(value: String) {
+    var isChecked by remember {
+        mutableStateOf(false)
+    }
+    Row(
+        modifier = Modifier
+            .fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Start
+    ) {
+        Checkbox(
+            checked = isChecked,
+            onCheckedChange = {
+                isChecked = it
+            }, colors = CheckboxDefaults.colors(
+                checkedColor = secondary100
+            )
+        )
+        YellowSmallText(value, onClick = {})
+    }
+}
+
+@Composable
+fun YellowSmallText(value: String, onClick: () -> Unit) {
     Text(
         text = value,
         Modifier
-            .fillMaxWidth()
-            .heightIn(min = 40.dp),
+            .heightIn()
+            .clickable(onClick = { onClick.invoke() }),
         style = TextStyle(
             fontSize = 12.sp,
             fontWeight = FontWeight.Normal,
             fontStyle = FontStyle.Normal
-        ), color = secondary100,
-        textAlign = TextAlign.Start
+        ),
+        color = secondary100,
     )
 }
 
@@ -109,8 +139,8 @@ fun ClickableTextLoginComponent(
     onTextSelected: (String) -> Unit,
 ) {
     val initialText =
-        if (tryingToLogin) "Already have an Account? " else "Don't have an Account yet? "
-    val loginText = if (tryingToLogin) "Login" else "Register"
+        if (tryingToLogin) "Already a member? " else "Don't have an account? "
+    val loginText = if (tryingToLogin) "Sign In" else "Sign up"
     val annotatedString = buildAnnotatedString {
         append(initialText)
         withStyle(style = SpanStyle(color = secondary100)) {

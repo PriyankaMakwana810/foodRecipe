@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "567930687823",
+    "project_id": "foodrecipe-410113",
+    "storage_bucket": "foodrecipe-410113.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:567930687823:android:0b53719c32ee37961b353a",
+        "android_client_info": {
+          "package_name": "com.tridya.foodrecipeblog"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "567930687823-htugu316ksushltbvthlp0230vodampm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tridya.foodrecipeblog",
+            "certificate_hash": "bb47f069322d5d74b98e435f79e9c1a33d585870"
+          }
+        },
+        {
+          "client_id": "567930687823-6rl4rv9bclio2i5gu9ni6a340b9bu9k7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBOn1dpYNxtMm3npvUnlegy6nXvcvxQ5HY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "567930687823-6rl4rv9bclio2i5gu9ni6a340b9bu9k7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
