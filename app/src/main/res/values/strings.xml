@@ -4,6 +4,7 @@
 <!--    google Signin client id-->
     <string name="google_cloud_server_client_id">567930687823-htugu316ksushltbvthlp0230vodampm.apps.googleusercontent.com</string>
 <!--    web client id google signIn-->
+
     <string name="google_cloud_web_client_id">567930687823-6rl4rv9bclio2i5gu9ni6a340b9bu9k7.apps.googleusercontent.com</string>
 
     <string name="_100k_premium_recipe">"100K+ Premium Recipe "</string>
@@ -19,4 +20,23 @@
     <string name="sign_in">Sign In</string>
     <string name="or">Or Sign in With</string>
     <string name="this_functionality_is_under_development">This Functionality is under development</string>
+    <string name="empty_string" />
+
+    <!--Login Error Messages-->
+    <string name="login_error_msg_empty_email">Please enter your email</string>
+    <string name="login_error_msg_empty_password">Please enter your password</string>
+
+    <!--Registration Error Messages-->
+    <string name="registration_error_msg_empty_email">Please enter your email id</string>
+    <string name="registration_error_msg_empty_name">Please enter your name</string>
+    <string name="registration_error_msg_empty_password">Please enter your password</string>
+    <string name="registration_error_msg_empty_confirm_password">Please confirm your password</string>
+    <string name="registration_error_msg_password_mismatch">Please enter the same password here as above</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="retype_password">Retype Password</string>
+    <string name="let_s_help_you_set_up_your_account_it_won_t_take_long">Let’s help you set up your account, it won’t take long.</string>
+    <string name="create_an_account">Create an account</string>
+    <string name="name">Name</string>
+    <string name="enter_name">Enter Name</string>
+
 </resources>

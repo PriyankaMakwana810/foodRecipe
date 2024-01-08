@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
@@ -24,19 +25,26 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.tridya.foodrecipeblog.ui.theme.Warning1
+import com.tridya.foodrecipeblog.ui.theme.Warning2
 import com.tridya.foodrecipeblog.ui.theme.black
 import com.tridya.foodrecipeblog.ui.theme.gray3
 import com.tridya.foodrecipeblog.ui.theme.secondary100
 import com.tridya.foodrecipeblog.ui.theme.white
 
 @Composable
-fun TextFieldCustom(hintText: String, onTextChanged: (String) -> Unit) {
+fun TextFieldCustom(
+    value: String,
+    hintText: String,
+    onTextChanged: (String) -> Unit,
+    isError: Boolean,
+    errorText: String,
+) {
     var textValue by remember {
         mutableStateOf("")
     }
     OutlinedTextField(
-        value = textValue,
-
+        value = value,
         onValueChange = {
             textValue = it
             onTextChanged(it)
@@ -50,11 +58,17 @@ fun TextFieldCustom(hintText: String, onTextChanged: (String) -> Unit) {
                 )
             )
         },
+        isError = isError,
+        supportingText = {
+            if (isError) {
+                ErrorTextInputField(text = errorText)
+            }
+        },
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
         shape = RoundedCornerShape(size = 10.dp),
         modifier = Modifier
-            .fillMaxWidth()
-            .border(width = 1.5.dp, color = gray3, shape = RoundedCornerShape(size = 10.dp)),
+            .fillMaxWidth(),
+//            .border(width = 1.5.dp, color = gray3, shape = RoundedCornerShape(size = 10.dp)),
         colors = OutlinedTextFieldDefaults.colors(
             cursorColor = black,
             unfocusedContainerColor = white,
@@ -66,15 +80,23 @@ fun TextFieldCustom(hintText: String, onTextChanged: (String) -> Unit) {
 }
 
 @Composable
-fun TextFieldPassword(hintText: String) {
+fun TextFieldPassword(
+    value: String,
+    hintText: String,
+    onValueChange: (String) -> Unit,
+    isError: Boolean,
+    errorText: String,
+    imeAction: ImeAction = ImeAction.Done,
+) {
     var textValue by remember {
         mutableStateOf("")
     }
     OutlinedTextField(
-        value = textValue,
+        value = value,
 
         onValueChange = {
             textValue = it
+            onValueChange(it)
         },
         placeholder = {
             Text(
@@ -85,17 +107,25 @@ fun TextFieldPassword(hintText: String) {
                 )
             )
         },
+        supportingText = {
+            if (isError) {
+                ErrorTextInputField(text = errorText)
+            }
+        },
+        isError = isError,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         shape = RoundedCornerShape(size = 10.dp),
         modifier = Modifier
-            .fillMaxWidth()
-            .border(width = 1.5.dp, color = gray3, shape = RoundedCornerShape(size = 10.dp)),
+            .fillMaxWidth(),
+//            .border(width = 1.5.dp, color = gray3, shape = RoundedCornerShape(size = 10.dp)),
         colors = OutlinedTextFieldDefaults.colors(
             cursorColor = black,
             unfocusedContainerColor = white,
             focusedContainerColor = white,
             unfocusedBorderColor = gray3,
             focusedBorderColor = gray3,
+            errorTextColor = Warning1,
+            errorContainerColor = Warning2
         ),
     )
 }
@@ -126,4 +156,59 @@ fun AccountQueryComponent(
                 }
             }
     })
+}
+
+@Composable
+fun EmailTextField(
+    modifier: Modifier = Modifier,
+    value: String,
+    onValueChange: (String) -> Unit,
+    label: String,
+    isError: Boolean = false,
+    errorText: String = "",
+    imeAction: ImeAction = ImeAction.Next,
+) {
+
+    OutlinedTextField(
+        modifier = modifier,
+        shape = RoundedCornerShape(10.dp),
+        value = value,
+        onValueChange = onValueChange,
+
+        maxLines = 1,
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Email,
+            imeAction = imeAction
+        ),
+        placeholder = {
+            Text(
+                text = label, style = TextStyle(
+                    fontSize = 10.sp,
+                    fontWeight = FontWeight(400),
+                    color = gray3
+                )
+            )
+        },
+        isError = isError,
+        supportingText = {
+            if (isError) {
+                ErrorTextInputField(text = errorText)
+            }
+        }
+    )
+
+}
+
+
+@Composable
+fun ErrorTextInputField(
+    modifier: Modifier = Modifier,
+    text: String,
+) {
+    Text(
+        modifier = modifier,
+        text = text,
+        style = MaterialTheme.typography.bodyMedium,
+        color = MaterialTheme.colorScheme.error
+    )
 }

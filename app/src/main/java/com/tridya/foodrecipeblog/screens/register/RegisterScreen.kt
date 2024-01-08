@@ -1,4 +1,4 @@
-package com.tridya.foodrecipeblog.screens
+package com.tridya.foodrecipeblog.screens.register
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -34,20 +34,20 @@ import com.tridya.foodrecipeblog.components.SocialIcons
 import com.tridya.foodrecipeblog.components.TextFieldCustom
 import com.tridya.foodrecipeblog.components.TextFieldPassword
 import com.tridya.foodrecipeblog.navigation.Screen
+import com.tridya.foodrecipeblog.screens.register.state.RegistrationUiEvent
 import com.tridya.foodrecipeblog.ui.theme.black
 import com.tridya.foodrecipeblog.ui.theme.white
 import com.tridya.foodrecipeblog.viewModels.RegisterViewModel
 
 @Composable
 fun RegisterScreen(navController: NavController) {
-    val registerViewModel: RegisterViewModel = viewModel()
-    var textValue by remember {
-        mutableStateOf("")
+    val registrationViewModel: RegisterViewModel = viewModel()
+
+    val registrationState by remember {
+        registrationViewModel.registrationState
     }
     Surface(
-        modifier = Modifier
-            .fillMaxSize(),
-        color = white
+        modifier = Modifier.fillMaxSize(), color = white
     ) {
         Column(
             modifier = Modifier
@@ -58,7 +58,7 @@ fun RegisterScreen(navController: NavController) {
             Spacer(modifier = Modifier.height(20.dp))
 
             SimpleTextComponent(
-                value = "Create an account",
+                value = stringResource(R.string.create_an_account),
                 fontSize = 20.sp,
                 fontWeight = FontWeight(600),
                 textColor = black,
@@ -66,7 +66,7 @@ fun RegisterScreen(navController: NavController) {
             )
 
             SimpleTextComponent(
-                value = "Let’s help you set up your account, it won’t take long.",
+                value = stringResource(R.string.let_s_help_you_set_up_your_account_it_won_t_take_long),
                 fontSize = 12.sp,
                 fontWeight = FontWeight(400),
                 textColor = black,
@@ -75,25 +75,71 @@ fun RegisterScreen(navController: NavController) {
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            SmallTextLabel(value = "Name")
-            TextFieldCustom(hintText = "Enter Name", onTextChanged = {})
+            SmallTextLabel(value = stringResource(R.string.name))
+            TextFieldCustom(
+                value = registrationState.name,
+                hintText = stringResource(R.string.enter_name),
+                onTextChanged = {
+                    registrationViewModel.onUiEvent(
+                        registrationUiEvent = RegistrationUiEvent.NameChanged(
+                            inputValue = it
+                        )
+                    )
+                },
+                isError = registrationState.errorState.nameErrorState.hasError,
+                errorText = stringResource(id = registrationState.errorState.nameErrorState.errorMessageStringResource)
+            )
 
             Spacer(modifier = Modifier.height(10.dp))
 
             SmallTextLabel(value = stringResource(R.string.email))
             TextFieldCustom(
-                hintText = stringResource(R.string.enter_email), onTextChanged = {}
+                value = registrationState.emailId,
+                hintText = stringResource(R.string.enter_email),
+                onTextChanged = {
+                    registrationViewModel.onUiEvent(
+                        registrationUiEvent = RegistrationUiEvent.EmailChanged(
+                            inputValue = it
+                        )
+                    )
+                },
+                isError = registrationState.errorState.nameErrorState.hasError,
+                errorText = stringResource(id = registrationState.errorState.emailIdErrorState.errorMessageStringResource)
             )
 
             Spacer(modifier = Modifier.height(10.dp))
 
             SmallTextLabel(value = stringResource(R.string.password))
-            TextFieldPassword(hintText = stringResource(R.string.enter_password))
+            TextFieldPassword(
+                value = registrationState.password,
+                hintText = stringResource(R.string.enter_password),
+                onValueChange = {
+                    registrationViewModel.onUiEvent(
+                        registrationUiEvent = RegistrationUiEvent.PasswordChanged(
+                            inputValue = it
+                        )
+                    )
+                },
+                isError = registrationState.errorState.passwordErrorState.hasError,
+                errorText = stringResource(id = registrationState.errorState.passwordErrorState.errorMessageStringResource)
+            )
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            SmallTextLabel(value = "Confirm Password")
-            TextFieldPassword(hintText = "Retype Password")
+            SmallTextLabel(value = stringResource(R.string.confirm_password))
+            TextFieldPassword(
+                value = registrationState.confirmPassword,
+                hintText = stringResource(R.string.retype_password),
+                onValueChange = {
+                    registrationViewModel.onUiEvent(
+                        registrationUiEvent = RegistrationUiEvent.ConfirmPasswordChanged(
+                            inputValue = it
+                        )
+                    )
+                },
+                isError = registrationState.errorState.passwordErrorState.hasError,
+                errorText = stringResource(id = registrationState.errorState.confirmPasswordErrorState.errorMessageStringResource)
+            )
 
             Spacer(modifier = Modifier.height(20.dp))
 
@@ -102,8 +148,7 @@ fun RegisterScreen(navController: NavController) {
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            ButtonComponent(
-                modifier = Modifier.fillMaxWidth(),
+            ButtonComponent(modifier = Modifier.fillMaxWidth(),
                 value = stringResource(R.string.sign_in),
                 onButtonClicked = {
                     navController.navigate(Screen.RegisterScreen.route)

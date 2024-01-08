@@ -106,7 +106,11 @@ dependencies {
 //    cradential manager
     implementation("androidx.credentials:credentials:1.3.0-alpha01")
 
-//    implementation("com.github.stevdza-san:OneTapCompose:1.0.11")
+//    google one tap signIn library
+    implementation("com.github.stevdza-san:OneTapCompose:1.0.11")
+
+//    facebook integration
+    implementation("com.facebook.android:facebook-android-sdk:latest.release")
 }
 kapt {
     correctErrorTypes = true

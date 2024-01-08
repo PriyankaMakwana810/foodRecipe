@@ -1,95 +1,179 @@
 package com.tridya.foodrecipeblog.viewModels
 
-import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.tridya.foodrecipeblog.models.RegisterUser
+import com.tridya.foodrecipeblog.models.ErrorState
+import com.tridya.foodrecipeblog.screens.register.state.RegistrationErrorState
+import com.tridya.foodrecipeblog.screens.register.state.RegistrationState
+import com.tridya.foodrecipeblog.screens.register.state.RegistrationUiEvent
+import com.tridya.foodrecipeblog.screens.register.state.confirmPasswordEmptyErrorState
+import com.tridya.foodrecipeblog.screens.register.state.emailEmptyErrorState
+import com.tridya.foodrecipeblog.screens.register.state.nameEmptyErrorState
+import com.tridya.foodrecipeblog.screens.register.state.passwordEmptyErrorState
+import com.tridya.foodrecipeblog.screens.register.state.passwordMismatchErrorState
 
 class RegisterViewModel : ViewModel() {
-    var registerUser = RegisterUser()
+    var registrationState = mutableStateOf(RegistrationState())
+        private set
 
-    var userName = mutableStateOf(registerUser.name)
-    var isUserNameValid = mutableStateOf(false)
-    var userNameErrMsg = mutableStateOf("")
+    fun onUiEvent(registrationUiEvent: RegistrationUiEvent) {
+        when (registrationUiEvent) {
 
-    var email = mutableStateOf(registerUser.email)
-    var isEmailValid = mutableStateOf(false)
-    var emailErrMsg = mutableStateOf("")
+            // Email id changed event
+            is RegistrationUiEvent.EmailChanged -> {
+                registrationState.value = registrationState.value.copy(
+                    emailId = registrationUiEvent.inputValue,
+                    errorState = registrationState.value.errorState.copy(
+                        emailIdErrorState = if (registrationUiEvent.inputValue.trim().isEmpty()) {
+                            // Email id empty state
+                            emailEmptyErrorState
+                        } else {
+                            // Valid state
+                            ErrorState()
+                        }
 
-    var password = mutableStateOf(registerUser.email)
-    var isPasswordValid = mutableStateOf(false)
-    var passwordErrMsg = mutableStateOf("")
+                    )
+                )
+            }
 
-    var cPassword = mutableStateOf(registerUser.email)
-    var iscPasswordValid = mutableStateOf(false)
-    var cPasswordErrMsg = mutableStateOf("")
+            // Mobile Number changed event
+            is RegistrationUiEvent.NameChanged -> {
+                registrationState.value = registrationState.value.copy(
+                    name = registrationUiEvent.inputValue,
+                    errorState = registrationState.value.errorState.copy(
+                        nameErrorState = if (registrationUiEvent.inputValue.trim()
+                                .isEmpty()
+                        ) {
+                            // Mobile Number Empty state
+                            nameEmptyErrorState
+                        } else {
+                            // Valid state
+                            ErrorState()
+                        }
 
-    var isEnableRegButton = mutableStateOf(false)
-    private fun shouldEnableRegistrationButton() {
-        isEnableRegButton.value = userNameErrMsg.value.isEmpty()
-                && emailErrMsg.value.isEmpty()
-                && passwordErrMsg.value.isEmpty()
-                && cPasswordErrMsg.value.isEmpty()
-                && userName.value.isNotEmpty()
-                && email.value.isNotEmpty()
-                && password.value.isNotEmpty()
-                && cPassword.value.isNotEmpty()
-    }
+                    )
+                )
+            }
 
-    fun validateUserName() {
-        if (userName.value.length >= 10) {
-            isUserNameValid.value = true
-            userNameErrMsg.value = "User Name should be less than 10 chars"
-        } else {
-            isUserNameValid.value = false
-            userNameErrMsg.value = ""
+            // Password changed event
+            is RegistrationUiEvent.PasswordChanged -> {
+                registrationState.value = registrationState.value.copy(
+                    password = registrationUiEvent.inputValue,
+                    errorState = registrationState.value.errorState.copy(
+                        passwordErrorState = if (registrationUiEvent.inputValue.trim().isEmpty()) {
+                            // Password Empty state
+                            passwordEmptyErrorState
+                        } else {
+                            // Valid state
+                            ErrorState()
+                        }
+
+                    )
+                )
+            }
+
+            // Confirm Password changed event
+            is RegistrationUiEvent.ConfirmPasswordChanged -> {
+                registrationState.value = registrationState.value.copy(
+                    confirmPassword = registrationUiEvent.inputValue,
+                    errorState = registrationState.value.errorState.copy(
+                        confirmPasswordErrorState = when {
+
+                            // Empty state of confirm password
+                            registrationUiEvent.inputValue.trim().isEmpty() -> {
+                                confirmPasswordEmptyErrorState
+                            }
+
+                            // Password is different than the confirm password
+                            registrationState.value.password.trim() != registrationUiEvent.inputValue -> {
+                                passwordMismatchErrorState
+                            }
+
+                            // Valid state
+                            else -> ErrorState()
+                        }
+                    )
+                )
+            }
+
+
+            // Submit Registration event
+            is RegistrationUiEvent.Submit -> {
+                val inputsValidated = validateInputs()
+                if (inputsValidated) {
+                    // TODO Trigger registration in authentication flow
+                    registrationState.value =
+                        registrationState.value.copy(isRegistrationSuccessful = true)
+                }
+            }
         }
-        shouldEnableRegistrationButton()
     }
 
-    fun validateEmail() {
-        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email.value).matches()) {
-            isEmailValid.value = true
-            emailErrMsg.value = "Input proper email id"
-        } else {
-            isEmailValid.value = false
-            emailErrMsg.value = ""
+    private fun validateInputs(): Boolean {
+        val emailString = registrationState.value.emailId.trim()
+        val mobileNumberString = registrationState.value.name.trim()
+        val passwordString = registrationState.value.password.trim()
+        val confirmPasswordString = registrationState.value.confirmPassword.trim()
+
+        return when {
+
+            // Email empty
+            emailString.isEmpty() -> {
+                registrationState.value = registrationState.value.copy(
+                    errorState = RegistrationErrorState(
+                        emailIdErrorState = emailEmptyErrorState
+                    )
+                )
+                false
+            }
+
+            //Mobile Number Empty
+            mobileNumberString.isEmpty() -> {
+                registrationState.value = registrationState.value.copy(
+                    errorState = RegistrationErrorState(
+                        nameErrorState = nameEmptyErrorState
+                    )
+                )
+                false
+            }
+
+            //Password Empty
+            passwordString.isEmpty() -> {
+                registrationState.value = registrationState.value.copy(
+                    errorState = RegistrationErrorState(
+                        passwordErrorState = passwordEmptyErrorState
+                    )
+                )
+                false
+            }
+
+            //Confirm Password Empty
+            confirmPasswordString.isEmpty() -> {
+                registrationState.value = registrationState.value.copy(
+                    errorState = RegistrationErrorState(
+                        confirmPasswordErrorState = confirmPasswordEmptyErrorState
+                    )
+                )
+                false
+            }
+
+            // Password and Confirm Password are different
+            passwordString != confirmPasswordString -> {
+                registrationState.value = registrationState.value.copy(
+                    errorState = RegistrationErrorState(
+                        confirmPasswordErrorState = passwordMismatchErrorState
+                    )
+                )
+                false
+            }
+
+            // No errors
+            else -> {
+                // Set default error state
+                registrationState.value =
+                    registrationState.value.copy(errorState = RegistrationErrorState())
+                true
+            }
         }
-        shouldEnableRegistrationButton()
-    }
-
-    fun validatePassword() {
-        if (password.value != "123") {
-            isPasswordValid.value = true
-            passwordErrMsg.value = "Password should be 123"
-        } else {
-            isPasswordValid.value = false
-            passwordErrMsg.value = ""
-        }
-        shouldEnableRegistrationButton()
-    }
-
-    fun validateConfirmPassword() {
-        if (password.value != cPassword.value) {
-            iscPasswordValid.value = true
-            cPasswordErrMsg.value = "Password did not match"
-        } else {
-            iscPasswordValid.value = false
-            cPasswordErrMsg.value = ""
-        }
-        shouldEnableRegistrationButton()
-    }
-
-    fun register() {
-        registerUser.name = userName.value
-        registerUser.email = email.value
-        registerUser.password = password.value
-        registerUser.confirmPassword = cPassword.value
-
-        Log.d("username", userName.value)
-        Log.d("email", email.value)
-        Log.d("password", password.value)
-        Log.d("confirmPassword", cPassword.value)
-        Log.d("Data:", registerUser.toString())
     }
 }

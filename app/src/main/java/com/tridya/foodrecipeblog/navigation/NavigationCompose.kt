@@ -5,8 +5,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.tridya.foodrecipeblog.screens.IntroScreen
-import com.tridya.foodrecipeblog.screens.Login.LoginScreen
-import com.tridya.foodrecipeblog.screens.RegisterScreen
+import com.tridya.foodrecipeblog.screens.login.LoginScreen
+import com.tridya.foodrecipeblog.screens.register.RegisterScreen
 
 @Composable
 fun NavigationCompose(navController: NavHostController) {
