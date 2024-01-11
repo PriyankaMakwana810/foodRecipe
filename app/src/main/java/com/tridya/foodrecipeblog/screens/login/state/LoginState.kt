@@ -10,7 +10,7 @@ data class LoginState(
     val email: String = "",
     val password: String = "",
     val errorState: LoginErrorState = LoginErrorState(),
-    val isLoginSuccessful: Boolean = false,
+    val isLoginSuccessful: Boolean = false
 )
 
 /**

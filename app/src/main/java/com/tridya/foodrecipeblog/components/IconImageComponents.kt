@@ -6,8 +6,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -22,7 +20,11 @@ import com.tridya.foodrecipeblog.R
 import com.tridya.foodrecipeblog.ui.theme.gray3
 
 @Composable
-fun SocialIcons(modifier: Modifier = Modifier) {
+fun SocialIcons(
+    modifier: Modifier = Modifier,
+    onClickGoogle: () -> Unit = {},
+    onClickFacebook: () -> Unit = {},
+) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.fillMaxWidth(),
@@ -30,10 +32,10 @@ fun SocialIcons(modifier: Modifier = Modifier) {
     ) {
         Button(
             onClick = {
-
+                onClickGoogle()
             },
             colors = ButtonDefaults.buttonColors(Color.Transparent),
-            elevation = ButtonDefaults.buttonElevation() ,
+            elevation = ButtonDefaults.buttonElevation(),
             modifier = Modifier
                 .border(
                     width = 1.dp,
@@ -49,9 +51,9 @@ fun SocialIcons(modifier: Modifier = Modifier) {
         Spacer(modifier = Modifier.width(25.dp))
         Button(
             onClick = {
-
+                onClickFacebook()
             },
-            elevation = ButtonDefaults.buttonElevation() ,
+            elevation = ButtonDefaults.buttonElevation(),
             colors = ButtonDefaults.buttonColors(Color.Transparent),
             modifier = Modifier
                 .border(

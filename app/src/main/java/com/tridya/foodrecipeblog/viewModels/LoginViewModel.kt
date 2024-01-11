@@ -1,40 +1,40 @@
 package com.tridya.foodrecipeblog.viewModels
 
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.google.android.gms.auth.api.identity.SignInClient
-import com.google.firebase.auth.AuthCredential
+import com.tridya.foodrecipeblog.api.repo.LoginRepository
 import com.tridya.foodrecipeblog.models.ErrorState
-import com.tridya.foodrecipeblog.models.Response
+import com.tridya.foodrecipeblog.models.User
 import com.tridya.foodrecipeblog.repository.AuthRepository
-import com.tridya.foodrecipeblog.repository.OneTapSignInResponse
-import com.tridya.foodrecipeblog.repository.SignInWithGoogleResponse
 import com.tridya.foodrecipeblog.screens.login.state.LoginErrorState
 import com.tridya.foodrecipeblog.screens.login.state.LoginState
 import com.tridya.foodrecipeblog.screens.login.state.LoginUiEvent
 import com.tridya.foodrecipeblog.screens.login.state.emailEmptyErrorState
 import com.tridya.foodrecipeblog.screens.login.state.passwordEmptyErrorState
+import com.tridya.foodrecipeblog.utils.Constants.SHARED_COMMON
+import com.tridya.foodrecipeblog.utils.PrefUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
+import javax.inject.Named
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val authRepo: AuthRepository,
+    private val repository: LoginRepository,
+    @Named(SHARED_COMMON) private val sharedPreferences: PrefUtils,
     val client: SignInClient,
 ) : ViewModel() {
 
+
+    private val error = MutableLiveData<String>()
+    private lateinit var disposable: Disposable
     var loginState = mutableStateOf(LoginState())
         private set
-
-    private val _signInStatus = MutableStateFlow<Boolean?>(null)
-    val signInStatus: StateFlow<Boolean?>
-        get() = _signInStatus
 
     fun onUiEvent(loginUiEvent: LoginUiEvent) {
         when (loginUiEvent) {
@@ -68,9 +68,9 @@ class LoginViewModel @Inject constructor(
             // Submit Login
             is LoginUiEvent.Submit -> {
                 val inputsValidated = validateInputs()
+//                getLoginStatus()
                 if (inputsValidated) {
-                    // TODO Trigger login in authentication flow
-                    loginState.value = loginState.value.copy(isLoginSuccessful = true)
+                    getLoginStatus()
                 }
             }
         }
@@ -110,20 +110,24 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    val isUserAuthenticated get() = authRepo.isUserAuthenticatedInFirebase
-    var oneTapSignInResponse by mutableStateOf<OneTapSignInResponse>(Response.Success(null))
-        private set
-    var signInWithGoogleResponse by mutableStateOf<SignInWithGoogleResponse>(Response.Success(false))
-        private set
 
-    fun oneTapSignIn() = viewModelScope.launch {
-        oneTapSignInResponse = Response.Loading
-        oneTapSignInResponse = authRepo.oneTapSignInWithGoogle()
+    private fun getLoginStatus() {
+        disposable = repository.login()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(/* onSuccess = */ { onSuccess ->
+                if (onSuccess.IsSuccess) {
+                    // TODO Trigger login in authentication flow
+                    val user =
+                        User(emailId = loginState.value.email, password = loginState.value.password)
+                    sharedPreferences.user = user
+                    loginState.value = loginState.value.copy(isLoginSuccessful = true)
+//                    navController.navigate(Screen.HomeScreen.route)
+                }
+
+            },
+                /* onError = */ { errorData ->
+                    error.postValue(errorData.toString())
+                })
     }
-
-    fun signInWithGoogle(googleCredential: AuthCredential) = viewModelScope.launch {
-        oneTapSignInResponse = Response.Loading
-        signInWithGoogleResponse = authRepo.firebaseSignInWithGoogle(googleCredential)
-    }
-
 }

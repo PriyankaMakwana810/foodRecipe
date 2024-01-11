@@ -1,6 +1,5 @@
 package com.tridya.foodrecipeblog.components
 
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
@@ -21,12 +20,11 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.tridya.foodrecipeblog.ui.theme.Warning1
-import com.tridya.foodrecipeblog.ui.theme.Warning2
 import com.tridya.foodrecipeblog.ui.theme.black
 import com.tridya.foodrecipeblog.ui.theme.gray3
 import com.tridya.foodrecipeblog.ui.theme.secondary100
@@ -64,6 +62,8 @@ fun TextFieldCustom(
                 ErrorTextInputField(text = errorText)
             }
         },
+        maxLines = 1,
+        singleLine = true,
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
         shape = RoundedCornerShape(size = 10.dp),
         modifier = Modifier
@@ -98,6 +98,8 @@ fun TextFieldPassword(
             textValue = it
             onValueChange(it)
         },
+        maxLines = 1,
+        singleLine = true,
         placeholder = {
             Text(
                 text = hintText, style = TextStyle(
@@ -113,7 +115,11 @@ fun TextFieldPassword(
             }
         },
         isError = isError,
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Password,
+            imeAction = imeAction
+        ),
+        visualTransformation = PasswordVisualTransformation(),
         shape = RoundedCornerShape(size = 10.dp),
         modifier = Modifier
             .fillMaxWidth(),
@@ -124,9 +130,7 @@ fun TextFieldPassword(
             focusedContainerColor = white,
             unfocusedBorderColor = gray3,
             focusedBorderColor = gray3,
-            errorTextColor = Warning1,
-            errorContainerColor = Warning2
-        ),
+        )
     )
 }
 

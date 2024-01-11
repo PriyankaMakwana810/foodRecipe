@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.tridya.foodrecipeblog.R
+import com.tridya.foodrecipeblog.models.User
 
 class PrefUtils(private val context: Context) {
 
@@ -21,6 +22,14 @@ class PrefUtils(private val context: Context) {
     }
 
     fun getContext() = context
+
+    var isLoggedIn: Boolean
+        get() = prefs.contains(KEY_IS_LOGIN) && getBoolean(KEY_IS_LOGIN)
+        set(isLoggedIn) = putBoolean(KEY_IS_LOGIN, isLoggedIn)
+
+    var isLoginExpired: Boolean
+        get() = prefs.contains(KEY_IS_LOGIN_EXPIRED) && getBoolean(KEY_IS_LOGIN_EXPIRED)
+        set(isLoinExpired) = putBoolean(KEY_IS_LOGIN_EXPIRED, isLoinExpired)
 
     /**
      * Store integer value
@@ -66,6 +75,21 @@ class PrefUtils(private val context: Context) {
         return prefs.getBoolean(key, false)
     }
 
+    var user: User?
+        get() {
+            val gson = Gson()
+            val json = getString(KEY_USER_INFO)
+            return gson.fromJson(json, User::class.java)
+        }
+        set(user) {
+            val gson = Gson()
+            val json = gson.toJson(user)
+            prefs.edit().putString(KEY_USER_INFO, json).apply()
+            isLoggedIn = true
+            isLoginExpired = false
+        }
+
+
     /**
      * Clear current session
      * */
@@ -83,5 +107,11 @@ class PrefUtils(private val context: Context) {
         val gson = Gson()
         val json: String = getString(key)
         return gson.fromJson(json, className)
+    }
+
+    private companion object {
+        private const val KEY_IS_LOGIN = "isLogin"
+        private const val KEY_IS_LOGIN_EXPIRED = "isLoinExpired"
+        private const val KEY_USER_INFO = "user"
     }
 }

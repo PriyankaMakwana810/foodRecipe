@@ -10,6 +10,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.facebook.FacebookSdk
+import com.facebook.appevents.AppEventsLogger
 import com.tridya.foodrecipeblog.ui.theme.FoodRecipeBlogTheme
 import com.tridya.foodrecipeblog.viewModels.SplashScreenViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -21,6 +23,10 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Initialize Facebook SDK
+        FacebookSdk.sdkInitialize(applicationContext)
+        AppEventsLogger.activateApp(application)
+
         val splashScreen = installSplashScreen()
         splashScreen.setKeepOnScreenCondition { splashViewModel.isLoading.value }
         enableEdgeToEdge()

@@ -102,7 +102,12 @@ dependencies {
 //    retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-
+    implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.9")
+//    RxJava 2
+    implementation("io.reactivex.rxjava2:rxjava:2.2.19")
+    implementation("io.reactivex.rxjava2:rxandroid:2.1.1")
+//    RxJava2 with Retrofit
+    implementation("com.squareup.retrofit2:adapter-rxjava2:2.9.0")
 //    cradential manager
     implementation("androidx.credentials:credentials:1.3.0-alpha01")
 

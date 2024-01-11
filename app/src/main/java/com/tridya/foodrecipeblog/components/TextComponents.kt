@@ -54,7 +54,7 @@ fun SimpleTextComponent(
             .heightIn(),
         style = TextStyle(
             fontSize = fontSize,
-            lineHeight = 60.sp,
+            lineHeight = 40.sp,
             fontWeight = fontWeight,
             color = textColor,
             textAlign = textAlign,
