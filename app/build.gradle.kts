@@ -116,6 +116,9 @@ dependencies {
 
 //    facebook integration
     implementation("com.facebook.android:facebook-android-sdk:latest.release")
+
+//    coil image loading lib
+    implementation("io.coil-kt:coil-compose:2.5.0")
 }
 kapt {
     correctErrorTypes = true

@@ -8,24 +8,34 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.tridya.foodrecipeblog.components.SimpleTextComponent
 import com.tridya.foodrecipeblog.ui.theme.black
 import com.tridya.foodrecipeblog.ui.theme.white
 
 @Composable
-fun ProfileScreen() {
+fun SavedScreen(navController: NavController) {
     Surface(
         modifier = Modifier.fillMaxSize(), color = white
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
             SimpleTextComponent(
                 modifier = Modifier.align(Alignment.Center),
-                value = "Profile Screen",
+                value = "Saved Screen",
                 fontSize = 30.sp,
                 textColor = Color.Black,
                 fontWeight = FontWeight(700)
             )
         }
     }
+}
+
+
+@Preview
+@Composable
+fun PreviewSavedScreen() {
+    SavedScreen(navController = rememberNavController())
 }

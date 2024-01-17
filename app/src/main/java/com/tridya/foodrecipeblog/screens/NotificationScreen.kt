@@ -14,18 +14,19 @@ import com.tridya.foodrecipeblog.ui.theme.black
 import com.tridya.foodrecipeblog.ui.theme.white
 
 @Composable
-fun ProfileScreen() {
+fun NotificationScreen() {
     Surface(
         modifier = Modifier.fillMaxSize(), color = white
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
             SimpleTextComponent(
                 modifier = Modifier.align(Alignment.Center),
-                value = "Profile Screen",
+                value = "Notification Screen",
                 fontSize = 30.sp,
                 textColor = Color.Black,
                 fontWeight = FontWeight(700)
             )
+
         }
     }
 }

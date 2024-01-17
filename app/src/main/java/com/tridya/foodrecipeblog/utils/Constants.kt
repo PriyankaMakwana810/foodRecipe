@@ -20,9 +20,12 @@ object Constants {
 
     const val SIGN_IN_WITH_GOOGLE = "Sign in with Google"
 
-//screens
+    //screens
     const val INTRO = "intro_screen"
     const val LOGIN = "login_screen"
     const val REGISTER = "register_screen"
     const val HOME = "home_screen"
+    const val SAVED = "saved_screen"
+    const val NOTIFICATION = "notification_screen"
+    const val PROFILE = "profile_screen"
 }

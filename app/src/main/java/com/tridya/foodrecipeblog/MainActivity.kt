@@ -1,7 +1,9 @@
 package com.tridya.foodrecipeblog
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -20,7 +22,6 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     private val splashViewModel: SplashScreenViewModel by viewModels()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // Initialize Facebook SDK
@@ -29,7 +30,14 @@ class MainActivity : ComponentActivity() {
 
         val splashScreen = installSplashScreen()
         splashScreen.setKeepOnScreenCondition { splashViewModel.isLoading.value }
-        enableEdgeToEdge()
+        enableEdgeToEdge(
+            statusBarStyle = SystemBarStyle.light(
+                Color.TRANSPARENT,
+                Color.TRANSPARENT
+            ), SystemBarStyle.dark(
+                Color.BLACK
+            )
+        )
         setContent {
             FoodRecipeBlogTheme {
                 // A surface container using the 'background' color from the theme

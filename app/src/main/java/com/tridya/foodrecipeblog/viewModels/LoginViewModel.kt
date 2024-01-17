@@ -7,6 +7,7 @@ import com.google.android.gms.auth.api.identity.SignInClient
 import com.tridya.foodrecipeblog.api.repo.LoginRepository
 import com.tridya.foodrecipeblog.models.ErrorState
 import com.tridya.foodrecipeblog.models.User
+import com.tridya.foodrecipeblog.navigation.Screen
 import com.tridya.foodrecipeblog.repository.AuthRepository
 import com.tridya.foodrecipeblog.screens.login.state.LoginErrorState
 import com.tridya.foodrecipeblog.screens.login.state.LoginState
@@ -26,10 +27,9 @@ import javax.inject.Named
 class LoginViewModel @Inject constructor(
     private val authRepo: AuthRepository,
     private val repository: LoginRepository,
-    @Named(SHARED_COMMON) private val sharedPreferences: PrefUtils,
+    @Named(SHARED_COMMON) val sharedPreferences: PrefUtils,
     val client: SignInClient,
 ) : ViewModel() {
-
 
     private val error = MutableLiveData<String>()
     private lateinit var disposable: Disposable

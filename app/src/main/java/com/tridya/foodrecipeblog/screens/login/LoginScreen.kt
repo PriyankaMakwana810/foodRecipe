@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -49,6 +50,7 @@ import com.tridya.foodrecipeblog.components.SocialIcons
 import com.tridya.foodrecipeblog.components.TextFieldCustom
 import com.tridya.foodrecipeblog.components.TextFieldPassword
 import com.tridya.foodrecipeblog.components.YellowSmallText
+import com.tridya.foodrecipeblog.models.User
 import com.tridya.foodrecipeblog.navigation.Screen
 import com.tridya.foodrecipeblog.screens.login.state.LoginUiEvent
 import com.tridya.foodrecipeblog.ui.theme.black
@@ -58,16 +60,18 @@ import com.tridya.foodrecipeblog.viewModels.LoginViewModel
 import org.json.JSONException
 
 @Composable
-fun LoginScreen(navController: NavController, loginViewModel: LoginViewModel) {
+fun LoginScreen(navController: NavController, paddingValues: PaddingValues) {
 
+    val loginViewModel: LoginViewModel = hiltViewModel()
     val context = LocalContext.current
-    val loginState by remember {
-        loginViewModel.loginState
-    }
 
-    val callbackManager = remember {
-        CallbackManager.Factory.create()
+    if (loginViewModel.sharedPreferences.isLoggedIn) {
+        navController.navigate(Screen.HomeScreen.route)
     }
+    val loginState by remember { loginViewModel.loginState }
+
+    val callbackManager = remember { CallbackManager.Factory.create() }
+
     val fbLauncher = rememberLauncherForActivityResult(
         LoginManager.getInstance().createLogInActivityResultContract(callbackManager)
     ) { result ->
@@ -89,23 +93,21 @@ fun LoginScreen(navController: NavController, loginViewModel: LoginViewModel) {
                                 } else {
                                     null
                                 }
-//                                user.isSignInWithFacebook = true
-//                                session?.user = user
                                 Log.e("TAG", "onSuccess: $userName $id $emailId")
+                                val user =
+                                    User(
+                                        userId = id,
+                                        userName = userName,
+                                        emailId = emailId,
+                                    )
+                                loginViewModel.sharedPreferences.user = user
+
                                 loginViewModel.onUiEvent(
                                     loginUiEvent = LoginUiEvent.EmailChanged(
                                         inputValue = emailId!!
                                     )
                                 )
-                                Toast.makeText(
-                                    context,
-                                    "Login with Facebook successfully",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-
-//                                LoginManager.getInstance().logOut()
-//                                LoginManager.getInstance().logOut()
-//                                goToActivityAndClearTask<SignUpActivity>()
+                                navController.navigate(Screen.HomeScreen.route)
                             } catch (e: JSONException) {
                                 e.printStackTrace()
                             }
@@ -126,10 +128,9 @@ fun LoginScreen(navController: NavController, loginViewModel: LoginViewModel) {
             }
         )
     }
+
     val oneTapSignInState = rememberOneTapSignInState()
-    var authenticated by remember {
-        mutableStateOf(false)
-    }
+    var authenticated by remember { mutableStateOf(false) }
     val scrollState = rememberScrollState()
 
     Surface(
@@ -245,5 +246,5 @@ fun LoginScreen(navController: NavController, loginViewModel: LoginViewModel) {
 @Preview
 @Composable
 fun PreviewLoginScreen() {
-    LoginScreen(navController = rememberNavController(), hiltViewModel())
+    LoginScreen(navController = rememberNavController(), paddingValues = PaddingValues())
 }

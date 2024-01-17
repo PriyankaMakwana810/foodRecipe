@@ -3,7 +3,7 @@ package com.tridya.foodrecipeblog.models
 import java.io.Serializable
 
 data class User(
-    val userId: Int? = null,
+    val userId: String? = null,
     val emailId: String? = null,
     val password: String? = null,
     val userName: String? = null,

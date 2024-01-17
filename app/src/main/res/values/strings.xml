@@ -45,6 +45,8 @@
     <string name="facebook_app_id">2750791605059480</string>
     <string name="fb_login_protocol_scheme">fb2750791605059480</string>
     <string name="facebook_client_token">e4e549403afd5a2b719aa73db6334a3a</string>
+    <string name="what_are_you_cooking_today">What are you cooking today?</string>
+    <string name="search">search</string>
 
 
 </resources>

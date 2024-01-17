@@ -90,7 +90,7 @@ fun RegisterScreen(navController: NavController) {
                             Log.e("TAG", "onSuccess: $userName $id $emailId")
                             val user =
                                 User(
-                                    userId = id.toInt(),
+                                    userId = id,
                                     userName = userName,
                                     emailId = emailId,
                                 )
@@ -98,6 +98,11 @@ fun RegisterScreen(navController: NavController) {
                             registrationViewModel.onUiEvent(
                                 registrationUiEvent = RegistrationUiEvent.EmailChanged(
                                     inputValue = emailId!!
+                                )
+                            )
+                            registrationViewModel.onUiEvent(
+                                registrationUiEvent = RegistrationUiEvent.NameChanged(
+                                    inputValue = userName
                                 )
                             )
                         } catch (e: JSONException) {
