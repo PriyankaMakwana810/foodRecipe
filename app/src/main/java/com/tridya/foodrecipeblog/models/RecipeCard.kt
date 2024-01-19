@@ -8,7 +8,8 @@ data class RecipeCard(
     val tagline: String = "",
     val tags: Set<String> = emptySet(),
     val isSaved: Boolean = false,
-    val ratings: String = "4.0"
+    val ratings: Float = 4.0f,
+    val postedBy: String = "James Milner"
 )
 
 val recipesByCountry = listOf(
@@ -18,21 +19,23 @@ val recipesByCountry = listOf(
         imageUrl = "https://source.unsplash.com/pGM4sjt_BdQ",
         timeToCook = 10L,
         tagline = "A tag line",
-        isSaved = true
+        isSaved = true,
+        postedBy = "Laura wilson"
     ),
     RecipeCard(
         id = 2,
-        name = "Donut",
+        name = "Steak with tomato sauce and bulgur rice.",
         imageUrl = "https://source.unsplash.com/Yc5sL-ejk6U",
         timeToCook = 10L,
         tagline = "A tag line",
     ),
     RecipeCard(
         id = 3,
-        name = "Eclair",
+        name = "Pilaf sweet with lamb-and-raisins",
         imageUrl = "https://source.unsplash.com/-LojFX9NfPY",
         timeToCook = 10L,
         tagline = "A tag line",
+        postedBy = "Laura wilson"
     ),
     RecipeCard(
         id = 4,
@@ -47,7 +50,8 @@ val recipesByCountry = listOf(
         imageUrl = "https://source.unsplash.com/Y4YR9OjdIMk",
         timeToCook = 10L,
         tagline = "A tag line",
-        isSaved = true
+        isSaved = true,
+        postedBy = "Laura wilson"
     ),
     RecipeCard(
         id = 6,
@@ -62,6 +66,7 @@ val recipesByCountry = listOf(
         imageUrl = "https://source.unsplash.com/YgYJsFDd4AU",
         timeToCook = 10L,
         tagline = "A tag line",
+        postedBy = "Laura wilson"
     ),
     RecipeCard(
         id = 8,
@@ -84,5 +89,6 @@ val recipesByCountry = listOf(
         imageUrl = "https://source.unsplash.com/AHF_ZktTL6Q",
         timeToCook = 10L,
         tagline = "A tag line",
+        postedBy = "Laura wilson"
     )
 )

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -24,7 +25,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -47,6 +47,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -54,13 +55,14 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.gowtham.ratingbar.RatingBar
+import com.gowtham.ratingbar.RatingBarStyle
 import com.tridya.foodrecipeblog.R
 import com.tridya.foodrecipeblog.models.RecipeCard
 import com.tridya.foodrecipeblog.models.recipesByCountry
 import com.tridya.foodrecipeblog.ui.theme.black
 import com.tridya.foodrecipeblog.ui.theme.gray1
 import com.tridya.foodrecipeblog.ui.theme.gray3
-import com.tridya.foodrecipeblog.ui.theme.gray4
 import com.tridya.foodrecipeblog.ui.theme.primary100
 import com.tridya.foodrecipeblog.ui.theme.primary80
 import com.tridya.foodrecipeblog.ui.theme.secondary100
@@ -111,18 +113,7 @@ fun ProfileSection(
         )
     }
 }
-
-//@Preview
-@Composable
-fun SearchBarSection() {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 20.dp)
-    ) {
-        SearchBar(hint = "Search Recipe")
-    }
-}
+/*
 
 @Composable
 fun SearchBar(
@@ -140,7 +131,6 @@ fun SearchBar(
     Row(
         modifier = Modifier
             .height(height)
-            .fillMaxWidth()
             .shadow(elevation = elevation, shape = cornerShape)
             .background(color = backgroundColor, shape = cornerShape)
             .clickable { onSearchClicked() },
@@ -148,7 +138,6 @@ fun SearchBar(
     ) {
         Box(
             modifier = modifier
-                .weight(1f)
                 .size(40.dp)
                 .background(color = Color.Transparent, shape = CircleShape)
                 .clickable {
@@ -158,29 +147,19 @@ fun SearchBar(
                     }
                 },
         ) {
-            if (text.text.isNotEmpty()) {
-                Icon(
-                    modifier = modifier
-                        .fillMaxSize()
-                        .padding(10.dp),
-                    painter = painterResource(id = R.drawable.baseline_clear_24),
-                    contentDescription = stringResource(R.string.search)
-                )
-            } else {
-                Icon(
-                    modifier = modifier
-                        .fillMaxSize()
-                        .padding(10.dp),
-                    painter = painterResource(id = R.drawable.v_ic_search),
-                    contentDescription = stringResource(R.string.search),
-                )
-            }
+            Image(
+                modifier = modifier
+                    .fillMaxSize()
+                    .padding(10.dp),
+                painter = painterResource(id = R.drawable.v_ic_search),
+                contentDescription = stringResource(R.string.search),
+            )
         }
         BasicTextField(
             modifier = modifier
-                .weight(5f)
-                .fillMaxWidth()
-                .padding(horizontal = 10.dp),
+                .padding(horizontal = 10.dp)
+//                .weight(1f),
+                .width(250.dp),
             value = text,
             onValueChange = {
                 text = it
@@ -188,9 +167,9 @@ fun SearchBar(
             },
             enabled = isEnabled,
             textStyle = TextStyle(
-                color = MaterialTheme.colorScheme.primary,
+                color = black,
                 fontSize = 16.sp,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
             ),
             decorationBox = { innerTextField ->
                 if (text.text.isEmpty()) {
@@ -208,46 +187,44 @@ fun SearchBar(
                 imeAction = ImeAction.Search
             ),
             keyboardActions = KeyboardActions(onSearch = { onSearchClicked() }),
-            singleLine = true
+            singleLine = true,
+            maxLines = 1
         )
     }
 }
+*/
 
 @Preview
 @Composable
 fun ListSelectCountry() {
+    var selectedCountry by remember { mutableStateOf(countryData.firstOrNull()) }
     LazyRow(
-        modifier = Modifier.padding(start = 12.dp, top = 20.dp, end = 20.dp),
+        modifier = Modifier.padding(start = 12.dp, top = 20.dp, end = 20.dp, bottom = 10.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         contentPadding = PaddingValues(horizontal = 8.dp)
     ) {
         items(countryData) { item ->
-            if (item.isSelected) {
-                Text(
-                    text = item.countryName,
-                    style = TextStyle(
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight(600),
-                        color = white,
-                        textAlign = TextAlign.Center
-                    ),
-                    modifier = Modifier
-                        .background(color = primary100, shape = RoundedCornerShape(10.dp))
-                        .padding(horizontal = 20.dp, vertical = 7.dp)
-                )
-            } else {
-                Text(
-                    text = item.countryName,
-                    style = TextStyle(
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight(600),
-                        color = primary80,
-                        textAlign = TextAlign.Center
-                    ),
-                    modifier = Modifier.padding(horizontal = 20.dp, vertical = 7.dp)
-                )
-            }
-
+            val isSelected = item == selectedCountry
+            val backgroundColor = if (isSelected) primary100 else Color.Transparent
+            val textColor = if (isSelected) white else primary80
+            Text(
+                text = item.countryName,
+                style = TextStyle(
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight(600),
+                    color = textColor,
+                    textAlign = TextAlign.Center
+                ),
+                modifier = Modifier
+                    .background(color = backgroundColor, shape = RoundedCornerShape(10.dp))
+                    .padding(horizontal = 20.dp, vertical = 7.dp)
+                    .clickable {
+                        // Update the isSelected property when the item is clicked
+//                        item.isSelected = !item.isSelected
+                        selectedCountry = item
+                        countryData.forEach { it.isSelected = (it == item) }
+                    }
+            )
         }
     }
 }
@@ -256,11 +233,24 @@ fun ListSelectCountry() {
 @Composable
 fun ListPopularRecipeByCountry() {
     LazyRow(
-        modifier = Modifier.padding(start = 15.dp, top = 20.dp, end = 30.dp, bottom = 20.dp),
+        modifier = Modifier.padding(start = 15.dp, top = 15.dp, end = 30.dp, bottom = 15.dp),
         horizontalArrangement = Arrangement.spacedBy(15.dp),
     ) {
         items(recipesByCountry) { item: RecipeCard ->
             ItemRecipeCard(recipe = item)
+        }
+    }
+}
+
+@Preview
+@Composable
+fun ListNewRecipe() {
+    LazyRow(
+        modifier = Modifier.padding(start = 15.dp, end = 30.dp),
+        horizontalArrangement = Arrangement.spacedBy(5.dp),
+    ) {
+        items(recipesByCountry) { item: RecipeCard ->
+            ItemNewRecipe(recipe = item)
         }
     }
 }
@@ -300,28 +290,7 @@ fun ItemRecipeCard(
                     .width(50.dp)
                     .align(Alignment.CenterEnd)
             ) {
-                Row(
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        painterResource(id = R.drawable.v_ic_star),
-                        tint = secondary100,
-                        contentDescription = "",
-                        modifier = Modifier
-                            .align(Alignment.CenterVertically)
-                            .padding(vertical = 6.dp, horizontal = 7.dp)
-                    )
-                    Text(
-                        text = recipe.ratings,
-                        style = TextStyle(
-                            fontSize = 11.sp,
-                            fontWeight = FontWeight(400),
-                            color = Color(0xFF000000),
-                            textAlign = TextAlign.End
-                        )
-                    )
-                }
+                RatingBar(rating = recipe.ratings.toString())
             }
         }
         Box(
@@ -329,7 +298,7 @@ fun ItemRecipeCard(
                 .width(150.dp)
                 .padding(top = 80.dp)
                 .height(160.dp)
-                .background(color =  Color(0xFFD9D9D9), shape = RoundedCornerShape(size = 12.dp)),
+                .background(color = Color(0xFFD9D9D9), shape = RoundedCornerShape(size = 12.dp)),
         ) {
             Column(
                 verticalArrangement = Arrangement.Center,
@@ -411,6 +380,115 @@ fun ItemRecipeCard(
 
 }
 
+@Composable
+fun ItemNewRecipe(recipe: RecipeCard) {
+    Box(modifier = Modifier.padding(top = 8.dp)) {
+        AsyncImage(
+            modifier = Modifier
+                .padding(end = 25.dp)
+                .clip(shape = RoundedCornerShape(100.dp))
+                .size(90.dp)
+                .align(alignment = Alignment.TopEnd)
+                .zIndex(1f),
+            model = ImageRequest.Builder(LocalContext.current)
+                .data(recipe.imageUrl)
+                .crossfade(true)
+                .build(),
+            placeholder = painterResource(id = R.drawable.food_image),
+            contentDescription = "image description",
+            contentScale = ContentScale.Crop,
+        )
+        Card(
+            colors = CardDefaults.cardColors(
+                containerColor = white,
+            ),
+            elevation = CardDefaults.cardElevation(10.dp),
+            modifier = Modifier
+                .shadow(
+                    elevation = 20.dp,
+                    spotColor = Color(0x1A000000),
+                    ambientColor = Color(0x1A000000)
+                )
+                .width(300.dp)
+                .padding(vertical = 40.dp, horizontal = 10.dp)
+                .background(color = Color(0xFFFFFFFF), shape = RoundedCornerShape(size = 10.dp))
+        ) {
+            Column(
+                modifier = Modifier.padding(18.dp),
+            ) {
+                Text(
+                    modifier = Modifier.width(150.dp),
+                    text = recipe.name,
+                    // Text Style/Small Text/Bold
+                    style = TextStyle(
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight(600),
+                        color = Color(0xFF484848),
+                    ),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+                RatingBar(
+                    modifier = Modifier.padding(vertical = 8.dp),
+                    value = recipe.ratings,
+                    style = RatingBarStyle.Fill(),
+                    size = 12.dp,
+                    spaceBetween = 2.dp,
+                    hideInactiveStars = true,
+                    onValueChange = {},
+                    onRatingChanged = {}
+                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier,
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        modifier = Modifier.weight(1f)
+                    ) {
+                        AsyncImage(
+                            modifier = Modifier
+                                .clip(shape = RoundedCornerShape(100.dp))
+                                .size(25.dp),
+                            model = ImageRequest.Builder(LocalContext.current)
+                                .data(recipe.imageUrl)
+                                .crossfade(true)
+                                .build(),
+                            placeholder = painterResource(id = R.drawable.img_user_profile_1),
+                            contentDescription = "image description",
+                            contentScale = ContentScale.Crop,
+                        )
+                        Text(
+                            text = "By ${recipe.postedBy}",
+                            // Text Style/Smaller Text/Regular
+                            style = TextStyle(
+                                fontSize = 11.sp,
+                                fontWeight = FontWeight(400),
+                                color = Color(0xFFA9A9A9),
+                            ),
+                        )
+                    }
+                    Image(
+                        painter = painterResource(id = R.drawable.v_ic_timer),
+                        contentDescription = "time"
+                    )
+                    Text(
+                        text = "${recipe.timeToCook} Mins",
+                        // Text Style/Smaller Text/Regular
+                        style = TextStyle(
+                            fontSize = 11.sp,
+                            fontWeight = FontWeight(400),
+                            color = Color(0xFFA9A9A9),
+                        ),
+                        modifier = Modifier.padding(start = 8.dp)
+                    )
+                }
+            }
+        }
+    }
+}
 
 @Preview
 @Composable
@@ -418,16 +496,126 @@ fun ItemRecipeCardPreview() {
     ItemRecipeCard(recipe = recipesByCountry.first())
 }
 
-//@Preview
+@Preview
+@Composable
+fun ItemNewRecipeCardPreview() {
+    ItemNewRecipe(recipe = recipesByCountry.first())
+}
+
+/*//@Preview
 @Composable
 fun PreviewSearchSection() {
     SearchBar(hint = "Search Recipe")
-}
+}*/
 
-//@Preview
+@Preview
 @Composable
 fun PreviewProfileSection() {
     ProfileSection(userName = "Hello Priyanka")
+    SearchBarSection()
+}
+
+
+@Composable
+fun SearchBarSection(
+    modifier: Modifier = Modifier,
+    hint: String = "Search",
+    isEnabled: (Boolean) = true,
+    elevation: Dp = 3.dp,
+    cornerShape: RoundedCornerShape = RoundedCornerShape(8.dp),
+    onSearchClicked: () -> Unit = {},
+    onTextChange: (Any) -> Unit = {},
+    onFilterClicked: () -> Unit = {},
+) {
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(20.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        var text by remember { mutableStateOf(TextFieldValue()) }
+        Row(
+            modifier = modifier
+                .height(50.dp)
+                .shadow(elevation = elevation, shape = cornerShape)
+                .background(color = white, shape = RoundedCornerShape(8.dp))
+                .clickable { onSearchClicked() },
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Box(
+                modifier = modifier
+                    .size(40.dp)
+                    .background(color = Color.Transparent, shape = CircleShape)
+                    .clickable {
+                        if (text.text.isNotEmpty()) {
+                            text = TextFieldValue(text = "")
+                            onTextChange("")
+                        }
+                    },
+            ) {
+                Image(
+                    modifier = modifier
+                        .fillMaxSize()
+                        .padding(10.dp),
+                    painter = painterResource(id = R.drawable.v_ic_search),
+                    contentDescription = stringResource(R.string.search),
+                )
+            }
+            BasicTextField(
+                modifier = modifier
+                    .padding(horizontal = 10.dp)
+//                .weight(1f),
+                    .width(220.dp),
+                value = text,
+                onValueChange = {
+                    text = it
+                    onTextChange(it.text)
+                },
+                enabled = isEnabled,
+                textStyle = TextStyle(
+                    color = black,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Normal,
+                ),
+                decorationBox = { innerTextField ->
+                    if (text.text.isEmpty()) {
+                        Text(
+                            text = hint,
+                            color = Color.Gray.copy(alpha = 0.5f),
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold,
+                        )
+                    }
+                    innerTextField()
+                },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Search
+                ),
+                keyboardActions = KeyboardActions(onSearch = { onSearchClicked() }),
+                singleLine = true,
+                maxLines = 1
+            )
+        }
+        Spacer(modifier = Modifier.width(20.dp))
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .width(50.dp)
+                .height(50.dp)
+                .background(color = Color(0xFF129575), shape = RoundedCornerShape(size = 10.dp))
+                .clickable { onFilterClicked() }
+        ) {
+            Image(
+                contentDescription = "filter",
+                painter = painterResource(id = R.drawable.v_ic_filter),
+                contentScale = ContentScale.FillBounds,
+            )
+        }
+
+    }
 }
 
 private val countryData =
@@ -439,15 +627,12 @@ private val countryData =
         CountryWithSelection("Asian", false),
         CountryWithSelection("Chinese", false),
         CountryWithSelection("Spanish", false),
-        CountryWithSelection("French", true),
+        CountryWithSelection("French", false),
         CountryWithSelection("Maxican", false),
         CountryWithSelection("Korean", false),
         CountryWithSelection("Thai", false),
         CountryWithSelection("Cousine", false),
         CountryWithSelection("Greek", false),
-        CountryWithSelection("All", false),
-        CountryWithSelection("All", false),
-        CountryWithSelection("All", false),
     )
 
-data class CountryWithSelection(val countryName: String, val isSelected: Boolean)
+data class CountryWithSelection(val countryName: String, var isSelected: Boolean)

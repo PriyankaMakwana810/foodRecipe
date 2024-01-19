@@ -10,6 +10,7 @@ import com.tridya.foodrecipeblog.screens.IntroScreen
 import com.tridya.foodrecipeblog.screens.NotificationScreen
 import com.tridya.foodrecipeblog.screens.ProfileScreen
 import com.tridya.foodrecipeblog.screens.SavedScreen
+import com.tridya.foodrecipeblog.screens.SearchScreen
 import com.tridya.foodrecipeblog.screens.login.LoginScreen
 import com.tridya.foodrecipeblog.screens.register.RegisterScreen
 
@@ -21,13 +22,13 @@ fun NavigationCompose(navController: NavHostController, paddingValues: PaddingVa
             IntroScreen(navController)
         }
         composable(route = Screen.LoginScreen.route) {
-            LoginScreen(navController,paddingValues)
+            LoginScreen(navController, paddingValues)
         }
         composable(route = Screen.RegisterScreen.route) {
             RegisterScreen(navController = navController)
         }
         composable(route = Screen.HomeScreen.route) {
-            HomeScreen(navController = navController,paddingValues)
+            HomeScreen(navController = navController, paddingValues)
         }
         composable(route = Screen.SavedScreen.route) {
             SavedScreen(navController = navController)
@@ -37,6 +38,9 @@ fun NavigationCompose(navController: NavHostController, paddingValues: PaddingVa
         }
         composable(route = Screen.ProfileScreen.route) {
             ProfileScreen()
+        }
+        composable(route = Screen.SearchScreen.route) {
+            SearchScreen(navController = navController)
         }
     }
 }

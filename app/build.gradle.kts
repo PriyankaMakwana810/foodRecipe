@@ -119,6 +119,9 @@ dependencies {
 
 //    coil image loading lib
     implementation("io.coil-kt:coil-compose:2.5.0")
+
+//    for ratings
+    implementation("com.github.a914-gowtham:compose-ratingbar:1.3.4")
 }
 kapt {
     correctErrorTypes = true

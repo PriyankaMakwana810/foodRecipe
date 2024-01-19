@@ -1,4 +1,4 @@
-package com.tridya.foodrecipeblog.api
+package com.tridya.foodrecipeblog.api.response
 
 data class LoginResponse(
     val IsSuccess: Boolean,
