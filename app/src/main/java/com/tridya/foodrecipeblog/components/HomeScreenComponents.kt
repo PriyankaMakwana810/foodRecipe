@@ -24,7 +24,6 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -65,7 +64,6 @@ import com.tridya.foodrecipeblog.ui.theme.gray1
 import com.tridya.foodrecipeblog.ui.theme.gray3
 import com.tridya.foodrecipeblog.ui.theme.primary100
 import com.tridya.foodrecipeblog.ui.theme.primary80
-import com.tridya.foodrecipeblog.ui.theme.secondary100
 import com.tridya.foodrecipeblog.ui.theme.secondary40
 import com.tridya.foodrecipeblog.ui.theme.white
 
@@ -502,17 +500,17 @@ fun ItemNewRecipeCardPreview() {
     ItemNewRecipe(recipe = recipesByCountry.first())
 }
 
-/*//@Preview
+@Preview
 @Composable
 fun PreviewSearchSection() {
-    SearchBar(hint = "Search Recipe")
-}*/
+    SearchBarSection()
+}
 
 @Preview
 @Composable
 fun PreviewProfileSection() {
     ProfileSection(userName = "Hello Priyanka")
-    SearchBarSection()
+//    SearchBarSection()
 }
 
 
@@ -526,12 +524,13 @@ fun SearchBarSection(
     onSearchClicked: () -> Unit = {},
     onTextChange: (Any) -> Unit = {},
     onFilterClicked: () -> Unit = {},
+    ifHome: Boolean = false,
 ) {
 
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(20.dp),
+            .padding(horizontal = 20.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -549,9 +548,13 @@ fun SearchBarSection(
                     .size(40.dp)
                     .background(color = Color.Transparent, shape = CircleShape)
                     .clickable {
-                        if (text.text.isNotEmpty()) {
-                            text = TextFieldValue(text = "")
-                            onTextChange("")
+                        if (ifHome) {
+                            onSearchClicked()
+                        } else {
+                            if (text.text.isNotEmpty()) {
+                                text = TextFieldValue(text = "")
+                                onTextChange("")
+                            }
                         }
                     },
             ) {

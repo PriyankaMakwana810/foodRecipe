@@ -1,5 +1,6 @@
 package com.tridya.foodrecipeblog.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -21,30 +22,48 @@ import com.tridya.foodrecipeblog.ui.theme.black
 @Preview
 @Composable
 fun ToolbarComponent(
+    showBackArrow: Boolean = true,
     toolbarTitle: String = "",
     onBackClicked: () -> Unit = {},
+    onMenuClicked: () -> Unit = {},
+    showMenuIcon: Boolean = false,
 ) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 20.dp, start = 10.dp, end = 10.dp)
+            .padding(top = 14.dp, start = 10.dp, end = 10.dp, bottom = 14.dp)
     ) {
-        Icon(
-            modifier = Modifier.padding(10.dp),
-            painter = painterResource(id = R.drawable.v_ic_arrow_left),
-            contentDescription = "arrow"
-        )
+        if (showBackArrow) {
+            Icon(
+                modifier = Modifier
+                    .padding(10.dp)
+                    .clickable {
+                        onBackClicked()
+                    },
+                painter = painterResource(id = R.drawable.v_ic_arrow_left),
+                contentDescription = "arrow"
+            )
+        }
         Text(
-            text = "Search recipes",
-            modifier = Modifier.fillMaxWidth().align(Alignment.Center),
+            text = toolbarTitle, modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.Center),
             // Text Style/Medium Text/Bold
             style = TextStyle(
                 fontSize = 20.sp,
 //                fontFamily = FontFamily(Font(R.font.poppins)),
-                fontWeight = FontWeight(600),
-                color = black,
-                textAlign = TextAlign.Center
+                fontWeight = FontWeight(600), color = black, textAlign = TextAlign.Center
             )
         )
+        if (showMenuIcon) {
+            Icon(
+                modifier = Modifier
+                    .padding(10.dp)
+                    .align(Alignment.CenterEnd)
+                    .clickable { onMenuClicked() },
+                painter = painterResource(id = R.drawable.v_ic_menu),
+                contentDescription = "arrow"
+            )
+        }
     }
 }

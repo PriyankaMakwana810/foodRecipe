@@ -49,7 +49,7 @@ fun HomeScreen(
         Column {
             Spacer(modifier = Modifier.height(20.dp))
             ProfileSection(modifier = Modifier.fillMaxWidth(), userName = "Hello $userName")
-            SearchBarSection(onSearchClicked = {
+            SearchBarSection(ifHome = true, onSearchClicked = {
                 navController.navigate(Screen.SearchScreen.route)
             })
             ListSelectCountry()

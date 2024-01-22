@@ -25,6 +25,7 @@ object Constants {
     const val LOGIN = "login_screen"
     const val REGISTER = "register_screen"
     const val HOME = "home_screen"
+    const val RECIPE_DETAIL = "recipe_detail_screen"
     const val SEARCH = "search_screen"
     const val SAVED = "saved_screen"
     const val NOTIFICATION = "notification_screen"

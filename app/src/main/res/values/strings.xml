@@ -45,10 +45,18 @@
     <string name="facebook_app_id">2750791605059480</string>
     <string name="fb_login_protocol_scheme">fb2750791605059480</string>
     <string name="facebook_client_token">e4e549403afd5a2b719aa73db6334a3a</string>
+
+
     <string name="what_are_you_cooking_today">What are you cooking today?</string>
     <string name="search">search</string>
     <string name="new_recipes">New Recipes</string>
     <string name="search_recipes">Search recipes</string>
+    <string name="filter_search">Filter Search</string>
+    <string name="time">Time</string>
+    <string name="rate">Rate</string>
+    <string name="category">Category</string>
+    <string name="spicy_chicken_burger_with_french_fries">Spicy chicken burger with French fries</string>
+    <string name="_1_serve">1 serve</string>
 
 
 </resources>

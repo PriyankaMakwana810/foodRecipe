@@ -22,9 +22,10 @@ import com.tridya.foodrecipeblog.navigation.NavigationCompose
 import com.tridya.foodrecipeblog.ui.theme.gray4
 import com.tridya.foodrecipeblog.ui.theme.primary100
 import com.tridya.foodrecipeblog.ui.theme.white
-import com.tridya.foodrecipeblog.utils.Constants.INTRO
-import com.tridya.foodrecipeblog.utils.Constants.LOGIN
-import com.tridya.foodrecipeblog.utils.Constants.REGISTER
+import com.tridya.foodrecipeblog.utils.Constants.HOME
+import com.tridya.foodrecipeblog.utils.Constants.NOTIFICATION
+import com.tridya.foodrecipeblog.utils.Constants.PROFILE
+import com.tridya.foodrecipeblog.utils.Constants.SAVED
 
 @Composable
 fun FoodRecipeBlogApp() {
@@ -39,8 +40,8 @@ fun FoodRecipeBlogApp() {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
 
     shouldShowBottomBar = when (navBackStackEntry?.destination?.route) {
-        INTRO, LOGIN, REGISTER -> false // on this screen bottom bar should be hidden
-        else -> true // in all other cases show bottom bar
+        HOME, SAVED, NOTIFICATION, PROFILE -> true // on this screen bottom bar should be hidden
+        else -> false // in all other cases show bottom bar
     }
 
     Scaffold(
