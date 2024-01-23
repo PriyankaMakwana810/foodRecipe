@@ -68,7 +68,10 @@ fun SearchScreen(navController: NavController, paddingValues: PaddingValues) {
                 onBackClicked = {
                     navController.navigateUp()
                 })
-            SearchBarSection(onSearchClicked = {}, onFilterClicked = { showBottomSheet = true })
+            SearchBarSection(
+                modifier = Modifier.weight(1f),
+                onSearchClicked = {},
+                onFilterClicked = { showBottomSheet = true })
             SimpleTextComponent(
                 modifier = Modifier.padding(20.dp),
                 value = "Recent Search",

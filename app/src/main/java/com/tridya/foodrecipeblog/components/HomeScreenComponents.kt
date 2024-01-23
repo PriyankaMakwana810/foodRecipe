@@ -24,6 +24,9 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -62,10 +65,13 @@ import com.tridya.foodrecipeblog.models.recipesByCountry
 import com.tridya.foodrecipeblog.ui.theme.black
 import com.tridya.foodrecipeblog.ui.theme.gray1
 import com.tridya.foodrecipeblog.ui.theme.gray3
+import com.tridya.foodrecipeblog.ui.theme.gray4
 import com.tridya.foodrecipeblog.ui.theme.primary100
 import com.tridya.foodrecipeblog.ui.theme.primary80
+import com.tridya.foodrecipeblog.ui.theme.secondary20
 import com.tridya.foodrecipeblog.ui.theme.secondary40
 import com.tridya.foodrecipeblog.ui.theme.white
+import com.tridya.foodrecipeblog.utils.StaticData
 
 @Composable
 fun ProfileSection(
@@ -192,36 +198,49 @@ fun SearchBar(
 }
 */
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
-fun ListSelectCountry() {
-    var selectedCountry by remember { mutableStateOf(countryData.firstOrNull()) }
+fun ListSelectCountry(onItemSelected: (String) -> Unit = {}) {
+    var selectedItem by remember {
+        mutableStateOf(StaticData.listCountries[0])
+    }
+
     LazyRow(
-        modifier = Modifier.padding(start = 12.dp, top = 20.dp, end = 20.dp, bottom = 10.dp),
+        modifier = Modifier.padding(start = 12.dp, top = 20.dp, bottom = 10.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         contentPadding = PaddingValues(horizontal = 8.dp)
     ) {
-        items(countryData) { item ->
-            val isSelected = item == selectedCountry
-            val backgroundColor = if (isSelected) primary100 else Color.Transparent
+        items(StaticData.listCountries) { item ->
+            val isSelected = item == selectedItem
             val textColor = if (isSelected) white else primary80
-            Text(
-                text = item.countryName,
-                style = TextStyle(
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight(600),
-                    color = textColor,
-                    textAlign = TextAlign.Center
+            FilterChip(
+                modifier = Modifier.padding(horizontal = 6.dp),
+                selected = (item == selectedItem),
+                onClick = {
+                    selectedItem = item
+                    onItemSelected(item)
+                },
+                label = {
+                    Text(
+                        text = item, style = TextStyle(
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight(600),
+                            color = textColor,
+                            textAlign = TextAlign.Center
+                        )
+                    )
+                },
+                colors = FilterChipDefaults.filterChipColors(
+                    containerColor = white,
+                    selectedContainerColor = primary100,
+                    selectedLabelColor = white,
+                    labelColor = primary80
                 ),
-                modifier = Modifier
-                    .background(color = backgroundColor, shape = RoundedCornerShape(10.dp))
-                    .padding(horizontal = 20.dp, vertical = 7.dp)
-                    .clickable {
-                        // Update the isSelected property when the item is clicked
-//                        item.isSelected = !item.isSelected
-                        selectedCountry = item
-                        countryData.forEach { it.isSelected = (it == item) }
-                    }
+                border = FilterChipDefaults.filterChipBorder(
+                    borderColor = white
+                ),
+                shape = RoundedCornerShape(12.dp)
             )
         }
     }
@@ -231,7 +250,7 @@ fun ListSelectCountry() {
 @Composable
 fun ListPopularRecipeByCountry() {
     LazyRow(
-        modifier = Modifier.padding(start = 15.dp, top = 15.dp, end = 30.dp, bottom = 15.dp),
+        modifier = Modifier.padding(start = 15.dp, top = 15.dp, bottom = 15.dp),
         horizontalArrangement = Arrangement.spacedBy(15.dp),
     ) {
         items(recipesByCountry) { item: RecipeCard ->
@@ -244,7 +263,7 @@ fun ListPopularRecipeByCountry() {
 @Composable
 fun ListNewRecipe() {
     LazyRow(
-        modifier = Modifier.padding(start = 15.dp, end = 30.dp),
+        modifier = Modifier.padding(start = 15.dp),
         horizontalArrangement = Arrangement.spacedBy(5.dp),
     ) {
         items(recipesByCountry) { item: RecipeCard ->
@@ -256,8 +275,11 @@ fun ListNewRecipe() {
 @Composable
 fun ItemRecipeCard(
     recipe: RecipeCard,
+    onRecipeClicked: () -> Unit = {}
 ) {
-    Box {
+    Box(
+        modifier = Modifier.clickable { onRecipeClicked() }
+    ) {
         Box(
             modifier = Modifier
                 .width(150.dp)
@@ -281,7 +303,7 @@ fun ItemRecipeCard(
             Card(
                 shape = RoundedCornerShape(20.dp),
                 colors = CardDefaults.cardColors(
-                    containerColor = Color(0xFFFFE1B3)
+                    containerColor = secondary20
                 ),
                 modifier = Modifier
                     .height(24.dp)
@@ -464,7 +486,7 @@ fun ItemNewRecipe(recipe: RecipeCard) {
                             style = TextStyle(
                                 fontSize = 11.sp,
                                 fontWeight = FontWeight(400),
-                                color = Color(0xFFA9A9A9),
+                                color = gray3,
                             ),
                         )
                     }
@@ -478,7 +500,7 @@ fun ItemNewRecipe(recipe: RecipeCard) {
                         style = TextStyle(
                             fontSize = 11.sp,
                             fontWeight = FontWeight(400),
-                            color = Color(0xFFA9A9A9),
+                            color = gray3,
                         ),
                         modifier = Modifier.padding(start = 8.dp)
                     )
@@ -517,7 +539,7 @@ fun PreviewProfileSection() {
 @Composable
 fun SearchBarSection(
     modifier: Modifier = Modifier,
-    hint: String = "Search",
+    hint: String = "Search Recipe",
     isEnabled: (Boolean) = true,
     elevation: Dp = 3.dp,
     cornerShape: RoundedCornerShape = RoundedCornerShape(8.dp),
@@ -536,7 +558,7 @@ fun SearchBarSection(
     ) {
         var text by remember { mutableStateOf(TextFieldValue()) }
         Row(
-            modifier = modifier
+            modifier = Modifier
                 .height(50.dp)
                 .shadow(elevation = elevation, shape = cornerShape)
                 .background(color = white, shape = RoundedCornerShape(8.dp))
@@ -544,7 +566,7 @@ fun SearchBarSection(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Box(
-                modifier = modifier
+                modifier = Modifier
                     .size(40.dp)
                     .background(color = Color.Transparent, shape = CircleShape)
                     .clickable {
@@ -559,7 +581,7 @@ fun SearchBarSection(
                     },
             ) {
                 Image(
-                    modifier = modifier
+                    modifier = Modifier
                         .fillMaxSize()
                         .padding(10.dp),
                     painter = painterResource(id = R.drawable.v_ic_search),
@@ -569,8 +591,9 @@ fun SearchBarSection(
             BasicTextField(
                 modifier = modifier
                     .padding(horizontal = 10.dp)
-//                .weight(1f),
-                    .width(220.dp),
+//                .weight(1f)
+//                    .width(220.dp)
+                    .clickable { if (ifHome) onSearchClicked() },
                 value = text,
                 onValueChange = {
                     text = it
@@ -579,16 +602,16 @@ fun SearchBarSection(
                 enabled = isEnabled,
                 textStyle = TextStyle(
                     color = black,
-                    fontSize = 16.sp,
+                    fontSize = 14.sp,
                     fontWeight = FontWeight.Normal,
                 ),
                 decorationBox = { innerTextField ->
                     if (text.text.isEmpty()) {
                         Text(
                             text = hint,
-                            color = Color.Gray.copy(alpha = 0.5f),
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.Bold,
+                            color = gray4,
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Normal,
                         )
                     }
                     innerTextField()
@@ -621,21 +644,5 @@ fun SearchBarSection(
     }
 }
 
-private val countryData =
-    listOf(
-        /*"All", "Indian", "Italian", "Asian", "Chinese", "Spanish", "Franch", "Korean"*/
-        CountryWithSelection("All", true),
-        CountryWithSelection("Indian", false),
-        CountryWithSelection("Italian", false),
-        CountryWithSelection("Asian", false),
-        CountryWithSelection("Chinese", false),
-        CountryWithSelection("Spanish", false),
-        CountryWithSelection("French", false),
-        CountryWithSelection("Maxican", false),
-        CountryWithSelection("Korean", false),
-        CountryWithSelection("Thai", false),
-        CountryWithSelection("Cousine", false),
-        CountryWithSelection("Greek", false),
-    )
 
 data class CountryWithSelection(val countryName: String, var isSelected: Boolean)

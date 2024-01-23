@@ -20,6 +20,4 @@ sealed class Screen(val route: String) {
     data object SavedScreen : Screen(SAVED)
     data object NotificationScreen : Screen(NOTIFICATION)
     data object ProfileScreen : Screen(PROFILE)
-
-
 }

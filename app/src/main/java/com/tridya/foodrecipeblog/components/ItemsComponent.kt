@@ -2,6 +2,7 @@ package com.tridya.foodrecipeblog.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -50,8 +51,10 @@ import coil.request.ImageRequest
 import com.tridya.foodrecipeblog.R
 import com.tridya.foodrecipeblog.models.RecipeCard
 import com.tridya.foodrecipeblog.models.recipesByCountry
+import com.tridya.foodrecipeblog.ui.theme.gray3
 import com.tridya.foodrecipeblog.ui.theme.primary100
 import com.tridya.foodrecipeblog.ui.theme.primary80
+import com.tridya.foodrecipeblog.ui.theme.secondary20
 import com.tridya.foodrecipeblog.ui.theme.white
 import com.tridya.foodrecipeblog.utils.StaticData.listCategoryFilter
 import com.tridya.foodrecipeblog.utils.StaticData.listRateFilter
@@ -63,16 +66,18 @@ fun RecipesItemsComponent(
     modifier: Modifier = Modifier,
     recipe: RecipeCard = recipesByCountry.first(),
     isFromSaved: Boolean = false,
-    isFromDetail: Boolean = false
+    isFromDetail: Boolean = false,
+    onRecipeItemClicked: () -> Unit = {},
 ) {
     Box(
         modifier = modifier
-            .height(200.dp)
+            .height(180.dp)
             .padding(10.dp)
             .background(
                 color = white,
                 shape = RoundedCornerShape(10.dp),
             )
+            .clickable { onRecipeItemClicked() }
     ) {
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current).data(recipe.imageUrl).crossfade(true)
@@ -98,7 +103,7 @@ fun RecipesItemsComponent(
             Card(
                 shape = RoundedCornerShape(20.dp),
                 colors = CardDefaults.cardColors(
-                    containerColor = Color(0xFFFFE1B3)
+                    containerColor = secondary20
                 ),
                 modifier = Modifier
                     .padding(8.dp)
@@ -132,7 +137,7 @@ fun RecipesItemsComponent(
                         text = if (isFromDetail) "" else recipe.postedBy, style = TextStyle(
                             fontSize = 10.sp,
                             fontWeight = FontWeight(400),
-                            color = Color(0xFFA9A9A9),
+                            color = gray3,
                         )
                     )
                 }
@@ -151,7 +156,7 @@ fun RecipesItemsComponent(
                             style = TextStyle(
                                 fontSize = 11.sp,
                                 fontWeight = FontWeight(400),
-                                color = Color(0xFFA9A9A9),
+                                color = gray3,
                             ), modifier = Modifier.padding(start = 8.dp)
                         )
                         Spacer(modifier = Modifier.width(10.dp))

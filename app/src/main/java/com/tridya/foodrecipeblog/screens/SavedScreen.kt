@@ -17,6 +17,7 @@ import androidx.navigation.compose.rememberNavController
 import com.tridya.foodrecipeblog.components.RecipesItemsComponent
 import com.tridya.foodrecipeblog.components.ToolbarComponent
 import com.tridya.foodrecipeblog.models.recipesByCountry
+import com.tridya.foodrecipeblog.navigation.Screen
 import com.tridya.foodrecipeblog.ui.theme.white
 
 @Composable
@@ -36,7 +37,11 @@ fun SavedScreen(navController: NavController, paddingValues: PaddingValues) {
                     .padding(horizontal = 10.dp),
             ) {
                 items(recipesByCountry.filter { it.isSaved }) { item ->
-                    RecipesItemsComponent(recipe = item, isFromSaved = true)
+                    RecipesItemsComponent(recipe = item, isFromSaved = true, onRecipeItemClicked = {
+                        navController.navigate(Screen.RecipeDetailScreen.route + "/${item.id}"){
+                            this.launchSingleTop = true
+                        }
+                    })
                 }
             }
         }

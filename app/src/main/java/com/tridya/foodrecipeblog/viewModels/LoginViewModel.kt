@@ -77,12 +77,12 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun validateInputs(): Boolean {
-        val emailOrMobileString = loginState.value.email.trim()
+        val emailString = loginState.value.email.trim()
         val passwordString = loginState.value.password
         return when {
 
             // Email/Mobile empty
-            emailOrMobileString.isEmpty() -> {
+            emailString.isEmpty() -> {
                 loginState.value = loginState.value.copy(
                     errorState = LoginErrorState(
                         emailErrorState = emailEmptyErrorState
@@ -117,7 +117,6 @@ class LoginViewModel @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(/* onSuccess = */ { onSuccess ->
                 if (onSuccess.IsSuccess) {
-                    // TODO Trigger login in authentication flow
                     val user =
                         User(emailId = loginState.value.email, password = loginState.value.password)
                     sharedPreferences.user = user

@@ -29,7 +29,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -93,12 +92,12 @@ fun ProfileSectionOfRecipe(
                 .clip(shape = CircleShape)
                 .size(50.dp),
             model = ImageRequest.Builder(LocalContext.current)
-                .data("https://images.unsplash.com/photo-1705582033498-e7384d494759?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")
+                .data(recipe.userProfilePhoto)
                 .crossfade(true)
                 .build(),
             placeholder = painterResource(id = R.drawable.img_user_profile_1),
             contentDescription = "image description",
-            contentScale = ContentScale.Fit,
+            contentScale = ContentScale.Crop,
         )
         Column(
             modifier = Modifier
@@ -176,7 +175,7 @@ fun CustomTabs(onIngridentClicked: () -> Unit = {}, onProcedureClicked: () -> Un
                 selected = selected,
                 onClick = {
                     selectedIndex = index
-                    if (selectedIndex == 1) {
+                    if (selectedIndex == 0) {
                         onIngridentClicked()
                     } else {
                         onProcedureClicked()
@@ -188,33 +187,3 @@ fun CustomTabs(onIngridentClicked: () -> Unit = {}, onProcedureClicked: () -> Un
     }
 }
 
-@Preview
-@Composable
-fun ShowIngredients(modifier: Modifier = Modifier) {
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(20.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Row {
-            Image(
-                painter = painterResource(id = R.drawable.v_ic_serve),
-                contentDescription = ""
-            )
-            Text(
-                text = stringResource(R.string._1_serve),
-                modifier = modifier
-                    .heightIn(),
-                style = TextStyle(
-                    fontSize = 12.sp,
-                    lineHeight = 40.sp,
-                    fontWeight = FontWeight(400),
-                    color = gray3,
-                    textAlign = TextAlign.Start,
-                )
-            )
-        }
-    }
-}

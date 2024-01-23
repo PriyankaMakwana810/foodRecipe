@@ -3,8 +3,10 @@ package com.tridya.foodrecipeblog.navigation
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.tridya.foodrecipeblog.screens.HomeScreen
 import com.tridya.foodrecipeblog.screens.IntroScreen
 import com.tridya.foodrecipeblog.screens.NotificationScreen
@@ -31,8 +33,20 @@ fun NavigationCompose(navController: NavHostController, paddingValues: PaddingVa
         composable(route = Screen.HomeScreen.route) {
             HomeScreen(navController = navController, paddingValues)
         }
-        composable(route = Screen.RecipeDetailScreen.route) {
-            RecipeDetailScreen(navController = navController, paddingValues = paddingValues)
+        composable(
+            route = Screen.RecipeDetailScreen.route + "/{recipeId}", arguments = listOf(
+                navArgument("recipeId") {
+                    type = NavType.IntType
+                })
+        ) { entry ->
+            entry.arguments?.getInt("recipeId")?.let {
+                RecipeDetailScreen(
+                    navController = navController,
+                    paddingValues = paddingValues,
+                    recipeId = it
+                )
+            }
+
         }
         composable(route = Screen.SavedScreen.route) {
             SavedScreen(navController = navController, paddingValues)
