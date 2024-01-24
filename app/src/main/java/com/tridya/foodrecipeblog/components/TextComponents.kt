@@ -63,18 +63,23 @@ fun SimpleTextComponent(
 }
 
 @Composable
-fun NormalTextComponent(value: String) {
+fun NormalTextComponent(
+    modifier: Modifier = Modifier,
+    value: String,
+    fontSize: TextUnit,
+    fontWeight: FontWeight = FontWeight.Normal,
+    textColor: Color = black,
+    align: TextAlign = TextAlign.Start
+) {
     Text(
         text = value,
-        Modifier
-            .fillMaxWidth()
-            .heightIn(),
+        modifier = modifier,
         style = TextStyle(
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Normal,
-            fontStyle = FontStyle.Normal
-        ), color = black,
-        textAlign = TextAlign.Center
+            fontSize = fontSize,
+            fontWeight = fontWeight,
+        ),
+        color = textColor,
+        textAlign = align
     )
 }
 

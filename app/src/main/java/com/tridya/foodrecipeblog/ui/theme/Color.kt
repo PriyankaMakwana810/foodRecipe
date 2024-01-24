@@ -32,7 +32,7 @@ val gray3 = Color(0xFFA9A9A9)
 val gray4 = Color(0xFFD9D9D9)
 val white = Color(0xFFFFFFFF)
 
-val rating = Color(0xFFFFAD30)
+val ratingColor = Color(0xFFFFAD30)
 
 //Warning
 val Warning1 = Color(0xFFFD3654)

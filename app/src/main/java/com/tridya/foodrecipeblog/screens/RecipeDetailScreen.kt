@@ -34,7 +34,9 @@ import androidx.navigation.compose.rememberNavController
 import com.tridya.foodrecipeblog.R
 import com.tridya.foodrecipeblog.components.CustomTabs
 import com.tridya.foodrecipeblog.components.ProfileSectionOfRecipe
+import com.tridya.foodrecipeblog.components.RateDialogComponent
 import com.tridya.foodrecipeblog.components.RecipesItemsComponent
+import com.tridya.foodrecipeblog.components.ShareDialogComponent
 import com.tridya.foodrecipeblog.components.ShowIngredients
 import com.tridya.foodrecipeblog.components.ShowProcedure
 import com.tridya.foodrecipeblog.components.ToolbarComponent
@@ -51,6 +53,8 @@ fun RecipeDetailScreen(navController: NavController, paddingValues: PaddingValue
         var showProcedure by remember { mutableStateOf(false) }
         var expanded by remember { mutableStateOf(false) }
         val recipe = recipesByCountry[recipeId]
+        var openShareDialog by remember { mutableStateOf(false) }
+        var openRatingDialog by remember { mutableStateOf(false) }
 
         Column(
             modifier = Modifier
@@ -69,7 +73,8 @@ fun RecipeDetailScreen(navController: NavController, paddingValues: PaddingValue
                     onDismissRequest = { expanded = false },
                     offset = DpOffset(x = (-66).dp, y = (-10).dp)
                 ) {
-                    DropdownMenuItem(text = { Text(text = "Share") },
+                    DropdownMenuItem(
+                        text = { Text(text = "Share") },
                         leadingIcon = {
                             Icon(
                                 painter = painterResource(id = R.drawable.v_ic_menu_share),
@@ -78,7 +83,9 @@ fun RecipeDetailScreen(navController: NavController, paddingValues: PaddingValue
                         },
                         onClick = {
                             expanded = false
+                            openShareDialog = true
                         })
+
                     DropdownMenuItem(
                         text = { Text(text = "Rate Recipe") },
                         leadingIcon = {
@@ -87,7 +94,10 @@ fun RecipeDetailScreen(navController: NavController, paddingValues: PaddingValue
                                 contentDescription = "Rate"
                             )
                         },
-                        onClick = { expanded = false })
+                        onClick = {
+                            expanded = false
+                            openRatingDialog = true
+                        })
                     DropdownMenuItem(
                         text = { Text(text = "Review") },
                         leadingIcon = {
@@ -152,10 +162,15 @@ fun RecipeDetailScreen(navController: NavController, paddingValues: PaddingValue
             } else {
                 ShowIngredients()
             }
+            if (openShareDialog) {
+                ShareDialogComponent(onButtonClicked = { openShareDialog = !openShareDialog },)
+            }
+            if (openRatingDialog) {
+                RateDialogComponent(onButtonClicked = { openRatingDialog = !openRatingDialog })
+            }
         }
     }
 }
-
 
 @Preview
 @Composable

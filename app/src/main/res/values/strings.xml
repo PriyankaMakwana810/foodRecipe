@@ -57,6 +57,11 @@
     <string name="category">Category</string>
     <string name="spicy_chicken_burger_with_french_fries">Spicy chicken burger with French fries</string>
     <string name="_1_serve">1 serve</string>
+    <string name="copy_link">Copy Link</string>
+    <string name="send">Send</string>
+    <string name="rate_recipe">Rate Recipe</string>
+    <string name="recipe_share">Recipe Share</string>
+    <string name="copy_recipe_link_and_share_your_recipe_link_with_friends_and_family">Copy recipe link and share your recipe link with  friends and family.</string>
 
 
 </resources>
