@@ -73,7 +73,7 @@ import com.tridya.foodrecipeblog.ui.theme.primary80
 import com.tridya.foodrecipeblog.ui.theme.secondary20
 import com.tridya.foodrecipeblog.ui.theme.secondary40
 import com.tridya.foodrecipeblog.ui.theme.white
-import com.tridya.foodrecipeblog.utils.StaticData
+import com.tridya.foodrecipeblog.utils.StaticData.listCountries
 
 @Composable
 fun ProfileSection(
@@ -123,17 +123,19 @@ fun ProfileSection(
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
-fun ListSelectCountry(onItemSelected: (String) -> Unit = {}) {
+fun ListSelectCountry(
+    listOfCountries: List<String?> = listCountries,
+    onItemSelected: (String) -> Unit = {},
+) {
     var selectedItem by remember {
-        mutableStateOf(StaticData.listCountries[0])
+        mutableStateOf(listOfCountries.filterNotNull().firstOrNull())
     }
-
     LazyRow(
         modifier = Modifier.padding(start = 12.dp, top = 20.dp, bottom = 10.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         contentPadding = PaddingValues(horizontal = 8.dp)
     ) {
-        items(StaticData.listCountries) { item ->
+        items(listOfCountries.filterNotNull()) { item ->
             val isSelected = item == selectedItem
             val textColor = if (isSelected) white else primary80
             FilterChip(

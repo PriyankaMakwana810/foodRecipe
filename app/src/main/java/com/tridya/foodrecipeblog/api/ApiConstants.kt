@@ -13,7 +13,9 @@ object ApiConstants {
     const val RECIPE_API_SERVICE = "RecipeApiServiceProvider"
     const val RECIPE_URL = "https://all-in-one-recipe-api.p.rapidapi.com/"
 
-//        .addHeader("X-RapidAPI-Key", "147683b500msha3dafe202f0bc70p187692jsn29814410c05e")
-//        .addHeader("X-RapidAPI-Host", "all-in-one-recipe-api.p.rapidapi.com")
+    const val MEALDB_BASE = "MealDbBaseUrlProvider"
+    const val MEALDB_RETROFIT = "MealDbRetrofitProvider"
+    const val MEALDB_API_SERVICE = "MealDbApiServiceProvider"
+    const val MEALDB_BASE_URL = "https://www.themealdb.com/"
 
 }
