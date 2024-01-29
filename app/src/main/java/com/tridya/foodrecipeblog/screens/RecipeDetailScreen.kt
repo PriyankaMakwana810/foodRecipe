@@ -32,7 +32,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.tridya.foodrecipeblog.R
-import com.tridya.foodrecipeblog.components.CustomTabs
+import com.tridya.foodrecipeblog.components.CustomRecipeDetailsTabs
 import com.tridya.foodrecipeblog.components.ProfileSectionOfRecipe
 import com.tridya.foodrecipeblog.components.RateDialogComponent
 import com.tridya.foodrecipeblog.components.RecipesItemsComponent
@@ -152,7 +152,7 @@ fun RecipeDetailScreen(navController: NavController, paddingValues: PaddingValue
                 )
             }
             ProfileSectionOfRecipe(recipe = recipe)
-            CustomTabs(onIngridentClicked = {
+            CustomRecipeDetailsTabs(onIngridentClicked = {
                 showProcedure = false
             }, onProcedureClicked = {
                 showProcedure = true

@@ -52,10 +52,10 @@ fun NavigationCompose(navController: NavHostController, paddingValues: PaddingVa
             SavedScreen(navController = navController, paddingValues)
         }
         composable(route = Screen.NotificationScreen.route) {
-            NotificationScreen()
+            NotificationScreen(navController, paddingValues)
         }
         composable(route = Screen.ProfileScreen.route) {
-            ProfileScreen()
+            ProfileScreen(navController, paddingValues)
         }
         composable(route = Screen.SearchScreen.route) {
             SearchScreen(navController = navController, paddingValues)

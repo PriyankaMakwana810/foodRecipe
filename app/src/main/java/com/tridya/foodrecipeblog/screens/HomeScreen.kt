@@ -27,10 +27,9 @@ import androidx.navigation.compose.rememberNavController
 import com.tridya.foodrecipeblog.R
 import com.tridya.foodrecipeblog.components.ItemRecipeCard
 import com.tridya.foodrecipeblog.components.ListNewRecipe
-import com.tridya.foodrecipeblog.components.ListPopularRecipeByCountry
 import com.tridya.foodrecipeblog.components.ListSelectCountry
 import com.tridya.foodrecipeblog.components.ProfileSection
-import com.tridya.foodrecipeblog.components.SearchBarSection
+import com.tridya.foodrecipeblog.components.SearchBarWithFilter
 import com.tridya.foodrecipeblog.components.SimpleTextComponent
 import com.tridya.foodrecipeblog.models.RecipeCard
 import com.tridya.foodrecipeblog.models.recipesByCountry
@@ -58,12 +57,12 @@ fun HomeScreen(
         ) {
             Spacer(modifier = Modifier.height(20.dp))
             ProfileSection(modifier = Modifier.fillMaxWidth(), userName = "Hello $userName")
-            SearchBarSection(modifier = Modifier.weight(1f), ifHome = true, isEnabled = false, onSearchClicked = {
-                navController.navigate(Screen.SearchScreen.route){
+            SearchBarWithFilter(ifHome = true, onSearchClicked = {
+                navController.navigate(Screen.SearchScreen.route) {
                     this.launchSingleTop = true
                 }
             })
-            ListSelectCountry{ selectedItem ->
+            ListSelectCountry { selectedItem ->
                 println("Selected item: $selectedItem")
             }
 //            ListPopularRecipeByCountry()
@@ -72,9 +71,9 @@ fun HomeScreen(
                 horizontalArrangement = Arrangement.spacedBy(15.dp),
             ) {
                 items(recipesByCountry) { item: RecipeCard ->
-                    ItemRecipeCard(recipe = item){
+                    ItemRecipeCard(recipe = item) {
 //                        navController.navigate(Screen.RecipeDetailScreen.route)
-                        navController.navigate(Screen.RecipeDetailScreen.route + "/${item.id}"){
+                        navController.navigate(Screen.RecipeDetailScreen.route + "/${item.id}") {
                             this.launchSingleTop = true
                         }
                     }

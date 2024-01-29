@@ -27,6 +27,8 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -117,86 +119,6 @@ fun ProfileSection(
         )
     }
 }
-/*
-
-@Composable
-fun SearchBar(
-    hint: String,
-    modifier: Modifier = Modifier,
-    isEnabled: (Boolean) = true,
-    height: Dp = 50.dp,
-    elevation: Dp = 3.dp,
-    cornerShape: RoundedCornerShape = RoundedCornerShape(8.dp),
-    backgroundColor: Color = Color.White,
-    onSearchClicked: () -> Unit = {},
-    onTextChange: (Any) -> Unit = {},
-) {
-    var text by remember { mutableStateOf(TextFieldValue()) }
-    Row(
-        modifier = Modifier
-            .height(height)
-            .shadow(elevation = elevation, shape = cornerShape)
-            .background(color = backgroundColor, shape = cornerShape)
-            .clickable { onSearchClicked() },
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Box(
-            modifier = modifier
-                .size(40.dp)
-                .background(color = Color.Transparent, shape = CircleShape)
-                .clickable {
-                    if (text.text.isNotEmpty()) {
-                        text = TextFieldValue(text = "")
-                        onTextChange("")
-                    }
-                },
-        ) {
-            Image(
-                modifier = modifier
-                    .fillMaxSize()
-                    .padding(10.dp),
-                painter = painterResource(id = R.drawable.v_ic_search),
-                contentDescription = stringResource(R.string.search),
-            )
-        }
-        BasicTextField(
-            modifier = modifier
-                .padding(horizontal = 10.dp)
-//                .weight(1f),
-                .width(250.dp),
-            value = text,
-            onValueChange = {
-                text = it
-                onTextChange(it.text)
-            },
-            enabled = isEnabled,
-            textStyle = TextStyle(
-                color = black,
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Bold,
-            ),
-            decorationBox = { innerTextField ->
-                if (text.text.isEmpty()) {
-                    Text(
-                        text = hint,
-                        color = Color.Gray.copy(alpha = 0.5f),
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Bold,
-                    )
-                }
-                innerTextField()
-            },
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Text,
-                imeAction = ImeAction.Search
-            ),
-            keyboardActions = KeyboardActions(onSearch = { onSearchClicked() }),
-            singleLine = true,
-            maxLines = 1
-        )
-    }
-}
-*/
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
@@ -275,7 +197,7 @@ fun ListNewRecipe() {
 @Composable
 fun ItemRecipeCard(
     recipe: RecipeCard,
-    onRecipeClicked: () -> Unit = {}
+    onRecipeClicked: () -> Unit = {},
 ) {
     Box(
         modifier = Modifier.clickable { onRecipeClicked() }
@@ -424,11 +346,12 @@ fun ItemNewRecipe(recipe: RecipeCard) {
             ),
             elevation = CardDefaults.cardElevation(10.dp),
             modifier = Modifier
-                .shadow(
+                /*.shadow(
                     elevation = 20.dp,
                     spotColor = Color(0x1A000000),
                     ambientColor = Color(0x1A000000)
                 )
+                */
                 .width(300.dp)
                 .padding(vertical = 40.dp, horizontal = 10.dp)
                 .background(color = Color(0xFFFFFFFF), shape = RoundedCornerShape(size = 10.dp))
@@ -535,6 +458,95 @@ fun PreviewProfileSection() {
 //    SearchBarSection()
 }
 
+@Preview
+@Composable
+fun SearchBarWithFilter(
+    modifier: Modifier = Modifier,
+    hint: String = "Search Recipe",
+    onSearchClicked: () -> Unit = {},
+    onTextChange: (String) -> Unit = {},
+    onFilterClicked: () -> Unit = {},
+    ifHome: Boolean = false,
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 20.dp)
+            .clickable {
+                if (ifHome) {
+                    onSearchClicked()
+                }
+            },
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        var text by remember { mutableStateOf(TextFieldValue()) }
+        OutlinedTextField(
+            modifier = Modifier
+                .weight(1f)
+                .height(50.dp)
+                .clip(RoundedCornerShape(10.dp)),
+//                .border(width = 2.dp, Color(0xFFD9D9D9)),
+            value = text,
+            onValueChange = {
+                text = it
+                onTextChange(it.text)
+            },
+            enabled = !ifHome,
+            textStyle = TextStyle(
+                color = black,
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Normal,
+            ),
+            placeholder = {
+                Text(
+                    text = hint,
+                    color = gray4,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Normal,
+                )
+            },
+            leadingIcon = {
+                Image(
+                    painter = painterResource(id = R.drawable.v_ic_search),
+                    contentDescription = stringResource(R.string.search),
+                )
+            },
+
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Text,
+                imeAction = ImeAction.Search
+            ),
+            keyboardActions = KeyboardActions(onSearch = { onSearchClicked() }),
+            maxLines = 1,
+            singleLine = true,
+            shape = RoundedCornerShape(size = 10.dp),
+            colors = OutlinedTextFieldDefaults.colors(
+                cursorColor = black,
+                unfocusedContainerColor = white,
+                focusedContainerColor = white,
+                unfocusedBorderColor = Color(0xFFD9D9D9),
+                focusedBorderColor = black,
+                disabledBorderColor = Color(0xFFD9D9D9),
+            )
+        )
+        Spacer(modifier = Modifier.width(20.dp))
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .width(50.dp)
+                .height(50.dp)
+                .background(color = Color(0xFF129575), shape = RoundedCornerShape(size = 10.dp))
+                .clickable { onFilterClicked() }
+        ) {
+            Image(
+                contentDescription = "filter",
+                painter = painterResource(id = R.drawable.v_ic_filter),
+                contentScale = ContentScale.FillBounds,
+            )
+        }
+    }
+}
 
 @Composable
 fun SearchBarSection(
@@ -645,4 +657,3 @@ fun SearchBarSection(
 }
 
 
-data class CountryWithSelection(val countryName: String, var isSelected: Boolean)

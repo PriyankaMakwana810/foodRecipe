@@ -1,31 +1,51 @@
 package com.tridya.foodrecipeblog.screens
 
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.sp
-import com.tridya.foodrecipeblog.components.SimpleTextComponent
-import com.tridya.foodrecipeblog.ui.theme.black
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.tridya.foodrecipeblog.R
+import com.tridya.foodrecipeblog.components.ToolbarComponent
+import com.tridya.foodrecipeblog.components.UserProfileSectionUI
 import com.tridya.foodrecipeblog.ui.theme.white
 
 @Composable
-fun ProfileScreen() {
+fun ProfileScreen(navController: NavController, paddingValues: PaddingValues) {
     Surface(
         modifier = Modifier.fillMaxSize(), color = white
     ) {
-        Box(modifier = Modifier.fillMaxSize()) {
-            SimpleTextComponent(
-                modifier = Modifier.align(Alignment.Center),
-                value = "Profile Screen",
-                fontSize = 30.sp,
-                textColor = Color.Black,
-                fontWeight = FontWeight(700)
-            )
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+        ) {
+            ToolbarComponent(
+                toolbarTitle = stringResource(R.string.profile),
+                showBackArrow = false,
+                showMenuIcon = true,
+                onMenuClicked = {})
+            Column(
+                modifier = Modifier.padding(horizontal = 20.dp)
+            ) {
+                UserProfileSectionUI()
+            }
         }
     }
+}
+
+@Preview
+@Composable
+fun PreviewProfileScreen() {
+    ProfileScreen(
+        navController = rememberNavController(),
+        paddingValues = PaddingValues(),
+    )
 }

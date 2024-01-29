@@ -62,6 +62,11 @@
     <string name="rate_recipe">Rate Recipe</string>
     <string name="recipe_share">Recipe Share</string>
     <string name="copy_recipe_link_and_share_your_recipe_link_with_friends_and_family">Copy recipe link and share your recipe link with  friends and family.</string>
+    <string name="reviews">Reviews</string>
+    <string name="thumbs_up">👍 %1$s </string>
+    <string name="thums_down">👎 %1$s</string>
+    <string name="notifications">Notifications</string>
+    <string name="profile">Profile</string>
 
 
 </resources>

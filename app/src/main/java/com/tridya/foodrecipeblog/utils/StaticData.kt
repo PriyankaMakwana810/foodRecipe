@@ -1,8 +1,10 @@
 package com.tridya.foodrecipeblog.utils
 
-import com.tridya.foodrecipeblog.components.CountryWithSelection
 import com.tridya.foodrecipeblog.models.IngredientModel
+import com.tridya.foodrecipeblog.models.NotificationModel
 import com.tridya.foodrecipeblog.models.ProcedureModel
+import com.tridya.foodrecipeblog.models.ReviewModel
+import com.tridya.foodrecipeblog.models.UserProfile
 
 object StaticData {
 
@@ -43,6 +45,52 @@ object StaticData {
         "Procedure"
     )
 
+    val notificationTitle = listOf(
+        "All",
+        "Read",
+        "Unread"
+    )
+    val listOfNotifications = listOf<NotificationModel>(
+        NotificationModel(
+            "New Recipe Alert!",
+            "Lorem Ipsum tempor incididunt ut labore et dolore,in voluptate velit esse cillum",
+            System.currentTimeMillis(),
+            ""
+        ),
+        NotificationModel(
+            "New Recipe Alert!",
+            "Lorem Ipsum tempor incididunt ut labore et dolore,in voluptate velit esse cillum",
+            System.currentTimeMillis(),
+            ""
+        ),
+        NotificationModel(
+            "New Recipe Alert!",
+            "Lorem Ipsum tempor incididunt ut labore et dolore,in voluptate velit esse cillum",
+            System.currentTimeMillis(),
+            ""
+        ),
+        NotificationModel(
+            "New Recipe Alert!",
+            "Lorem Ipsum tempor incididunt ut labore et dolore,in voluptate velit esse cillum",
+            System.currentTimeMillis(),
+            ""
+        )
+    )
+
+    /*fun getListOfNotification(): MutableList<NotificationModel> {
+        for (i in 1..5) {
+            notifications.add(
+                NotificationModel(
+                    "New Recipe Alert!",
+                    "Lorem Ipsum tempor incididunt ut labore et dolore,in voluptate velit esse cillum",
+                    System.currentTimeMillis(),
+                    ""
+                )
+            )
+        }
+        return notifications
+    }
+*/
     val listOfIngredients = listOf<IngredientModel>(
         IngredientModel(
             itemName = "Tomatos",
@@ -87,34 +135,111 @@ object StaticData {
     )
 
     val listOfProcedureSteps = listOf<ProcedureModel>(
-        ProcedureModel(1,"Lorem Ipsum tempor incididunt ut labore et dolore,in voluptate velit esse cillum dolore eu fugiat nulla pariatur?"),
-        ProcedureModel(2,"Lorem Ipsum tempor incididunt ut labore et dolore,in voluptate velit esse cillum dolore eu fugiat nulla pariatur?\n" +
-                "Tempor incididunt ut labore et dolore,in voluptate velit esse cillum dolore eu fugiat nulla pariatur?"),
-        ProcedureModel(3,"Lorem Ipsum tempor incididunt ut labore et dolore,in voluptate velit esse cillum dolore eu fugiat nulla pariatur?"),
-        ProcedureModel(4,"Lorem Ipsum tempor incididunt ut labore et dolore,in voluptate velit esse cillum dolore eu fugiat nulla pariatur?\n" +
-                "Tempor incididunt ut labore et dolore,in voluptate velit esse cillum dolore eu fugiat nulla pariatur?"),
-        ProcedureModel(5,"Lorem Ipsum tempor incididunt ut labore et dolore,in voluptate velit esse cillum dolore eu fugiat nulla pariatur?"),
-        ProcedureModel(6,"Lorem Ipsum tempor incididunt ut labore et dolore,in voluptate velit esse cillum dolore eu fugiat nulla pariatur?"),
+        ProcedureModel(
+            1,
+            "Lorem Ipsum tempor incididunt ut labore et dolore,in voluptate velit esse cillum dolore eu fugiat nulla pariatur?"
+        ),
+        ProcedureModel(
+            2,
+            "Lorem Ipsum tempor incididunt ut labore et dolore,in voluptate velit esse cillum dolore eu fugiat nulla pariatur?\n" +
+                    "Tempor incididunt ut labore et dolore,in voluptate velit esse cillum dolore eu fugiat nulla pariatur?"
+        ),
+        ProcedureModel(
+            3,
+            "Lorem Ipsum tempor incididunt ut labore et dolore,in voluptate velit esse cillum dolore eu fugiat nulla pariatur?"
+        ),
+        ProcedureModel(
+            4,
+            "Lorem Ipsum tempor incididunt ut labore et dolore,in voluptate velit esse cillum dolore eu fugiat nulla pariatur?\n" +
+                    "Tempor incididunt ut labore et dolore,in voluptate velit esse cillum dolore eu fugiat nulla pariatur?"
+        ),
+        ProcedureModel(
+            5,
+            "Lorem Ipsum tempor incididunt ut labore et dolore,in voluptate velit esse cillum dolore eu fugiat nulla pariatur?"
+        ),
+        ProcedureModel(
+            6,
+            "Lorem Ipsum tempor incididunt ut labore et dolore,in voluptate velit esse cillum dolore eu fugiat nulla pariatur?"
+        ),
 
-    )
+        )
+
 
     val listCountries = listOf(
-        "All","Indian","Italian","Asian","Chinese","Spanish","French","Maxican","Korean","Thai","Cousine","Greek"
+        "All",
+        "Indian",
+        "Italian",
+        "Asian",
+        "Chinese",
+        "Spanish",
+        "French",
+        "Maxican",
+        "Korean",
+        "Thai",
+        "Cousine",
+        "Greek"
     )
-    val countryData =
-        listOf(
-            /*"All", "Indian", "Italian", "Asian", "Chinese", "Spanish", "Franch", "Korean"*/
-            CountryWithSelection("All", true),
-            CountryWithSelection("Indian", false),
-            CountryWithSelection("Italian", false),
-            CountryWithSelection("Asian", false),
-            CountryWithSelection("Chinese", false),
-            CountryWithSelection("Spanish", false),
-            CountryWithSelection("French", false),
-            CountryWithSelection("Maxican", false),
-            CountryWithSelection("Korean", false),
-            CountryWithSelection("Thai", false),
-            CountryWithSelection("Cousine", false),
-            CountryWithSelection("Greek", false),
-        )
+
+    val userProfile = UserProfile(
+        "Afuwape Abiodun", "https://bit.ly/42ebJQd", 4, 200, 100, "Chef", "Private Chef\n" +
+                "Passionate about food and life \uD83E\uDD58\uD83C\uDF72\uD83C\uDF5D\uD83C\uDF71\n" +
+                "More..."
+    )
+    val listOfReviews = listOf<ReviewModel>(
+        ReviewModel(
+            0,
+            "Bella Throne",
+            "https://bit.ly/3S7gpTv",
+            "12/06/2023 19:35",
+            "Lorem Ipsum tempor incididunt ut labore et dolore,inise voluptate velit esse cillum",
+            9,
+            2
+        ),
+        ReviewModel(
+            1,
+            "Christopher Oshana",
+            "https://bit.ly/4b2Cmf7",
+            "12/06/2023 20:00",
+            "Lorem Ipsum tempor incididunt ut labore et dolore,inise voluptate.",
+            7,
+            1
+        ),
+        ReviewModel(
+            2,
+            "Kyle Austin",
+            "https://bit.ly/3Hwof40",
+            "12/06/2023 20:00",
+            "Lorem Ipsum tempor incididunt ut labore et dolore,inise voluptate.",
+            7,
+            1
+        ),
+        ReviewModel(
+            3,
+            "Jeniffern Wilson",
+            "https://bit.ly/3vTQGWW",
+            "12/06/2023 19:35",
+            "Lorem Ipsum tempor incididunt ut labore et dolore,inise voluptate velit esse cillum",
+            9,
+            2
+        ),
+        ReviewModel(
+            4,
+            "Kate Johnson",
+            "https://bit.ly/3vUnu21",
+            "12/06/2023 20:00",
+            "Lorem Ipsum tempor incididunt ut labore et dolore,inise voluptate.",
+            7,
+            1
+        ),
+        ReviewModel(
+            5,
+            "Kyle Austin",
+            "https://bit.ly/3Hwof40",
+            "12/06/2023 20:00",
+            "Lorem Ipsum tempor incididunt ut labore et dolore,inise voluptate.",
+            7,
+            1
+        ),
+    )
 }
+

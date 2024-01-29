@@ -3,6 +3,7 @@ package com.tridya.foodrecipeblog.screens
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -38,7 +39,7 @@ import com.tridya.foodrecipeblog.components.ListFilterCategory
 import com.tridya.foodrecipeblog.components.ListFilterRate
 import com.tridya.foodrecipeblog.components.ListFilterTime
 import com.tridya.foodrecipeblog.components.RecipesItemsComponent
-import com.tridya.foodrecipeblog.components.SearchBarSection
+import com.tridya.foodrecipeblog.components.SearchBarWithFilter
 import com.tridya.foodrecipeblog.components.SimpleTextComponent
 import com.tridya.foodrecipeblog.components.ToolbarComponent
 import com.tridya.foodrecipeblog.models.RecipeCard
@@ -68,8 +69,8 @@ fun SearchScreen(navController: NavController, paddingValues: PaddingValues) {
                 onBackClicked = {
                     navController.navigateUp()
                 })
-            SearchBarSection(
-                modifier = Modifier.weight(1f),
+            SearchBarWithFilter(
+//                modifier = Modifier.weight(1f),
                 onSearchClicked = {},
                 onFilterClicked = { showBottomSheet = true })
             SimpleTextComponent(
@@ -99,6 +100,7 @@ fun FilterBottomSheet(onDismiss: () -> Unit = {}) {
     val modalBottomSheetState = rememberModalBottomSheetState()
     ModalBottomSheet(containerColor = white, onDismissRequest = { onDismiss() },
         sheetState = SheetState(initialValue = SheetValue.Expanded, skipPartiallyExpanded = true),
+        windowInsets = WindowInsets(0, 0, 0, 0),
         dragHandle = { BottomSheetDefaults.DragHandle() }) {
         SimpleTextComponent(
             modifier = Modifier.padding(4.dp),

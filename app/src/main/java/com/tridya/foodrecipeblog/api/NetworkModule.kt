@@ -48,8 +48,7 @@ object NetworkModule {
     @Singleton
     @Provides
     fun provideOkHttpClient(httpLoggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
-        val okHttpClient = OkHttpClient.Builder()
-            .addInterceptor(httpLoggingInterceptor)
+        val okHttpClient = OkHttpClient.Builder().addInterceptor(httpLoggingInterceptor)
         return okHttpClient.build()
     }
 
@@ -60,9 +59,7 @@ object NetworkModule {
         converterFactory: Converter.Factory,
         okHttpClient: OkHttpClient,
     ): Retrofit {
-        val retrofit = Retrofit.Builder()
-            .baseUrl(baseUrl)
-            .client(okHttpClient)
+        val retrofit = Retrofit.Builder().baseUrl(baseUrl).client(okHttpClient)
             .addConverterFactory(converterFactory)
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
         return retrofit.build()
@@ -72,14 +69,11 @@ object NetworkModule {
     @Provides
     @Named(RECIPE_RETROFIT)
     fun provideRecipeRetrofit(
-        @Named(RECIPE_BASE)
-        baseUrl: String,
+        @Named(RECIPE_BASE) baseUrl: String,
         converterFactory: Converter.Factory,
         okHttpClient: OkHttpClient,
     ): Retrofit {
-        val retrofit = Retrofit.Builder()
-            .baseUrl(baseUrl)
-            .client(okHttpClient)
+        val retrofit = Retrofit.Builder().baseUrl(baseUrl).client(okHttpClient)
             .addConverterFactory(converterFactory)
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
         return retrofit.build()

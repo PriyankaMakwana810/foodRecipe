@@ -4,8 +4,6 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tridya.foodrecipeblog.api.ApiConstants
-import com.tridya.foodrecipeblog.api.ApiInterface
 import com.tridya.foodrecipeblog.api.ApiState
 import com.tridya.foodrecipeblog.api.repo.HomeRepository
 import com.tridya.foodrecipeblog.api.response.CuisinesResponse
@@ -22,7 +20,6 @@ import javax.inject.Named
 class HomeViewModel @Inject constructor(
     private val repository: HomeRepository,
     @Named(Constants.SHARED_COMMON) val sharedPreferences: PrefUtils,
-    @Named(ApiConstants.RECIPE_API_SERVICE) val apiService: ApiInterface,
 ) : ViewModel() {
     private val _countries = mutableStateOf<ApiState<CuisinesResponse>>(ApiState.Loading)
     val countries: State<ApiState<CuisinesResponse>> = _countries
@@ -30,7 +27,7 @@ class HomeViewModel @Inject constructor(
     fun getCountries() {
         viewModelScope.launch {
             try {
-                val response = apiService.getCountries()
+                val response = repository.getCountries()
                 _countries.value = ApiState.Success(response)
             } catch (e: Exception) {
                 _countries.value = ApiState.Error("API Error: ${e.message}")

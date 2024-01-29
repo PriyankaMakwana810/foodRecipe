@@ -39,14 +39,18 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.tridya.foodrecipeblog.R
 import com.tridya.foodrecipeblog.models.RecipeCard
+import com.tridya.foodrecipeblog.models.UserProfile
 import com.tridya.foodrecipeblog.models.recipesByCountry
 import com.tridya.foodrecipeblog.ui.theme.black
 import com.tridya.foodrecipeblog.ui.theme.gray3
+import com.tridya.foodrecipeblog.ui.theme.gray4
 import com.tridya.foodrecipeblog.ui.theme.primary100
 import com.tridya.foodrecipeblog.ui.theme.primary80
 import com.tridya.foodrecipeblog.ui.theme.secondary100
 import com.tridya.foodrecipeblog.ui.theme.white
+import com.tridya.foodrecipeblog.utils.StaticData.notificationTitle
 import com.tridya.foodrecipeblog.utils.StaticData.tabsList
+import com.tridya.foodrecipeblog.utils.StaticData.userProfile
 
 @Composable
 fun RatingBar(rating: String) {
@@ -146,7 +150,10 @@ fun ProfileSectionOfRecipe(
 
 @Preview
 @Composable
-fun CustomTabs(onIngridentClicked: () -> Unit = {}, onProcedureClicked: () -> Unit = {}) {
+fun CustomRecipeDetailsTabs(
+    onIngridentClicked: () -> Unit = {},
+    onProcedureClicked: () -> Unit = {},
+) {
     var selectedIndex by remember { mutableStateOf(0) }
 
     TabRow(selectedTabIndex = selectedIndex,
@@ -186,4 +193,125 @@ fun CustomTabs(onIngridentClicked: () -> Unit = {}, onProcedureClicked: () -> Un
         }
     }
 }
+
+
+@Preview
+@Composable
+fun CustomNotificationTabs(
+    onAllClicked: () -> Unit = {},
+    onReadClicked: () -> Unit = {},
+    onUnReadClicked: () -> Unit = {},
+) {
+    var selectedIndex by remember { mutableStateOf(0) }
+
+    TabRow(selectedTabIndex = selectedIndex,
+        containerColor = white,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 10.dp)
+            .clip(RoundedCornerShape(10)),
+        indicator = {
+            Box {}
+        },
+        divider = {}
+    ) {
+        notificationTitle.forEachIndexed { index, text ->
+            val selected = selectedIndex == index
+            Tab(
+                modifier = if (selected) Modifier
+                    .clip(RoundedCornerShape(20))
+                    .background(
+                        primary100
+                    )
+                else Modifier.background(white),
+                selected = selected,
+                onClick = {
+                    selectedIndex = index
+                    when (selectedIndex) {
+                        0 -> {
+                            onAllClicked()
+                        }
+
+                        1 -> {
+                            onReadClicked()
+                        }
+
+                        else -> {
+                            onUnReadClicked()
+                        }
+                    }
+
+                },
+                text = { Text(text = text, color = if (selected) white else primary80) }
+            )
+        }
+    }
+}
+
+@Preview
+@Composable
+fun UserProfileSectionUI(modifier: Modifier = Modifier, user: UserProfile = userProfile) {
+    Column(modifier = modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            AsyncImage(
+                modifier = Modifier
+                    .padding(vertical = 10.dp)
+                    .clip(shape = CircleShape)
+                    .size(130.dp),
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(userProfile.profilePic)
+                    .crossfade(true)
+                    .build(),
+                placeholder = painterResource(id = R.drawable.img_user_profile_1),
+                contentDescription = "image description",
+                contentScale = ContentScale.Crop,
+            )
+            Row(
+                modifier = Modifier.weight(1f),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    NormalTextComponent(value = "Recipe", fontSize = 12.sp, textColor = gray4)
+                    NormalTextComponent(
+                        value = userProfile.numOfRecipes.toString(),
+                        fontSize = 20.sp,
+                        textColor = black
+                    )
+                }
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    NormalTextComponent(value = "Followers", fontSize = 12.sp, textColor = gray4)
+                    NormalTextComponent(
+                        value = userProfile.followers.toString(),
+                        fontSize = 20.sp,
+                        textColor = black
+                    )
+                }
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    NormalTextComponent(value = "Following", fontSize = 12.sp, textColor = gray4)
+                    NormalTextComponent(
+                        value = userProfile.following.toString(),
+                        fontSize = 20.sp,
+                        textColor = black
+                    )
+                }
+            }
+        }
+
+    }
+}
+
 
