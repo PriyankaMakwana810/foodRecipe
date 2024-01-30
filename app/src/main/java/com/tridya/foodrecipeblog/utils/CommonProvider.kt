@@ -13,6 +13,10 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object CommonProvider {
+
+    @Provides
+    fun provideAppContext(@ApplicationContext context: Context) = context
+
     @Singleton
     @Named(SHARED_COMMON)
     @Provides

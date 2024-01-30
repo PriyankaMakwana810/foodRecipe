@@ -11,4 +11,5 @@ class HomeRepository @Inject constructor(
 ) {
     suspend fun getCountries() = apiInterface.getCountries()
     suspend fun getAreas() = mealDbApiInterface.getAreaList()
+    suspend fun getRecipesByArea(area: String) = mealDbApiInterface.getRecipeByArea(area)
 }

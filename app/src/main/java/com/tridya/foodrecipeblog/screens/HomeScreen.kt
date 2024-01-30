@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Surface
@@ -19,6 +20,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -34,19 +36,20 @@ import androidx.navigation.compose.rememberNavController
 import com.tridya.foodrecipeblog.R
 import com.tridya.foodrecipeblog.api.ApiState
 import com.tridya.foodrecipeblog.api.response.Meal
+import com.tridya.foodrecipeblog.components.ItemNewRecipe
 import com.tridya.foodrecipeblog.components.ItemRecipeCard
-import com.tridya.foodrecipeblog.components.ListNewRecipe
 import com.tridya.foodrecipeblog.components.ListSelectCountry
+import com.tridya.foodrecipeblog.components.NormalTextComponent
 import com.tridya.foodrecipeblog.components.ProfileSection
 import com.tridya.foodrecipeblog.components.SearchBarWithFilter
+import com.tridya.foodrecipeblog.components.ShowProgress
 import com.tridya.foodrecipeblog.components.SimpleTextComponent
-import com.tridya.foodrecipeblog.components.showProgress
 import com.tridya.foodrecipeblog.models.RecipeCard
-import com.tridya.foodrecipeblog.models.recipesByCountry
 import com.tridya.foodrecipeblog.navigation.Screen
 import com.tridya.foodrecipeblog.ui.theme.black
 import com.tridya.foodrecipeblog.ui.theme.white
 import com.tridya.foodrecipeblog.viewModels.HomeViewModel
+import kotlinx.coroutines.launch
 
 @Composable
 fun HomeScreen(
@@ -58,8 +61,13 @@ fun HomeScreen(
 
 //    val countriesState by homeViewModel.countries
     val areaState by homeViewModel.areas
+    val recipeByArea by homeViewModel.recipesByArea
+    val newRecipes by homeViewModel.newRecipes
     val userName = homeViewModel.sharedPreferences.user?.userName
     val context = LocalContext.current
+
+    val recipeScrollState = rememberLazyListState()
+    val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
         homeViewModel.getAreas()
@@ -72,20 +80,23 @@ fun HomeScreen(
     ) {
         when (areaState) {
             is ApiState.Loading -> {
-                showProgress()
+                ShowProgress()
 //                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
             }
 
             is ApiState.Success -> {
 //                val countries = (countriesState as ApiState.Success<List<String>>)
-                var selectedArea by remember {
-                    mutableStateOf("")
-                }
+
                 val areas = (areaState as ApiState.Success<List<Meal>>).data
                 val listOfArea: List<String> = areas.map { meal ->
                     meal.strArea
                 }
-                selectedArea = listOfArea.first()
+                var selectedArea by remember {
+                    mutableStateOf("")
+                }
+//                selectedArea = listOfArea.first()
+//                homeViewModel.getRecipeByArea(selectedArea)
+                homeViewModel.getNewRecipe("Indian")
                 Column(
                     Modifier
                         .verticalScroll(state = scrollState)
@@ -98,31 +109,98 @@ fun HomeScreen(
                             this.launchSingleTop = true
                         }
                     })
+                    LaunchedEffect(Unit) {
+                        homeViewModel.getRecipeByArea(listOfArea.first())
+                    }
                     ListSelectCountry(listOfCountries = listOfArea) { selectedItem ->
                         println("Selected item: $selectedItem")
                         selectedArea = selectedItem
+                        coroutineScope.launch {
+                            recipeScrollState.animateScrollToItem(index = 0)
+                        }
+                        homeViewModel.getRecipeByArea(selectedArea)
                     }
-                    LazyRow(
-                        modifier = Modifier.padding(start = 15.dp, top = 15.dp, bottom = 15.dp),
-                        horizontalArrangement = Arrangement.spacedBy(15.dp),
-                    ) {
-                        items(recipesByCountry) { item: RecipeCard ->
-                            ItemRecipeCard(recipe = item) {
-                                navController.navigate(Screen.RecipeDetailScreen.route + "/${item.id}") {
-                                    this.launchSingleTop = true
+                    when (recipeByArea) {
+                        is ApiState.Loading -> {
+                            ShowProgress()
+                        }
+
+                        is ApiState.Success -> {
+                            val recipeByCountry =
+                                (recipeByArea as ApiState.Success<List<RecipeCard>>).data
+                            LazyRow(
+                                state = recipeScrollState,
+                                modifier = Modifier.padding(
+                                    start = 15.dp,
+                                    top = 15.dp,
+                                    bottom = 15.dp
+                                ),
+                                horizontalArrangement = Arrangement.spacedBy(5.dp),
+                            ) {
+                                items(recipeByCountry) { item: RecipeCard ->
+                                    ItemRecipeCard(recipe = item) {
+                                        navController.navigate(Screen.RecipeDetailScreen.route + "/${item.id}") {
+                                            this.launchSingleTop = true
+                                        }
+                                    }
                                 }
                             }
                         }
+
+                        is ApiState.Error -> {
+                            val error = (recipeByArea as ApiState.Error).message
+                            NormalTextComponent(
+                                value = error,
+                                fontSize = 20.sp,
+                                align = TextAlign.Center
+                            )
+                        }
                     }
+
                     SimpleTextComponent(
-                        modifier = Modifier.padding(horizontal = 20.dp),
+                        modifier = Modifier.padding(top = 20.dp, start = 20.dp),
                         value = stringResource(R.string.new_recipes),
                         fontSize = 20.sp,
                         fontWeight = FontWeight(600),
                         textColor = black,
                         textAlign = TextAlign.Left
                     )
-                    ListNewRecipe()
+                    when (newRecipes) {
+                        is ApiState.Loading -> {
+                            ShowProgress()
+                        }
+
+                        is ApiState.Success -> {
+                            val listNewRecipes =
+                                (newRecipes as ApiState.Success<List<RecipeCard>>).data
+                            LazyRow(
+                                modifier = Modifier.padding(start = 15.dp),
+                                horizontalArrangement = Arrangement.spacedBy(5.dp),
+                            ) {
+                                items(listNewRecipes) { item: RecipeCard ->
+                                    ItemNewRecipe(recipe = item)
+                                }
+                            }
+//                            ListNewRecipe()
+                        }
+
+                        is ApiState.Error -> {
+                            val error = (recipeByArea as ApiState.Error).message
+                            LazyRow(
+                                modifier = Modifier.padding(start = 15.dp),
+                                horizontalArrangement = Arrangement.spacedBy(5.dp),
+                            ) {
+                                item {
+                                    NormalTextComponent(
+                                        value = error,
+                                        fontSize = 20.sp,
+                                        align = TextAlign.Center
+                                    )
+                                }
+                            }
+                        }
+                    }
+
                 }
             }
 

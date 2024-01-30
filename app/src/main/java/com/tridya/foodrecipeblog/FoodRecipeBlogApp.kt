@@ -53,9 +53,9 @@ fun FoodRecipeBlogApp() {
                 ) {
                     BottomNavigationItem().bottomNavigationItems()
                         .forEachIndexed { index, navigationItem ->
+                            val currentRoute = navBackStackEntry?.destination?.route
                             NavigationBarItem(
-
-                                selected = index == navigationSelectedItem,
+                                selected = currentRoute == navigationItem.route,
                                 icon = {
                                     Icon(
                                         painter = painterResource(id = navigationItem.icon),

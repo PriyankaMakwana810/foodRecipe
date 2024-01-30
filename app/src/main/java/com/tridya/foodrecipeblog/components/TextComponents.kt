@@ -34,7 +34,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tridya.foodrecipeblog.R
 import com.tridya.foodrecipeblog.ui.theme.black
+import com.tridya.foodrecipeblog.ui.theme.gray2
 import com.tridya.foodrecipeblog.ui.theme.gray4
+import com.tridya.foodrecipeblog.ui.theme.primary80
 import com.tridya.foodrecipeblog.ui.theme.secondary100
 import com.tridya.foodrecipeblog.ui.theme.white
 
@@ -69,7 +71,7 @@ fun NormalTextComponent(
     fontSize: TextUnit,
     fontWeight: FontWeight = FontWeight.Normal,
     textColor: Color = black,
-    align: TextAlign = TextAlign.Start
+    align: TextAlign = TextAlign.Start,
 ) {
     Text(
         text = value,
@@ -201,3 +203,38 @@ fun DividerTextComponent() {
 }
 
 
+@Composable
+fun ExpandableSeeMoreText(initialText: String, maxLines: Int = 3) {
+    var expanded by remember { mutableStateOf(false) }
+
+    val displayedText = buildAnnotatedString {
+        withStyle(style = SpanStyle(color = gray2)) {
+            if (expanded || initialText.length <= 100) {
+                append(initialText)
+            } else {
+                append(initialText.substring(0, 100))
+            }
+        }
+
+        if (!expanded && initialText.length > 100) {
+            withStyle(style = SpanStyle(color = primary80)) {
+                append("\nMore...")
+            }
+        }
+    }
+
+    ClickableText(
+        text = displayedText,
+        onClick = { offset ->
+            if (offset > initialText.length) {
+                expanded = !expanded
+            }
+        },
+        style = TextStyle(
+            color = gray2,
+            fontSize = 12.sp,
+            lineHeight = 20.sp,
+        ),
+        maxLines = if (expanded) Int.MAX_VALUE else maxLines
+    )
+}

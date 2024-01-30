@@ -66,7 +66,11 @@ fun LoginScreen(navController: NavController, paddingValues: PaddingValues) {
     val context = LocalContext.current
 
     if (loginViewModel.sharedPreferences.isLoggedIn) {
-        navController.navigate(Screen.HomeScreen.route)
+        navController.navigate(Screen.HomeScreen.route) {
+            popUpTo(Screen.IntroScreen.route) {
+                inclusive = false
+            }
+        }
     }
     val loginState by remember { loginViewModel.loginState }
 
@@ -206,7 +210,11 @@ fun LoginScreen(navController: NavController, paddingValues: PaddingValues) {
                 onButtonClicked = {
                     loginViewModel.onUiEvent(loginUiEvent = LoginUiEvent.Submit)
                     if (loginState.isLoginSuccessful) {
-                        navController.navigate(Screen.HomeScreen.route)
+                        navController.navigate(Screen.HomeScreen.route) {
+                            popUpTo(Screen.IntroScreen.route) {
+                                inclusive = true
+                            }
+                        }
                     }
                 })
             Spacer(modifier = Modifier.height(20.dp))

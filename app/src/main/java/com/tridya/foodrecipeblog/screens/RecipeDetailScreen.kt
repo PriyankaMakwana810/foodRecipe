@@ -133,7 +133,7 @@ fun RecipeDetailScreen(navController: NavController, paddingValues: PaddingValue
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = recipe.name,
+                    text = recipe.strMeal,
                     style = TextStyle(
                         fontSize = 16.sp,
                         fontWeight = FontWeight(600),
@@ -163,7 +163,7 @@ fun RecipeDetailScreen(navController: NavController, paddingValues: PaddingValue
                 ShowIngredients()
             }
             if (openShareDialog) {
-                ShareDialogComponent(onButtonClicked = { openShareDialog = !openShareDialog },)
+                ShareDialogComponent(onButtonClicked = { openShareDialog = !openShareDialog })
             }
             if (openRatingDialog) {
                 RateDialogComponent(onButtonClicked = { openRatingDialog = !openRatingDialog })

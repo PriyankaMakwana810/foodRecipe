@@ -185,7 +185,9 @@ fun ListPopularRecipeByCountry() {
 
 @Preview
 @Composable
-fun ListNewRecipe() {
+fun ListNewRecipe(
+
+) {
     LazyRow(
         modifier = Modifier.padding(start = 15.dp),
         horizontalArrangement = Arrangement.spacedBy(5.dp),
@@ -202,7 +204,7 @@ fun ItemRecipeCard(
     onRecipeClicked: () -> Unit = {},
 ) {
     Box(
-        modifier = Modifier.clickable { onRecipeClicked() }
+        modifier = Modifier.clickable { onRecipeClicked() }.padding(horizontal = 10.dp)
     ) {
         Box(
             modifier = Modifier
@@ -213,7 +215,7 @@ fun ItemRecipeCard(
         ) {
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data(recipe.imageUrl)
+                    .data(recipe.strMealThumb)
                     .crossfade(true)
                     .build(),
                 modifier = Modifier
@@ -250,7 +252,7 @@ fun ItemRecipeCard(
                 modifier = Modifier.align(Alignment.Center)
             ) {
                 Text(
-                    text = recipe.name,
+                    text = recipe.strMeal,
                     modifier = Modifier
                         .width(120.dp),
                     // Text Style/Small Text/Bold
@@ -259,7 +261,9 @@ fun ItemRecipeCard(
                         fontWeight = FontWeight(600),
                         color = gray1,
                         textAlign = TextAlign.Center
-                    )
+                    ),
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
                 )
             }
             Row(
@@ -335,7 +339,7 @@ fun ItemNewRecipe(recipe: RecipeCard) {
                 .align(alignment = Alignment.TopEnd)
                 .zIndex(1f),
             model = ImageRequest.Builder(LocalContext.current)
-                .data(recipe.imageUrl)
+                .data(recipe.strMealThumb)
                 .crossfade(true)
                 .build(),
             placeholder = painterResource(id = R.drawable.food_image),
@@ -363,7 +367,7 @@ fun ItemNewRecipe(recipe: RecipeCard) {
             ) {
                 Text(
                     modifier = Modifier.width(150.dp),
-                    text = recipe.name,
+                    text = recipe.strMeal,
                     // Text Style/Small Text/Bold
                     style = TextStyle(
                         fontSize = 14.sp,
@@ -398,7 +402,7 @@ fun ItemNewRecipe(recipe: RecipeCard) {
                                 .clip(shape = RoundedCornerShape(100.dp))
                                 .size(25.dp),
                             model = ImageRequest.Builder(LocalContext.current)
-                                .data(recipe.imageUrl)
+                                .data(recipe.strMealThumb)
                                 .crossfade(true)
                                 .build(),
                             placeholder = painterResource(id = R.drawable.img_user_profile_1),

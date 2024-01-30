@@ -6,7 +6,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -19,6 +21,7 @@ import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -42,6 +45,7 @@ import com.tridya.foodrecipeblog.models.RecipeCard
 import com.tridya.foodrecipeblog.models.UserProfile
 import com.tridya.foodrecipeblog.models.recipesByCountry
 import com.tridya.foodrecipeblog.ui.theme.black
+import com.tridya.foodrecipeblog.ui.theme.gray2
 import com.tridya.foodrecipeblog.ui.theme.gray3
 import com.tridya.foodrecipeblog.ui.theme.gray4
 import com.tridya.foodrecipeblog.ui.theme.primary100
@@ -275,6 +279,7 @@ fun UserProfileSectionUI(modifier: Modifier = Modifier, user: UserProfile = user
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
+
                 Column(
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
@@ -283,7 +288,8 @@ fun UserProfileSectionUI(modifier: Modifier = Modifier, user: UserProfile = user
                     NormalTextComponent(
                         value = userProfile.numOfRecipes.toString(),
                         fontSize = 20.sp,
-                        textColor = black
+                        textColor = black,
+                        fontWeight = FontWeight(600)
                     )
                 }
                 Column(
@@ -294,7 +300,8 @@ fun UserProfileSectionUI(modifier: Modifier = Modifier, user: UserProfile = user
                     NormalTextComponent(
                         value = userProfile.followers.toString(),
                         fontSize = 20.sp,
-                        textColor = black
+                        textColor = black,
+                        fontWeight = FontWeight(600)
                     )
                 }
                 Column(
@@ -305,13 +312,84 @@ fun UserProfileSectionUI(modifier: Modifier = Modifier, user: UserProfile = user
                     NormalTextComponent(
                         value = userProfile.following.toString(),
                         fontSize = 20.sp,
-                        textColor = black
+                        textColor = black,
+                        fontWeight = FontWeight(600)
                     )
                 }
             }
         }
-
+        Column(
+            modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.Start
+        ) {
+            NormalTextComponent(
+                value = "Afuwape Abiodun",
+                fontSize = 18.sp,
+                fontWeight = FontWeight(600)
+            )
+            NormalTextComponent(
+                modifier = Modifier.padding(top = 5.dp),
+                value = "Chef",
+                fontSize = 12.sp,
+                textColor = gray3
+            )
+            Spacer(modifier = Modifier.height(15.dp))
+            NormalTextComponent(
+                value = "Private Chef\n" +
+                        "Passionate about food and life \uD83E\uDD58\uD83C\uDF72\uD83C\uDF5D\uD83C\uDF71\n" +
+                        "More...",
+                fontSize = 12.sp,
+                textColor = gray2
+            )
+        }
     }
 }
 
+
+@Preview
+@Composable
+fun CustomProfileTabs(
+    onRecipeClicked: () -> Unit = {},
+    onVideosClicked: () -> Unit = {},
+    onTagClicked: () -> Unit = {},
+) {
+    var selectedIndex by remember { mutableIntStateOf(0) }
+
+    TabRow(selectedTabIndex = selectedIndex,
+        containerColor = white,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 10.dp)
+            .clip(RoundedCornerShape(10)),
+        indicator = {
+            Box {}
+        },
+        divider = {}
+    ) {
+        notificationTitle.forEachIndexed { index, text ->
+            val selected = selectedIndex == index
+            Tab(
+                modifier = if (selected) Modifier
+                    .clip(RoundedCornerShape(20))
+                    .background(
+                        primary100
+                    )
+                else Modifier.background(white),
+                selected = selected,
+                onClick = {
+                    selectedIndex = index
+                    when (selectedIndex) {
+                        0 -> {
+                            onRecipeClicked()
+                        }
+                        1 -> {}
+                        else -> {}
+                    }
+
+                },
+                text = { Text(text = text, color = if (selected) white else primary80) }
+            )
+        }
+    }
+}
 

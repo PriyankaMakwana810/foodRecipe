@@ -62,7 +62,7 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
-    implementation("com.google.android.libraries.identity.googleid:googleid:1.1.0")
+//    implementation("com.google.android.libraries.identity.googleid:googleid:1.1.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
@@ -70,7 +70,7 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
 
 //    icon extended
     implementation("androidx.compose.material:material-icons-extended:1.5.4")
@@ -81,8 +81,6 @@ dependencies {
 //    navigation
     implementation("androidx.navigation:navigation-compose:2.7.6")
 
-//    status bar colorn
-//    implementation("com.google.accompanist:accompanist-microcontroller:0.32.0")
 //google SignIn Integration
     implementation("com.google.android.gms:play-services-auth:20.7.0")
 
@@ -108,18 +106,15 @@ dependencies {
     implementation("io.reactivex.rxjava2:rxandroid:2.1.1")
 //    RxJava2 with Retrofit
     implementation("com.squareup.retrofit2:adapter-rxjava2:2.9.0")
-//    cradential manager
-    implementation("androidx.credentials:credentials:1.3.0-alpha01")
 
+//    credential manager
+    implementation("androidx.credentials:credentials:1.3.0-alpha01")
 //    google one tap signIn library
     implementation("com.github.stevdza-san:OneTapCompose:1.0.11")
-
 //    facebook integration
     implementation("com.facebook.android:facebook-android-sdk:latest.release")
-
 //    coil image loading lib
     implementation("io.coil-kt:coil-compose:2.5.0")
-
 //    for ratings
     implementation("com.github.a914-gowtham:compose-ratingbar:1.3.4")
 }

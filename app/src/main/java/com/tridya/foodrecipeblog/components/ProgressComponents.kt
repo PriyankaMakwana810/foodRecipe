@@ -15,11 +15,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import com.tridya.foodrecipeblog.ui.theme.primary100
 import com.tridya.foodrecipeblog.ui.theme.white
 
 @Composable
-fun showProgress() {
-    var showDialog by remember { mutableStateOf(false) }
+fun ShowProgress() {
+    var showDialog by remember { mutableStateOf(true) }
 
     if (showDialog) {
         Dialog(

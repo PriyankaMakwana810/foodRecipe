@@ -80,7 +80,7 @@ fun RecipesItemsComponent(
             .clickable { onRecipeItemClicked() }
     ) {
         AsyncImage(
-            model = ImageRequest.Builder(LocalContext.current).data(recipe.imageUrl).crossfade(true)
+            model = ImageRequest.Builder(LocalContext.current).data(recipe.strMealThumb).crossfade(true)
                 .build(),
             modifier = Modifier
                 .fillMaxSize()
@@ -126,7 +126,7 @@ fun RecipesItemsComponent(
                     horizontalAlignment = Alignment.Start
                 ) {
                     Text(
-                        text = if (isFromDetail) "" else recipe.name, style = TextStyle(
+                        text = if (isFromDetail) "" else recipe.strMeal, style = TextStyle(
                             fontSize = 14.sp,
                             fontWeight = FontWeight(600),
                             color = Color(0xFFFFFFFF),
