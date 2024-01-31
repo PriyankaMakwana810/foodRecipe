@@ -17,6 +17,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -36,6 +37,7 @@ import androidx.navigation.compose.rememberNavController
 import com.tridya.foodrecipeblog.R
 import com.tridya.foodrecipeblog.api.ApiState
 import com.tridya.foodrecipeblog.api.response.Meal
+import com.tridya.foodrecipeblog.api.response.ResponseOfRecipes
 import com.tridya.foodrecipeblog.components.ItemNewRecipe
 import com.tridya.foodrecipeblog.components.ItemRecipeCard
 import com.tridya.foodrecipeblog.components.ListSelectCountry
@@ -48,6 +50,7 @@ import com.tridya.foodrecipeblog.models.RecipeCard
 import com.tridya.foodrecipeblog.navigation.Screen
 import com.tridya.foodrecipeblog.ui.theme.black
 import com.tridya.foodrecipeblog.ui.theme.white
+import com.tridya.foodrecipeblog.utils.toEntity
 import com.tridya.foodrecipeblog.viewModels.HomeViewModel
 import kotlinx.coroutines.launch
 
@@ -60,9 +63,11 @@ fun HomeScreen(
     val scrollState = rememberScrollState()
 
 //    val countriesState by homeViewModel.countries
-    val areaState by homeViewModel.areas
-    val recipeByArea by homeViewModel.recipesByArea
-    val newRecipes by homeViewModel.newRecipes
+    val allRecipes by homeViewModel.allRecipes.collectAsState()
+    val areaState by homeViewModel.areas.collectAsState()
+    val recipeByArea by homeViewModel.recipesByArea.collectAsState()
+    val newRecipes by homeViewModel.newRecipes.collectAsState()
+
     val userName = homeViewModel.sharedPreferences.user?.userName
     val context = LocalContext.current
 
@@ -81,12 +86,10 @@ fun HomeScreen(
         when (areaState) {
             is ApiState.Loading -> {
                 ShowProgress()
-//                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
             }
 
             is ApiState.Success -> {
 //                val countries = (countriesState as ApiState.Success<List<String>>)
-
                 val areas = (areaState as ApiState.Success<List<Meal>>).data
                 val listOfArea: List<String> = areas.map { meal ->
                     meal.strArea
@@ -127,7 +130,7 @@ fun HomeScreen(
 
                         is ApiState.Success -> {
                             val recipeByCountry =
-                                (recipeByArea as ApiState.Success<List<RecipeCard>>).data
+                                (recipeByArea as ApiState.Success<List<ResponseOfRecipes>>).data.map { it.toEntity() }
                             LazyRow(
                                 state = recipeScrollState,
                                 modifier = Modifier.padding(
@@ -171,8 +174,15 @@ fun HomeScreen(
                         }
 
                         is ApiState.Success -> {
-                            val listNewRecipes =
-                                (newRecipes as ApiState.Success<List<RecipeCard>>).data
+                            var listNewRecipes: List<RecipeCard> = emptyList()
+                            if (!homeViewModel.sharedPreferences.getBoolean("isAddedToDb")) {
+                                listNewRecipes =
+                                    (newRecipes as ApiState.Success<List<ResponseOfRecipes>>).data.map { it.toEntity() }
+                                homeViewModel.addAllRecipes(listNewRecipes)
+                                homeViewModel.sharedPreferences.putBoolean("isAddedToDb", true)
+                            } else {
+                                listNewRecipes = allRecipes
+                            }
                             LazyRow(
                                 modifier = Modifier.padding(start = 15.dp),
                                 horizontalArrangement = Arrangement.spacedBy(5.dp),
@@ -181,7 +191,6 @@ fun HomeScreen(
                                     ItemNewRecipe(recipe = item)
                                 }
                             }
-//                            ListNewRecipe()
                         }
 
                         is ApiState.Error -> {

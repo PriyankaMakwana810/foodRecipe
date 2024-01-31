@@ -15,7 +15,6 @@ class PrefUtils(private val context: Context) {
     init {
         getPrefs(context)
     }
-
     fun getPrefs(context: Context): SharedPreferences {
         prefs = context.getSharedPreferences(context.getString(R.string.app_name), MODE_PRIVATE)
         return context.getSharedPreferences(context.getString(R.string.app_name), MODE_PRIVATE)
@@ -26,6 +25,7 @@ class PrefUtils(private val context: Context) {
     var isLoggedIn: Boolean
         get() = prefs.contains(KEY_IS_LOGIN) && getBoolean(KEY_IS_LOGIN)
         set(isLoggedIn) = putBoolean(KEY_IS_LOGIN, isLoggedIn)
+
 
     var isLoginExpired: Boolean
         get() = prefs.contains(KEY_IS_LOGIN_EXPIRED) && getBoolean(KEY_IS_LOGIN_EXPIRED)
@@ -52,7 +52,6 @@ class PrefUtils(private val context: Context) {
     fun putString(key: String, value: String) {
         prefs.edit().putString(key, value).apply()
     }
-
     /**
      * Retrieve string value
      * */
@@ -60,14 +59,12 @@ class PrefUtils(private val context: Context) {
         return prefs.getString(key, "") ?: ""
     }
 
-
     /**
      * Store boolean value
      * */
     fun putBoolean(key: String, value: Boolean) {
         prefs.edit().putBoolean(key, value).apply()
     }
-
     /**
      * Retrieve boolean value
      * */

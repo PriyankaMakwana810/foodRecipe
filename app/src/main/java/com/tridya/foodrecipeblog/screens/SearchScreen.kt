@@ -19,6 +19,8 @@ import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Surface
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -31,6 +33,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.tridya.foodrecipeblog.R
@@ -41,19 +44,31 @@ import com.tridya.foodrecipeblog.components.ListFilterTime
 import com.tridya.foodrecipeblog.components.RecipesItemsComponent
 import com.tridya.foodrecipeblog.components.SearchBarWithFilter
 import com.tridya.foodrecipeblog.components.SimpleTextComponent
+import com.tridya.foodrecipeblog.components.TitleSearchResults
 import com.tridya.foodrecipeblog.components.ToolbarComponent
 import com.tridya.foodrecipeblog.models.RecipeCard
 import com.tridya.foodrecipeblog.models.recipesByCountry
 import com.tridya.foodrecipeblog.ui.theme.black
 import com.tridya.foodrecipeblog.ui.theme.white
+import com.tridya.foodrecipeblog.viewModels.SearchViewModel
 
 @Composable
-fun SearchScreen(navController: NavController, paddingValues: PaddingValues) {
+fun SearchScreen(
+    navController: NavController,
+    paddingValues: PaddingValues,
+    searchViewModel: SearchViewModel = hiltViewModel(),
+) {
+    val allRecipes by searchViewModel.allRecipes.collectAsState()
+    val recipesByName by searchViewModel.recipesByName.collectAsState()
+
     Surface(
         modifier = Modifier.fillMaxSize(), color = white
     ) {
         var showBottomSheet by remember {
             mutableStateOf(false)
+        }
+        LaunchedEffect(Unit) {
+//            searchViewModel.getAllRecipes()
         }
         if (showBottomSheet) {
             FilterBottomSheet() {
@@ -70,25 +85,21 @@ fun SearchScreen(navController: NavController, paddingValues: PaddingValues) {
                     navController.navigateUp()
                 })
             SearchBarWithFilter(
-//                modifier = Modifier.weight(1f),
                 onSearchClicked = {},
                 onFilterClicked = { showBottomSheet = true })
-            SimpleTextComponent(
-                modifier = Modifier.padding(20.dp),
-                value = "Recent Search",
-                fontSize = 18.sp,
-                fontWeight = FontWeight(600),
-                textColor = black,
-                textAlign = TextAlign.Start
-            )
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(2),
-                modifier = Modifier.padding(horizontal = 10.dp)
-            ) {
-                items(recipesByCountry) { item: RecipeCard ->
-                    RecipesItemsComponent(recipe = item)
+            Column {
+                TitleSearchResults(title = "Search Result", results = "${allRecipes.size+1} results")
+
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(2),
+                    modifier = Modifier.padding(horizontal = 10.dp)
+                ) {
+                    items(allRecipes) { item: RecipeCard ->
+                        RecipesItemsComponent(recipe = item)
+                    }
                 }
             }
+
         }
     }
 }

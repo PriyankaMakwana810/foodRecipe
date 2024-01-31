@@ -204,7 +204,9 @@ fun ItemRecipeCard(
     onRecipeClicked: () -> Unit = {},
 ) {
     Box(
-        modifier = Modifier.clickable { onRecipeClicked() }.padding(horizontal = 10.dp)
+        modifier = Modifier
+            .clickable { onRecipeClicked() }
+            .padding(horizontal = 10.dp)
     ) {
         Box(
             modifier = Modifier
@@ -352,12 +354,6 @@ fun ItemNewRecipe(recipe: RecipeCard) {
             ),
             elevation = CardDefaults.cardElevation(10.dp),
             modifier = Modifier
-                /*.shadow(
-                    elevation = 20.dp,
-                    spotColor = Color(0x1A000000),
-                    ambientColor = Color(0x1A000000)
-                )
-                */
                 .width(300.dp)
                 .padding(vertical = 40.dp, horizontal = 10.dp)
                 .background(color = Color(0xFFFFFFFF), shape = RoundedCornerShape(size = 10.dp))
@@ -402,7 +398,7 @@ fun ItemNewRecipe(recipe: RecipeCard) {
                                 .clip(shape = RoundedCornerShape(100.dp))
                                 .size(25.dp),
                             model = ImageRequest.Builder(LocalContext.current)
-                                .data(recipe.strMealThumb)
+                                .data(recipe.userProfilePhoto)
                                 .crossfade(true)
                                 .build(),
                             placeholder = painterResource(id = R.drawable.img_user_profile_1),

@@ -30,4 +30,7 @@ object Constants {
     const val SAVED = "saved_screen"
     const val NOTIFICATION = "notification_screen"
     const val PROFILE = "profile_screen"
+
+    const val DATABASE_TABLE = "recipe_table"
+    const val DATABASE_NAME = "recipe_database"
 }

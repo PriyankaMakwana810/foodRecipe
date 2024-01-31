@@ -22,7 +22,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -158,7 +157,7 @@ fun CustomRecipeDetailsTabs(
     onIngridentClicked: () -> Unit = {},
     onProcedureClicked: () -> Unit = {},
 ) {
-    var selectedIndex by remember { mutableStateOf(0) }
+    var selectedIndex by remember { mutableIntStateOf(0) }
 
     TabRow(selectedTabIndex = selectedIndex,
         containerColor = white,
@@ -206,7 +205,7 @@ fun CustomNotificationTabs(
     onReadClicked: () -> Unit = {},
     onUnReadClicked: () -> Unit = {},
 ) {
-    var selectedIndex by remember { mutableStateOf(0) }
+    var selectedIndex by remember { mutableIntStateOf(0) }
 
     TabRow(selectedTabIndex = selectedIndex,
         containerColor = white,
@@ -249,6 +248,34 @@ fun CustomNotificationTabs(
                 text = { Text(text = text, color = if (selected) white else primary80) }
             )
         }
+    }
+}
+
+@Preview
+@Composable
+fun TitleSearchResults(
+    modifier: Modifier = Modifier,
+    title: String = "Recent Search",
+    results: String = "",
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(20.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        NormalTextComponent(
+            value = title,
+            fontSize = 18.sp,
+            fontWeight = FontWeight(600)
+        )
+        NormalTextComponent(
+            value = "$results results",
+            fontSize = 14.sp,
+            textColor = gray3,
+            align = TextAlign.End
+        )
     }
 }
 
@@ -382,6 +409,7 @@ fun CustomProfileTabs(
                         0 -> {
                             onRecipeClicked()
                         }
+
                         1 -> {}
                         else -> {}
                     }
