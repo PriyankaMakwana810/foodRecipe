@@ -55,6 +55,7 @@
     <string name="time">Time</string>
     <string name="rate">Rate</string>
     <string name="category">Category</string>
+    <string name="ingredients">Ingredients</string>
     <string name="spicy_chicken_burger_with_french_fries">Spicy chicken burger with French fries</string>
     <string name="_1_serve">1 serve</string>
     <string name="copy_link">Copy Link</string>
@@ -67,6 +68,7 @@
     <string name="thums_down">👎 %1$s</string>
     <string name="notifications">Notifications</string>
     <string name="profile">Profile</string>
+    <string name="please_write_something">Please write Something!</string>
 
 
 </resources>

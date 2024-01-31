@@ -25,7 +25,7 @@ fun NavigationCompose(navController: NavHostController, paddingValues: PaddingVa
             IntroScreen(navController)
         }
         composable(route = Screen.LoginScreen.route) {
-            LoginScreen(navController, paddingValues)
+            LoginScreen(navController)
         }
         composable(route = Screen.RegisterScreen.route) {
             RegisterScreen(navController = navController)
@@ -36,10 +36,10 @@ fun NavigationCompose(navController: NavHostController, paddingValues: PaddingVa
         composable(
             route = Screen.RecipeDetailScreen.route + "/{recipeId}", arguments = listOf(
                 navArgument("recipeId") {
-                    type = NavType.IntType
+                    type = NavType.StringType
                 })
         ) { entry ->
-            entry.arguments?.getInt("recipeId")?.let {
+            entry.arguments?.getString("recipeId")?.let {
                 RecipeDetailScreen(
                     navController = navController,
                     paddingValues = paddingValues,

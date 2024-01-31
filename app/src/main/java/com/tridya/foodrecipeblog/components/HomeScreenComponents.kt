@@ -58,11 +58,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import coil.compose.AsyncImage
+import coil.request.CachePolicy
 import coil.request.ImageRequest
 import com.gowtham.ratingbar.RatingBar
 import com.gowtham.ratingbar.RatingBarStyle
 import com.tridya.foodrecipeblog.R
-import com.tridya.foodrecipeblog.models.RecipeCard
+import com.tridya.foodrecipeblog.api.response.RecipeCard
 import com.tridya.foodrecipeblog.models.recipesByCountry
 import com.tridya.foodrecipeblog.ui.theme.black
 import com.tridya.foodrecipeblog.ui.theme.gray1
@@ -218,6 +219,8 @@ fun ItemRecipeCard(
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(recipe.strMealThumb)
+                    .memoryCachePolicy(CachePolicy.ENABLED)
+                    .diskCachePolicy(CachePolicy.ENABLED)
                     .crossfade(true)
                     .build(),
                 modifier = Modifier
@@ -331,8 +334,10 @@ fun ItemRecipeCard(
 }
 
 @Composable
-fun ItemNewRecipe(recipe: RecipeCard) {
-    Box(modifier = Modifier.padding(top = 8.dp)) {
+fun ItemNewRecipe(recipe: RecipeCard, onRecipeClicked: () -> Unit = {}) {
+    Box(modifier = Modifier
+        .padding(top = 8.dp)
+        .clickable { onRecipeClicked() }) {
         AsyncImage(
             modifier = Modifier
                 .padding(end = 25.dp)
@@ -342,6 +347,8 @@ fun ItemNewRecipe(recipe: RecipeCard) {
                 .zIndex(1f),
             model = ImageRequest.Builder(LocalContext.current)
                 .data(recipe.strMealThumb)
+                .memoryCachePolicy(CachePolicy.ENABLED)
+                .diskCachePolicy(CachePolicy.ENABLED)
                 .crossfade(true)
                 .build(),
             placeholder = painterResource(id = R.drawable.food_image),

@@ -33,4 +33,10 @@ object Constants {
 
     const val DATABASE_TABLE = "recipe_table"
     const val DATABASE_NAME = "recipe_database"
+
+    const val ADD_RECIPE_TO_DATABASE ="add_recipe_to_db"
+    const val ADD_NEW_RECIPE_TO_DATABASE ="add_new_recipe_to_db"
+    const val IS_ADDED_TO_DATABASE = "is_added_to_database"
+    const val IS_NEW_RECIPE_ADDED = "is_new_recipe_added_to_db"
+
 }

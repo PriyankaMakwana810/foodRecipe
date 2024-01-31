@@ -24,7 +24,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -36,7 +35,8 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.tridya.foodrecipeblog.R
 import com.tridya.foodrecipeblog.api.ApiState
-import com.tridya.foodrecipeblog.api.response.Meal
+import com.tridya.foodrecipeblog.api.response.Areas
+import com.tridya.foodrecipeblog.api.response.RecipeCard
 import com.tridya.foodrecipeblog.api.response.ResponseOfRecipes
 import com.tridya.foodrecipeblog.components.ItemNewRecipe
 import com.tridya.foodrecipeblog.components.ItemRecipeCard
@@ -46,10 +46,10 @@ import com.tridya.foodrecipeblog.components.ProfileSection
 import com.tridya.foodrecipeblog.components.SearchBarWithFilter
 import com.tridya.foodrecipeblog.components.ShowProgress
 import com.tridya.foodrecipeblog.components.SimpleTextComponent
-import com.tridya.foodrecipeblog.models.RecipeCard
 import com.tridya.foodrecipeblog.navigation.Screen
 import com.tridya.foodrecipeblog.ui.theme.black
 import com.tridya.foodrecipeblog.ui.theme.white
+import com.tridya.foodrecipeblog.utils.Constants.IS_ADDED_TO_DATABASE
 import com.tridya.foodrecipeblog.utils.toEntity
 import com.tridya.foodrecipeblog.viewModels.HomeViewModel
 import kotlinx.coroutines.launch
@@ -62,14 +62,12 @@ fun HomeScreen(
 ) {
     val scrollState = rememberScrollState()
 
-//    val countriesState by homeViewModel.countries
     val allRecipes by homeViewModel.allRecipes.collectAsState()
     val areaState by homeViewModel.areas.collectAsState()
     val recipeByArea by homeViewModel.recipesByArea.collectAsState()
     val newRecipes by homeViewModel.newRecipes.collectAsState()
 
     val userName = homeViewModel.sharedPreferences.user?.userName
-    val context = LocalContext.current
 
     val recipeScrollState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
@@ -89,16 +87,11 @@ fun HomeScreen(
             }
 
             is ApiState.Success -> {
-//                val countries = (countriesState as ApiState.Success<List<String>>)
-                val areas = (areaState as ApiState.Success<List<Meal>>).data
-                val listOfArea: List<String> = areas.map { meal ->
-                    meal.strArea
-                }
+                val areas = (areaState as ApiState.Success<List<Areas>>).data
+                val listOfArea: List<String> = areas.map { meal -> meal.strArea }
                 var selectedArea by remember {
                     mutableStateOf("")
                 }
-//                selectedArea = listOfArea.first()
-//                homeViewModel.getRecipeByArea(selectedArea)
                 homeViewModel.getNewRecipe("Indian")
                 Column(
                     Modifier
@@ -113,6 +106,7 @@ fun HomeScreen(
                         }
                     })
                     LaunchedEffect(Unit) {
+                        selectedArea = listOfArea.first()
                         homeViewModel.getRecipeByArea(listOfArea.first())
                     }
                     ListSelectCountry(listOfCountries = listOfArea) { selectedItem ->
@@ -130,7 +124,11 @@ fun HomeScreen(
 
                         is ApiState.Success -> {
                             val recipeByCountry =
-                                (recipeByArea as ApiState.Success<List<ResponseOfRecipes>>).data.map { it.toEntity() }
+                                (recipeByArea as ApiState.Success<List<ResponseOfRecipes>>).data.map {
+                                    it.toEntity(
+                                        area = selectedArea
+                                    )
+                                }
                             LazyRow(
                                 state = recipeScrollState,
                                 modifier = Modifier.padding(
@@ -142,7 +140,7 @@ fun HomeScreen(
                             ) {
                                 items(recipeByCountry) { item: RecipeCard ->
                                     ItemRecipeCard(recipe = item) {
-                                        navController.navigate(Screen.RecipeDetailScreen.route + "/${item.id}") {
+                                        navController.navigate(Screen.RecipeDetailScreen.route + "/${item.idMeal}") {
                                             this.launchSingleTop = true
                                         }
                                     }
@@ -174,12 +172,15 @@ fun HomeScreen(
                         }
 
                         is ApiState.Success -> {
-                            var listNewRecipes: List<RecipeCard> = emptyList()
-                            if (!homeViewModel.sharedPreferences.getBoolean("isAddedToDb")) {
+                            val listNewRecipes: List<RecipeCard>
+                            if (!homeViewModel.sharedPreferences.getBoolean(IS_ADDED_TO_DATABASE)) {
                                 listNewRecipes =
                                     (newRecipes as ApiState.Success<List<ResponseOfRecipes>>).data.map { it.toEntity() }
                                 homeViewModel.addAllRecipes(listNewRecipes)
-                                homeViewModel.sharedPreferences.putBoolean("isAddedToDb", true)
+                                homeViewModel.sharedPreferences.putBoolean(
+                                    IS_ADDED_TO_DATABASE,
+                                    true
+                                )
                             } else {
                                 listNewRecipes = allRecipes
                             }
@@ -188,7 +189,11 @@ fun HomeScreen(
                                 horizontalArrangement = Arrangement.spacedBy(5.dp),
                             ) {
                                 items(listNewRecipes) { item: RecipeCard ->
-                                    ItemNewRecipe(recipe = item)
+                                    ItemNewRecipe(recipe = item) {
+                                        navController.navigate(Screen.RecipeDetailScreen.route + "/${item.idMeal}") {
+                                            this.launchSingleTop = true
+                                        }
+                                    }
                                 }
                             }
                         }

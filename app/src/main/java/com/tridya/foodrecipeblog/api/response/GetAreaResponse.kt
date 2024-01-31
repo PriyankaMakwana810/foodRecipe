@@ -1,8 +1,8 @@
 package com.tridya.foodrecipeblog.api.response
 
 data class GetAreaResponse(
-    val meals: List<Meal>
+    val meals: List<Areas>
 )
-data class Meal(
+data class Areas(
     val strArea: String
 )

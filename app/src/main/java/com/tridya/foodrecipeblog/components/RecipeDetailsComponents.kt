@@ -12,8 +12,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -30,6 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import coil.request.CachePolicy
 import coil.request.ImageRequest
 import com.tridya.foodrecipeblog.R
 import com.tridya.foodrecipeblog.models.IngredientModel
@@ -102,7 +101,7 @@ fun IngredientItem(
             .padding(vertical = 6.dp, horizontal = 20.dp)
             .clip(RoundedCornerShape(12.dp))
             .background(gray4)
-            .padding(vertical = 12.dp, horizontal = 16.dp),
+            .padding(vertical = 6.dp, horizontal = 10.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(15.dp)
     ) {
@@ -113,6 +112,8 @@ fun IngredientItem(
                 .background(white),
             model = ImageRequest.Builder(LocalContext.current)
                 .data(ingredient.itemImage)
+                .memoryCachePolicy(CachePolicy.ENABLED)
+                .diskCachePolicy(CachePolicy.ENABLED)
                 .crossfade(true)
                 .build(),
             placeholder = painterResource(id = R.drawable.tomato),

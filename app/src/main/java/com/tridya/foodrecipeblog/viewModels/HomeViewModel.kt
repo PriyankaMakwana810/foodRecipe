@@ -4,10 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tridya.foodrecipeblog.api.ApiState
 import com.tridya.foodrecipeblog.api.repo.HomeRepository
-import com.tridya.foodrecipeblog.api.response.Meal
+import com.tridya.foodrecipeblog.api.response.Areas
+import com.tridya.foodrecipeblog.api.response.RecipeCard
 import com.tridya.foodrecipeblog.api.response.ResponseOfRecipes
-import com.tridya.foodrecipeblog.models.RecipeCard
-import com.tridya.foodrecipeblog.models.recipesByCountry
 import com.tridya.foodrecipeblog.utils.Constants
 import com.tridya.foodrecipeblog.utils.PrefUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -31,10 +30,11 @@ class HomeViewModel @Inject constructor(
     private val _countries = MutableStateFlow<ApiState<List<String>>>(ApiState.Loading)
     val countries: StateFlow<ApiState<List<String>>> = _countries
 
-    private val _areas = MutableStateFlow<ApiState<List<Meal>>>(ApiState.Loading)
-    val areas: StateFlow<ApiState<List<Meal>>> = _areas
+    private val _areas = MutableStateFlow<ApiState<List<Areas>>>(ApiState.Loading)
+    val areas: StateFlow<ApiState<List<Areas>>> = _areas
 
-    private val _recipesByArea = MutableStateFlow<ApiState<List<ResponseOfRecipes>>>(ApiState.Loading)
+    private val _recipesByArea =
+        MutableStateFlow<ApiState<List<ResponseOfRecipes>>>(ApiState.Loading)
     val recipesByArea: StateFlow<ApiState<List<ResponseOfRecipes>>> = _recipesByArea
 
     private val _newRecipes = MutableStateFlow<ApiState<List<ResponseOfRecipes>>>(ApiState.Loading)
@@ -44,7 +44,7 @@ class HomeViewModel @Inject constructor(
         getAllRecipes()
     }
 
-    private fun getAllRecipes(){
+    private fun getAllRecipes() {
         try {
             viewModelScope.launch {
                 repository.getAllRecipes.collect {
@@ -55,6 +55,7 @@ class HomeViewModel @Inject constructor(
             _allRecipes.value = emptyList()
         }
     }
+
     fun getCountries() {
         viewModelScope.launch {
             try {
@@ -88,14 +89,8 @@ class HomeViewModel @Inject constructor(
     fun getRecipeByArea(area: String) {
         viewModelScope.launch {
             try {
-                if (!sharedPreferences.getBoolean("isAddedToDb")){
-                    val response = repository.getRecipesByArea(area)
-                    _recipesByArea.value = ApiState.Success(response.meals)
-                }else{
-                    _recipesByArea.value = ApiState.Success(emptyList())
-                }
-
-
+                val response = repository.getRecipesByArea(area)
+                _recipesByArea.value = ApiState.Success(response.meals)
             } catch (e: Exception) {
                 _recipesByArea.value = ApiState.Error("API Error: ${e.message}")
             }
@@ -105,8 +100,12 @@ class HomeViewModel @Inject constructor(
     fun getNewRecipe(area: String) {
         viewModelScope.launch {
             try {
-                val response = repository.getRecipesByArea(area)
-                _newRecipes.value = ApiState.Success(response.meals)
+                if (!sharedPreferences.getBoolean("isAddedToDb")) {
+                    val response = repository.getRecipesByArea(area)
+                    _newRecipes.value = ApiState.Success(response.meals)
+                } else {
+                    _newRecipes.value = ApiState.Success(emptyList())
+                }
 
             } catch (e: Exception) {
                 _newRecipes.value = ApiState.Error("API Error: ${e.message}")
@@ -116,4 +115,3 @@ class HomeViewModel @Inject constructor(
 
 }
 
-fun getSnacks(): List<RecipeCard> = recipesByCountry

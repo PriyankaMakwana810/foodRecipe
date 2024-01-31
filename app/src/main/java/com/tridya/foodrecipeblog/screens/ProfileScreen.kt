@@ -49,7 +49,7 @@ fun ProfileScreen(navController: NavController, paddingValues: PaddingValues) {
                             recipe = item,
                             isFromSaved = true,
                             onRecipeItemClicked = {
-                                navController.navigate(Screen.RecipeDetailScreen.route + "/${item.id}") {
+                                navController.navigate(Screen.RecipeDetailScreen.route + "/${item.idMeal}") {
                                     this.launchSingleTop = true
                                 }
                             })

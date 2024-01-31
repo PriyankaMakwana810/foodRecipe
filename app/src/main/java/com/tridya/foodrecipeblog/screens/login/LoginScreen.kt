@@ -60,7 +60,7 @@ import com.tridya.foodrecipeblog.viewModels.LoginViewModel
 import org.json.JSONException
 
 @Composable
-fun LoginScreen(navController: NavController, paddingValues: PaddingValues) {
+fun LoginScreen(navController: NavController) {
 
     val loginViewModel: LoginViewModel = hiltViewModel()
     val context = LocalContext.current
@@ -254,5 +254,5 @@ fun LoginScreen(navController: NavController, paddingValues: PaddingValues) {
 @Preview
 @Composable
 fun PreviewLoginScreen() {
-    LoginScreen(navController = rememberNavController(), paddingValues = PaddingValues())
+    LoginScreen(navController = rememberNavController())
 }

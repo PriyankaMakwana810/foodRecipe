@@ -16,7 +16,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Tab
-import androidx.compose.material3.TabPosition
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -38,9 +37,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import coil.request.CachePolicy
 import coil.request.ImageRequest
 import com.tridya.foodrecipeblog.R
-import com.tridya.foodrecipeblog.models.RecipeCard
+import com.tridya.foodrecipeblog.api.response.RecipeCard
 import com.tridya.foodrecipeblog.models.UserProfile
 import com.tridya.foodrecipeblog.models.recipesByCountry
 import com.tridya.foodrecipeblog.ui.theme.black
@@ -100,6 +100,8 @@ fun ProfileSectionOfRecipe(
                 .size(50.dp),
             model = ImageRequest.Builder(LocalContext.current)
                 .data(recipe.userProfilePhoto)
+                .memoryCachePolicy(CachePolicy.ENABLED)
+                .diskCachePolicy(CachePolicy.ENABLED)
                 .crossfade(true)
                 .build(),
             placeholder = painterResource(id = R.drawable.img_user_profile_1),
@@ -154,7 +156,7 @@ fun ProfileSectionOfRecipe(
 @Preview
 @Composable
 fun CustomRecipeDetailsTabs(
-    onIngridentClicked: () -> Unit = {},
+    onIngredientClicked: () -> Unit = {},
     onProcedureClicked: () -> Unit = {},
 ) {
     var selectedIndex by remember { mutableIntStateOf(0) }
@@ -165,7 +167,7 @@ fun CustomRecipeDetailsTabs(
             .fillMaxWidth()
             .padding(vertical = 10.dp, horizontal = 20.dp)
             .clip(RoundedCornerShape(10)),
-        indicator = { tabPositions: List<TabPosition> ->
+        indicator = {
             Box {}
         },
         divider = {}
@@ -186,7 +188,7 @@ fun CustomRecipeDetailsTabs(
                 onClick = {
                     selectedIndex = index
                     if (selectedIndex == 0) {
-                        onIngridentClicked()
+                        onIngredientClicked()
                     } else {
                         onProcedureClicked()
                     }
@@ -271,7 +273,7 @@ fun TitleSearchResults(
             fontWeight = FontWeight(600)
         )
         NormalTextComponent(
-            value = "$results results",
+            value = results,
             fontSize = 14.sp,
             textColor = gray3,
             align = TextAlign.End
@@ -295,6 +297,8 @@ fun UserProfileSectionUI(modifier: Modifier = Modifier, user: UserProfile = user
                     .size(130.dp),
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(userProfile.profilePic)
+                    .memoryCachePolicy(CachePolicy.ENABLED)
+                    .diskCachePolicy(CachePolicy.ENABLED)
                     .crossfade(true)
                     .build(),
                 placeholder = painterResource(id = R.drawable.img_user_profile_1),

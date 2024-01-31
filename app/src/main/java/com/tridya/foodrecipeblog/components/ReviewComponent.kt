@@ -31,6 +31,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import coil.request.CachePolicy
 import coil.request.ImageRequest
 import com.tridya.foodrecipeblog.R
 import com.tridya.foodrecipeblog.models.ReviewModel
@@ -57,7 +58,10 @@ fun ReviewByUserComponent(
                 modifier = Modifier
                     .clip(shape = CircleShape)
                     .size(40.dp),
-                model = ImageRequest.Builder(LocalContext.current).data(review.profilePicPath)
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(review.profilePicPath)
+                    .memoryCachePolicy(CachePolicy.ENABLED)
+                    .diskCachePolicy(CachePolicy.ENABLED)
                     .crossfade(true).build(),
                 placeholder = painterResource(id = R.drawable.img_user_profile_1),
                 contentDescription = "image description",

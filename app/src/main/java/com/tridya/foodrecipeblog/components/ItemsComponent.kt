@@ -47,9 +47,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import coil.request.CachePolicy
 import coil.request.ImageRequest
 import com.tridya.foodrecipeblog.R
-import com.tridya.foodrecipeblog.models.RecipeCard
+import com.tridya.foodrecipeblog.api.response.RecipeCard
 import com.tridya.foodrecipeblog.models.recipesByCountry
 import com.tridya.foodrecipeblog.ui.theme.gray3
 import com.tridya.foodrecipeblog.ui.theme.primary100
@@ -80,7 +81,11 @@ fun RecipesItemsComponent(
             .clickable { onRecipeItemClicked() }
     ) {
         AsyncImage(
-            model = ImageRequest.Builder(LocalContext.current).data(recipe.strMealThumb).crossfade(true)
+            model = ImageRequest.Builder(LocalContext.current)
+                .data(recipe.strMealThumb)
+                .memoryCachePolicy(CachePolicy.ENABLED)
+                .diskCachePolicy(CachePolicy.ENABLED)
+                .crossfade(true)
                 .build(),
             modifier = Modifier
                 .fillMaxSize()
@@ -194,7 +199,7 @@ fun RecipesItemsComponent(
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
-fun ListFilterTime() {
+fun ListFilterTime(onItemSelected: (String) -> Unit = {}) {
     var selectedItem by remember {
         mutableStateOf(listTimeFilter[0])
     }
@@ -204,7 +209,10 @@ fun ListFilterTime() {
             FilterChip(
                 modifier = Modifier.padding(horizontal = 6.dp),
                 selected = (item == selectedItem),
-                onClick = { selectedItem = item },
+                onClick = {
+                    selectedItem = item
+                    onItemSelected(item)
+                },
                 label = {
                     Text(
                         text = item, style = TextStyle(fontSize = 12.sp)
@@ -228,7 +236,7 @@ fun ListFilterTime() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
-fun ListFilterRate() {
+fun ListFilterRate(onItemSelected: (String) -> Unit = {}) {
     var selectedItem by remember {
         mutableStateOf(listRateFilter[1])
     }
@@ -238,7 +246,10 @@ fun ListFilterRate() {
             InputChip(
                 modifier = Modifier.padding(horizontal = 6.dp),
                 selected = (item == selectedItem),
-                onClick = { selectedItem = item },
+                onClick = {
+                    selectedItem = item
+                    onItemSelected(item)
+                },
                 label = {
                     Text(
                         text = item,
@@ -271,7 +282,10 @@ fun ListFilterRate() {
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Preview
 @Composable
-fun ListFilterCategory() {
+fun ListFilterCategory(
+    listOfCategories: List<String> = listCategoryFilter,
+    onItemSelected: (String) -> Unit = {},
+) {
     var selectedItem by remember {
         mutableStateOf(listCategoryFilter[5])
     }
@@ -279,11 +293,56 @@ fun ListFilterCategory() {
     FlowRow(
         modifier = Modifier.fillMaxWidth(),
     ) {
-        listCategoryFilter.forEach { item ->
+        listOfCategories.forEach { item ->
             FilterChip(
                 modifier = Modifier.padding(horizontal = 6.dp),
                 selected = (item == selectedItem),
-                onClick = { selectedItem = item },
+                onClick = {
+                    selectedItem = item
+                    onItemSelected(item)
+                },
+                label = {
+                    Text(
+                        text = item, style = TextStyle(fontSize = 12.sp)
+                    )
+                },
+                colors = FilterChipDefaults.filterChipColors(
+                    containerColor = Color.White,
+                    selectedContainerColor = primary100,
+                    selectedLabelColor = Color.White,
+                    labelColor = primary80
+                ),
+                border = FilterChipDefaults.filterChipBorder(
+                    borderColor = primary80
+                ),
+                shape = RoundedCornerShape(12.dp)
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
+@Preview
+@Composable
+fun ListFilterIngredients(
+    listOfIngredients: List<String> = listCategoryFilter,
+    onItemSelected: (String) -> Unit = {},
+) {
+    var selectedItem by remember {
+        mutableStateOf(listOfIngredients[0])
+    }
+
+    FlowRow(
+        modifier = Modifier.fillMaxWidth(),
+    ) {
+        listOfIngredients.forEach { item ->
+            FilterChip(
+                modifier = Modifier.padding(horizontal = 6.dp),
+                selected = (item == selectedItem),
+                onClick = {
+                    selectedItem = item
+                    onItemSelected(item)
+                },
                 label = {
                     Text(
                         text = item, style = TextStyle(fontSize = 12.sp)

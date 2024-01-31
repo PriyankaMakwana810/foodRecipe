@@ -6,7 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.tridya.foodrecipeblog.models.RecipeCard
+import com.tridya.foodrecipeblog.api.response.RecipeCard
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -22,8 +22,10 @@ interface RecipeDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addAllRecipes(recipes: List<RecipeCard>)
+
     @Update
     suspend fun updateRecipe(recipe: RecipeCard)
+
     @Delete
     suspend fun deleteTask(recipe: RecipeCard)
 

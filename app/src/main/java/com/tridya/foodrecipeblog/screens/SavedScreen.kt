@@ -38,7 +38,7 @@ fun SavedScreen(navController: NavController, paddingValues: PaddingValues) {
             ) {
                 items(recipesByCountry.filter { it.isSaved }) { item ->
                     RecipesItemsComponent(recipe = item, isFromSaved = true, onRecipeItemClicked = {
-                        navController.navigate(Screen.RecipeDetailScreen.route + "/${item.id}"){
+                        navController.navigate(Screen.RecipeDetailScreen.route + "/${item.idMeal}"){
                             this.launchSingleTop = true
                         }
                     })
