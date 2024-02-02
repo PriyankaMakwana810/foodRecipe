@@ -21,6 +21,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -30,6 +31,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -85,8 +87,9 @@ fun RatingBar(rating: String) {
 @Composable
 fun ProfileSectionOfRecipe(
     modifier: Modifier = Modifier,
-    recipe: RecipeCard = recipesByCountry.first(),
+    recipe: RecipeCard = RecipeCard(),
 ) {
+    var isFollowing by remember { mutableStateOf(false) }
     Row(
         modifier = modifier
             .padding(horizontal = 20.dp, vertical = 10.dp)
@@ -133,7 +136,7 @@ fun ProfileSectionOfRecipe(
                     contentDescription = ""
                 )
                 Text(
-                    text = "Lagos, Nigeria",
+                    text = stringResource(R.string.lagos_nigeria),
                     modifier = modifier
                         .heightIn(),
                     style = TextStyle(
@@ -146,8 +149,9 @@ fun ProfileSectionOfRecipe(
                 )
             }
         }
-        CustomButtonComponent(value = "Follow") {
+        CustomButtonComponent(value = stringResource(R.string.follow), isFollowing = isFollowing) {
 //            follow clicked
+            isFollowing = !isFollowing
         }
     }
 

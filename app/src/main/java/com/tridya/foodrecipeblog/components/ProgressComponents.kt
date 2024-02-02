@@ -31,7 +31,7 @@ fun ShowProgress() {
                 contentAlignment = Center,
                 modifier = Modifier.size(100.dp).background(white, shape = RoundedCornerShape(8.dp))
             ) {
-                CircularProgressIndicator()
+                CircularProgressIndicator(color = white, trackColor = primary100)
             }
         }
     }

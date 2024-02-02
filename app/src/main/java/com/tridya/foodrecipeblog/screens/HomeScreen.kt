@@ -49,7 +49,6 @@ import com.tridya.foodrecipeblog.components.SimpleTextComponent
 import com.tridya.foodrecipeblog.navigation.Screen
 import com.tridya.foodrecipeblog.ui.theme.black
 import com.tridya.foodrecipeblog.ui.theme.white
-import com.tridya.foodrecipeblog.utils.Constants.IS_ADDED_TO_DATABASE
 import com.tridya.foodrecipeblog.utils.toEntity
 import com.tridya.foodrecipeblog.viewModels.HomeViewModel
 import kotlinx.coroutines.launch
@@ -74,6 +73,7 @@ fun HomeScreen(
 
     LaunchedEffect(Unit) {
         homeViewModel.getAreas()
+        homeViewModel.getNewRecipe()
     }
 
     Surface(
@@ -83,7 +83,7 @@ fun HomeScreen(
     ) {
         when (areaState) {
             is ApiState.Loading -> {
-                ShowProgress()
+//                ShowProgress()
             }
 
             is ApiState.Success -> {
@@ -92,7 +92,6 @@ fun HomeScreen(
                 var selectedArea by remember {
                     mutableStateOf("")
                 }
-                homeViewModel.getNewRecipe("Indian")
                 Column(
                     Modifier
                         .verticalScroll(state = scrollState)
@@ -172,19 +171,10 @@ fun HomeScreen(
                         }
 
                         is ApiState.Success -> {
-                            val listNewRecipes: List<RecipeCard>
-                            if (!homeViewModel.sharedPreferences.getBoolean(IS_ADDED_TO_DATABASE)) {
-                                listNewRecipes =
-                                    (newRecipes as ApiState.Success<List<ResponseOfRecipes>>).data.map { it.toEntity() }
-                                homeViewModel.addAllRecipes(listNewRecipes)
-                                homeViewModel.sharedPreferences.putBoolean(
-                                    IS_ADDED_TO_DATABASE,
-                                    true
-                                )
-                            } else {
-                                listNewRecipes = allRecipes
-                            }
+                            val listNewRecipes: List<RecipeCard> = (newRecipes as ApiState.Success<List<ResponseOfRecipes>>).data.map { it.toEntity() }
+
                             LazyRow(
+
                                 modifier = Modifier.padding(start = 15.dp),
                                 horizontalArrangement = Arrangement.spacedBy(5.dp),
                             ) {

@@ -52,6 +52,7 @@ import com.tridya.foodrecipeblog.components.ToolbarComponent
 import com.tridya.foodrecipeblog.ui.theme.black
 import com.tridya.foodrecipeblog.ui.theme.gray3
 import com.tridya.foodrecipeblog.ui.theme.white
+import com.tridya.foodrecipeblog.utils.toEntity
 import com.tridya.foodrecipeblog.viewModels.RecipeDetailsViewModel
 
 @Composable
@@ -100,49 +101,37 @@ fun RecipeDetailScreen(
                             onDismissRequest = { expanded = false },
                             offset = DpOffset(x = (-66).dp, y = (-10).dp)
                         ) {
-                            DropdownMenuItem(
-                                text = { Text(text = "Share") },
-                                leadingIcon = {
-                                    Icon(
-                                        painter = painterResource(id = R.drawable.v_ic_menu_share),
-                                        contentDescription = "Share"
-                                    )
-                                },
-                                onClick = {
-                                    expanded = false
-                                    openShareDialog = true
-                                })
+                            DropdownMenuItem(text = { Text(text = "Share") }, leadingIcon = {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.v_ic_menu_share),
+                                    contentDescription = "Share"
+                                )
+                            }, onClick = {
+                                expanded = false
+                                openShareDialog = true
+                            })
 
-                            DropdownMenuItem(
-                                text = { Text(text = "Rate Recipe") },
-                                leadingIcon = {
-                                    Icon(
-                                        painter = painterResource(id = R.drawable.v_ic_menu_star),
-                                        contentDescription = "Rate"
-                                    )
-                                },
-                                onClick = {
-                                    expanded = false
-                                    openRatingDialog = true
-                                })
-                            DropdownMenuItem(
-                                text = { Text(text = "Review") },
-                                leadingIcon = {
-                                    Icon(
-                                        painter = painterResource(id = R.drawable.v_ic_menu_review),
-                                        contentDescription = "Review"
-                                    )
-                                },
-                                onClick = { expanded = false })
-                            DropdownMenuItem(
-                                text = { Text(text = "Unsave") },
-                                leadingIcon = {
-                                    Icon(
-                                        painter = painterResource(id = R.drawable.v_ic_menu_unsave),
-                                        contentDescription = "Unsave"
-                                    )
-                                },
-                                onClick = { expanded = false })
+                            DropdownMenuItem(text = { Text(text = "Rate Recipe") }, leadingIcon = {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.v_ic_menu_star),
+                                    contentDescription = "Rate"
+                                )
+                            }, onClick = {
+                                expanded = false
+                                openRatingDialog = true
+                            })
+                            DropdownMenuItem(text = { Text(text = "Review") }, leadingIcon = {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.v_ic_menu_review),
+                                    contentDescription = "Review"
+                                )
+                            }, onClick = { expanded = false })
+                            DropdownMenuItem(text = { Text(text = "Unsave") }, leadingIcon = {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.v_ic_menu_unsave),
+                                    contentDescription = "Unsave"
+                                )
+                            }, onClick = { expanded = false })
                         }
                     }
 
@@ -162,13 +151,11 @@ fun RecipeDetailScreen(
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Text(
-                            text = recipe.strMeal,
-                            style = TextStyle(
+                            text = recipe.strMeal, style = TextStyle(
                                 fontSize = 18.sp,
                                 fontWeight = FontWeight(600),
                                 color = black,
-                            ),
-                            modifier = Modifier.width(190.dp)
+                            ), modifier = Modifier.width(190.dp)
                         )
                         Text(
                             text = "(13k Reviews)",
@@ -187,9 +174,9 @@ fun RecipeDetailScreen(
                         showProcedure = true
                     })
                     if (showProcedure) {
-                        ShowProcedure()
+                        recipe.strInstructions?.let { ShowProcedure(procedure = it) }
                     } else {
-                        ShowIngredients()
+                        ShowIngredients(recipe = recipe)
                     }
                     if (openShareDialog) {
                         ShareDialogComponent(onButtonClicked = {
@@ -223,8 +210,6 @@ fun RecipeDetailScreen(
 @Composable
 fun PreviewRecipeDetailScreen() {
     RecipeDetailScreen(
-        navController = rememberNavController(),
-        paddingValues = PaddingValues(),
-        recipeId = ""
+        navController = rememberNavController(), paddingValues = PaddingValues(), recipeId = ""
     )
 }

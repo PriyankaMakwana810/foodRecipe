@@ -7,6 +7,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.tridya.foodrecipeblog.api.response.RecipeCard
+import com.tridya.foodrecipeblog.api.response.RecipeDetails
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -37,5 +38,9 @@ interface RecipeDao {
 
     @Query("SELECT * FROM recipe_table WHERE isSaved =:isSaved ORDER BY id DESC")
     fun getSavedRecipes(isSaved: Boolean): List<RecipeCard>
+
+    @Query("SELECT * FROM recipe_table WHERE isSearched =:isSearched ORDER BY id DESC")
+    fun getSearchedRecipes(isSearched: Boolean): Flow<List<RecipeCard>>
+
 
 }

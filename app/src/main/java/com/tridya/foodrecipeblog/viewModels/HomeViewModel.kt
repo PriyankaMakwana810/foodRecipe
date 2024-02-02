@@ -97,15 +97,11 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun getNewRecipe(area: String) {
+    fun getNewRecipe() {
         viewModelScope.launch {
             try {
-                if (!sharedPreferences.getBoolean("isAddedToDb")) {
-                    val response = repository.getRecipesByArea(area)
-                    _newRecipes.value = ApiState.Success(response.meals)
-                } else {
-                    _newRecipes.value = ApiState.Success(emptyList())
-                }
+                val response = repository.getNewRecipe()
+                _newRecipes.value = ApiState.Success(response.meals)
 
             } catch (e: Exception) {
                 _newRecipes.value = ApiState.Error("API Error: ${e.message}")

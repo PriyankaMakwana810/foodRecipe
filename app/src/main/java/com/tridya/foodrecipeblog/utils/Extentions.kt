@@ -3,6 +3,7 @@ package com.tridya.foodrecipeblog.utils
 import android.content.Context
 import android.widget.Toast
 import com.tridya.foodrecipeblog.api.response.RecipeCard
+import com.tridya.foodrecipeblog.api.response.RecipeDetails
 import com.tridya.foodrecipeblog.api.response.ResponseOfRecipes
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -27,10 +28,39 @@ fun ResponseOfRecipes.toEntity(area: String = "", category: String = ""): Recipe
         isSearched = false,
         ratings = generateRandomRating(),
         postedBy = randomName,
-        userProfilePhoto = generateUserProfilePhotoForUser(randomName)
-//        userProfilePhoto = "https://images.unsplash.com/photo-1705582033498-e7384d494759?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-        // Add additional fields and their default values
+        userProfilePhoto = generateUserProfilePhotoForUser(randomName),
+        strCategory = category,
+        strArea = area
     )
+}
+
+fun RecipeCard.toEntity(): RecipeDetails {
+    return RecipeDetails(
+        idMeal = idMeal,
+        strMeal = strMeal,
+        strMealThumb = strMealThumb,
+        timeToCook = timeToCook,
+        tagline = tagline,
+        isSaved = isSaved,
+        isSearched = isSearched,
+        ratings = ratings,
+        postedBy = postedBy,
+        userProfilePhoto = userProfilePhoto
+    )
+}
+fun convertToRecipeCard(recipeDetails: RecipeDetails): RecipeCard {
+    return RecipeCard(
+        id = recipeDetails.id,
+        idMeal = recipeDetails.idMeal,
+        strMeal = recipeDetails.strMeal,
+        timeToCook = recipeDetails.timeToCook,
+        tagline = recipeDetails.tagline,
+        isSaved = recipeDetails.isSaved,
+        // ... (map other properties accordingly)
+    )
+}
+fun convertListToRecipeCardList(recipeDetailsList: List<RecipeDetails>): List<RecipeCard> {
+    return recipeDetailsList.map { convertToRecipeCard(it) }
 }
 /*
 fun RecipeDetails.toEntity(): RecipeCard {
@@ -50,22 +80,22 @@ fun RecipeDetails.toEntity(): RecipeCard {
     )
 }*/
 
-private fun generateRandomRating(): Float {
+ fun generateRandomRating(): Float {
     return (1..5).random().toFloat()
 }
 
-private fun generateRandomTimeToCook(): Long {
+ fun generateRandomTimeToCook(): Long {
     return (1..30).random().toLong()
 }
 
-private fun generateRandomName(): String {
+ fun generateRandomName(): String {
     val longNames = listOf(
         "Bella Throne", "Christopher Oshana", "Kyle Austin", "Jeniffern Wilson", "Kate Johnson",
     )
     return longNames.random()
 }
 
-private fun generateUserProfilePhotoForUser(username: String): String {
+ fun generateUserProfilePhotoForUser(username: String): String {
     val userToPhotoMap = mapOf(
         "Bella Throne" to "https://bit.ly/3S7gpTv",
         "Christopher Oshana" to "https://bit.ly/4b2Cmf7",

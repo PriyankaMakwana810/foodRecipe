@@ -2,6 +2,12 @@ package com.tridya.foodrecipeblog.api.response
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.tridya.foodrecipeblog.utils.generateRandomName
+import com.tridya.foodrecipeblog.utils.generateRandomRating
+import com.tridya.foodrecipeblog.utils.generateRandomTimeToCook
+import com.tridya.foodrecipeblog.utils.generateUserProfilePhotoForUser
+
+val randomName = generateRandomName()
 
 @Entity(tableName = "recipe_table")
 data class RecipeCard(
@@ -9,10 +15,13 @@ data class RecipeCard(
     val id: Int = 0,
     var idMeal: String = "",
     var strMeal: String = "",
-    val timeToCook: Long = 10L,
+    val timeToCook: Long = generateRandomTimeToCook(),
     val tagline: String = "tagline",
     val isSaved: Boolean = false,
     val isSearched: Boolean = false,
+    val ratings: Float = generateRandomRating(),
+    var postedBy: String = randomName,
+    val userProfilePhoto: String = generateUserProfilePhotoForUser(randomName),
     var strDrinkAlternate: String? = null,
     var strCategory: String? = null,
     var strArea: String? = null,
@@ -64,8 +73,24 @@ data class RecipeCard(
     var strImageSource: String? = null,
     var strCreativeCommonsConfirmed: String? = null,
     var dateModified: String? = null,
-    val ratings: Float = 4.0f,
-    var postedBy: String = "James Milner",
-    val userProfilePhoto: String = "https://images.unsplash.com/photo-1705582033498-e7384d494759?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+) {
+    fun getIngredientsList(): List<String?> {
+        return listOf(
+            strIngredient1, strIngredient2, strIngredient3, strIngredient4, strIngredient5,
+            strIngredient6, strIngredient7, strIngredient8, strIngredient9, strIngredient10,
+            strIngredient11, strIngredient12, strIngredient13, strIngredient14, strIngredient15,
+            strIngredient16, strIngredient17, strIngredient18, strIngredient19, strIngredient20
+        ).filter { !it.isNullOrBlank() }
+            .map { it ?: "" }
+    }
 
-    )
+    fun getMeasuresList(): List<String?> {
+        return listOf(
+            strMeasure1, strMeasure2, strMeasure3, strMeasure4, strMeasure5,
+            strMeasure6, strMeasure7, strMeasure8, strMeasure9, strMeasure10,
+            strMeasure11, strMeasure12, strMeasure13, strMeasure14, strMeasure15,
+            strMeasure16, strMeasure17, strMeasure18, strMeasure19, strMeasure20
+        ).filter { !it.isNullOrBlank() }
+            .map { it ?: "" }
+    }
+}

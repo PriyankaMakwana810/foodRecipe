@@ -6,7 +6,6 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -24,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tridya.foodrecipeblog.R
 import com.tridya.foodrecipeblog.ui.theme.primary100
+import com.tridya.foodrecipeblog.ui.theme.primary20
 import com.tridya.foodrecipeblog.ui.theme.white
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
@@ -65,24 +65,35 @@ class NoRippleInteractionSource : MutableInteractionSource {
 @Composable
 fun CustomButtonComponent(
     modifier: Modifier = Modifier,
+    isFollowing: Boolean = false,
     value: String = "",
     onButtonClicked: () -> Unit = {},
 ) {
     Button(
-        colors = ButtonDefaults.buttonColors(
-            containerColor = primary100,
-            contentColor = white
-        ),
+        colors = if (!isFollowing) {
+            ButtonDefaults.buttonColors(
+                containerColor = primary100,
+                contentColor = white
+            )
+        } else {
+            ButtonDefaults.buttonColors(
+                containerColor = primary20,
+                contentColor = primary100
+            )
+        },
         onClick = { onButtonClicked() },
         interactionSource = NoRippleInteractionSource(),
         modifier = modifier
             .heightIn(40.dp)
-            .background(color = Color(0xFF129575), shape = RoundedCornerShape(size = 10.dp))
+            .background(
+                color = if (!isFollowing) primary100 else primary20,
+                shape = RoundedCornerShape(size = 10.dp)
+            )
     ) {
         Text(
-            text = value, fontSize = 16.sp,
+            text = if (isFollowing) "Following" else value,
+            fontSize = 16.sp,
             fontWeight = FontWeight(600),
-            color = white,
             textAlign = TextAlign.Center,
 //            modifier = Modifier.padding(horizontal = 30.dp)
         )

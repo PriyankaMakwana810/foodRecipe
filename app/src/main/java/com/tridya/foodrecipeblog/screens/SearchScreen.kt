@@ -68,7 +68,7 @@ fun SearchScreen(
     paddingValues: PaddingValues,
     searchViewModel: SearchViewModel = hiltViewModel(),
 ) {
-    val allRecipes by searchViewModel.allRecipes.collectAsState()
+    val allSearchedRecipes by searchViewModel.allSearchedRecipes.collectAsState()
     val stateRecipeResult by searchViewModel.recipesByName.collectAsState()
     val stateCategoryResult by searchViewModel.categoryList.collectAsState()
     val stateIngredientResult by searchViewModel.ingredientList.collectAsState()
@@ -167,9 +167,24 @@ fun SearchScreen(
                         columns = GridCells.Fixed(2),
                         modifier = Modifier.padding(horizontal = 10.dp)
                     ) {
-                        items(allRecipes) { item: RecipeCard ->
-                            RecipesItemsComponent(recipe = item)
+                        val isListEmpty = allSearchedRecipes.isEmpty()
+                        if (!isListEmpty) {
+                            items(allSearchedRecipes) { item: RecipeCard ->
+                                RecipesItemsComponent(recipe = item)
+                            }
+                        } else {
+                            item {
+                                NormalTextComponent(
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .align(Alignment.CenterHorizontally),
+                                    value = "Nothing Here",
+                                    fontSize = 20.sp,
+                                    align = TextAlign.Center
+                                )
+                            }
                         }
+
                     }
                 }
             }
@@ -185,7 +200,6 @@ fun FilterBottomSheet(
     ingredients: List<Ingredients>,
 ) {
 
-//    val modalBottomSheetState = rememberModalBottomSheetState()
     ModalBottomSheet(containerColor = white,
         onDismissRequest = { onDismiss() },
         sheetState = SheetState(initialValue = SheetValue.Expanded, skipPartiallyExpanded = true),

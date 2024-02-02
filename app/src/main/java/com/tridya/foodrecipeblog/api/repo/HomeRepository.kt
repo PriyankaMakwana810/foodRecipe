@@ -21,9 +21,9 @@ class HomeRepository @Inject constructor(
         return recipeDao.getSelectedRecipe(recipeId = recipeId)
     }
 
-    suspend fun addRecipe(recipe: RecipeCard) {
-        recipeDao.addRecipe(recipe = recipe)
-    }
+    suspend fun getNewRecipe(category: String = "Miscellaneous") =
+        mealDbApiInterface.getRecipesByCategories(category = category)
+
 
     suspend fun addAllRecipe(recipes: List<RecipeCard>) {
         recipeDao.addAllRecipes(recipes = recipes)

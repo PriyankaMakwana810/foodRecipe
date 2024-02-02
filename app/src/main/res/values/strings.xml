@@ -69,6 +69,8 @@
     <string name="notifications">Notifications</string>
     <string name="profile">Profile</string>
     <string name="please_write_something">Please write Something!</string>
+    <string name="lagos_nigeria">Lagos, Nigeria</string>
+    <string name="follow">Follow</string>
 
 
 </resources>

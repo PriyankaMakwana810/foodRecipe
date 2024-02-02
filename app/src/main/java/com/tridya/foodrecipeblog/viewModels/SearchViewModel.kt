@@ -21,9 +21,9 @@ class SearchViewModel @Inject constructor(
     private val repository: SearchRepository,
     @Named(Constants.SHARED_COMMON) val sharedPreferences: PrefUtils,
 ) : ViewModel() {
-    private val _allRecipes =
+    private val _allSearchedRecipes =
         MutableStateFlow<List<RecipeCard>>(emptyList())
-    val allRecipes: StateFlow<List<RecipeCard>> = _allRecipes
+    val allSearchedRecipes: StateFlow<List<RecipeCard>> = _allSearchedRecipes
 
     var categories: List<Categories> = emptyList()
     var ingredients: List<Ingredients> = emptyList()
@@ -49,12 +49,12 @@ class SearchViewModel @Inject constructor(
     private fun getAllStoredRecipes() {
         try {
             viewModelScope.launch {
-                repository.getAllRecipes.collect {
-                    _allRecipes.value = it
+                repository.getAllSearchedRecipe.collect {
+                    _allSearchedRecipes.value = it
                 }
             }
         } catch (e: Exception) {
-            _allRecipes.value = emptyList()
+            _allSearchedRecipes.value = emptyList()
         }
     }
 

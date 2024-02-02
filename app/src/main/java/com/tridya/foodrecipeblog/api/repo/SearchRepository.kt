@@ -13,11 +13,20 @@ class SearchRepository @Inject constructor(
     private val recipeDao: RecipeDao,
 ) {
     val getAllRecipes: Flow<List<RecipeCard>> = recipeDao.getAllRecipes()
-    suspend fun searchRecipeByName(name: String) = mealDbApiInterface.searchRecipesByName(name = name)
-    suspend fun searchRecipeByFirstLetter(firstLetter: String) = mealDbApiInterface.searchRecipesByFirstLetter(firstLetter = firstLetter)
+
+    val getAllSearchedRecipe: Flow<List<RecipeCard>> = recipeDao.getSearchedRecipes(true)
+    suspend fun searchRecipeByName(name: String) =
+        mealDbApiInterface.searchRecipesByName(name = name)
+
+    suspend fun searchRecipeByFirstLetter(firstLetter: String) =
+        mealDbApiInterface.searchRecipesByFirstLetter(firstLetter = firstLetter)
+
     suspend fun getCategoriesList() = mealDbApiInterface.getCategoriesList()
     suspend fun getIngredientList() = mealDbApiInterface.getIngredientsList()
-    suspend fun getRecipeByCategories(category: String) = mealDbApiInterface.getRecipesByCategories(category = category)
-    suspend fun getRecipeByIngredients(ingredients: String) = mealDbApiInterface.getRecipesByIngredients(ingredient = ingredients)
+    suspend fun getRecipeByCategories(category: String) =
+        mealDbApiInterface.getRecipesByCategories(category = category)
+
+    suspend fun getRecipeByIngredients(ingredients: String) =
+        mealDbApiInterface.getRecipesByIngredients(ingredient = ingredients)
 
 }
