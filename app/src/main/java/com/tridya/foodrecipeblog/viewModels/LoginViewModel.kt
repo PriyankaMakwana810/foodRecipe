@@ -106,7 +106,6 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-
     private fun getLoginStatus() {
         disposable = repository.login()
             .subscribeOn(Schedulers.io())
@@ -114,7 +113,12 @@ class LoginViewModel @Inject constructor(
             .subscribe(/* onSuccess = */ { onSuccess ->
                 if (onSuccess.IsSuccess) {
                     val user =
-                        User(emailId = loginState.value.email, password = loginState.value.password)
+                        User(
+                            userName = "priyanka",
+                            emailId = loginState.value.email,
+                            password = loginState.value.password,
+                            profilePicPath = ""
+                        )
                     sharedPreferences.user = user
                     loginState.value = loginState.value.copy(isLoginSuccessful = true)
 //                    navController.navigate(Screen.HomeScreen.route)

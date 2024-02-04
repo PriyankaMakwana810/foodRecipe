@@ -16,6 +16,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.tridya.foodrecipeblog.ui.theme.primary100
+import com.tridya.foodrecipeblog.ui.theme.primary20
+import com.tridya.foodrecipeblog.ui.theme.primary40
 import com.tridya.foodrecipeblog.ui.theme.white
 
 @Composable
@@ -31,7 +33,7 @@ fun ShowProgress() {
                 contentAlignment = Center,
                 modifier = Modifier.size(100.dp).background(white, shape = RoundedCornerShape(8.dp))
             ) {
-                CircularProgressIndicator(color = white, trackColor = primary100)
+                CircularProgressIndicator(color = primary40, trackColor = primary100)
             }
         }
     }

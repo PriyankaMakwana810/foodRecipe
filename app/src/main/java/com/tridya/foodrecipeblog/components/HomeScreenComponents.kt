@@ -132,7 +132,7 @@ fun ListSelectCountry(
         mutableStateOf(listOfCountries.filterNotNull().firstOrNull())
     }
     LazyRow(
-        modifier = Modifier.padding(start = 12.dp, top = 20.dp, bottom = 10.dp),
+        modifier = Modifier.padding(start = 12.dp, top = 20.dp, bottom = 8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         contentPadding = PaddingValues(horizontal = 8.dp)
     ) {
@@ -149,7 +149,7 @@ fun ListSelectCountry(
                 label = {
                     Text(
                         text = item, style = TextStyle(
-                            fontSize = 16.sp,
+                            fontSize = 14.sp,
                             fontWeight = FontWeight(600),
                             color = textColor,
                             textAlign = TextAlign.Center
@@ -187,7 +187,6 @@ fun ListPopularRecipeByCountry() {
 @Preview
 @Composable
 fun ListNewRecipe(
-
 ) {
     LazyRow(
         modifier = Modifier.padding(start = 15.dp),
@@ -225,7 +224,7 @@ fun ItemRecipeCard(
                     .build(),
                 modifier = Modifier
                     .padding(top = 10.dp)
-                    .clip(shape = RoundedCornerShape(100.dp))
+                    .clip(shape = CircleShape)
                     .size(125.dp),
                 placeholder = painterResource(id = R.drawable.food_image),
                 contentDescription = "image description",

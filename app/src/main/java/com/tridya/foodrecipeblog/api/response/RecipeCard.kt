@@ -18,7 +18,7 @@ data class RecipeCard(
     val timeToCook: Long = generateRandomTimeToCook(),
     val tagline: String = "tagline",
     val isSaved: Boolean = false,
-    val isSearched: Boolean = false,
+    var isSearched: Boolean = false,
     val ratings: Float = generateRandomRating(),
     var postedBy: String = randomName,
     val userProfilePhoto: String = generateUserProfilePhotoForUser(randomName),

@@ -16,7 +16,7 @@ class RecipeDetailsRepository @Inject constructor(
     suspend fun getRecipeDetailsByID(recipeId: String) =
         mealDbApiInterface.getRecipeDetailsByID(recipeId = recipeId)
 
-    fun getSelectedRecipe(recipeId: Int): Flow<RecipeCard> {
+    fun getSelectedRecipe(recipeId: String): RecipeCard {
         return recipeDao.getSelectedRecipe(recipeId = recipeId)
     }
 

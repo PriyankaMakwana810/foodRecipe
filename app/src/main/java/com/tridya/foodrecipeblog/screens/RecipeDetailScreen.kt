@@ -25,6 +25,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -52,7 +53,6 @@ import com.tridya.foodrecipeblog.components.ToolbarComponent
 import com.tridya.foodrecipeblog.ui.theme.black
 import com.tridya.foodrecipeblog.ui.theme.gray3
 import com.tridya.foodrecipeblog.ui.theme.white
-import com.tridya.foodrecipeblog.utils.toEntity
 import com.tridya.foodrecipeblog.viewModels.RecipeDetailsViewModel
 
 @Composable
@@ -62,10 +62,18 @@ fun RecipeDetailScreen(
     recipeId: String,
     recipeDetailsViewModel: RecipeDetailsViewModel = hiltViewModel(),
 ) {
+    val context = LocalContext.current
     val stateRecipeDetails by recipeDetailsViewModel.recipeDetails.collectAsState()
+    val recipeDetailsFromDb by recipeDetailsViewModel.selectedRecipe.collectAsState()
+    var recipe: RecipeCard
 
     LaunchedEffect(true) {
         recipeDetailsViewModel.getRecipeDetailsByID(recipeId)
+        if (recipeDetailsFromDb != null) {
+            recipe = recipeDetailsFromDb as RecipeCard
+        } else {
+            recipeDetailsViewModel.getRecipeDetailsByID(recipeId)
+        }
     }
 
     Surface(
@@ -73,7 +81,6 @@ fun RecipeDetailScreen(
     ) {
         var showProcedure by remember { mutableStateOf(false) }
         var expanded by remember { mutableStateOf(false) }
-//        val recipe = recipesByCountry[3]
         var openShareDialog by remember { mutableStateOf(false) }
         var openRatingDialog by remember { mutableStateOf(false) }
 
@@ -83,7 +90,7 @@ fun RecipeDetailScreen(
             }
 
             is ApiState.Success -> {
-                val recipe = (stateRecipeDetails as ApiState.Success<RecipeCard>).data
+                recipe = (stateRecipeDetails as ApiState.Success<RecipeCard>).data
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
@@ -179,9 +186,16 @@ fun RecipeDetailScreen(
                         ShowIngredients(recipe = recipe)
                     }
                     if (openShareDialog) {
-                        ShareDialogComponent(onButtonClicked = {
-                            openShareDialog = !openShareDialog
-                        })
+                        ShareDialogComponent(
+                            link = if (recipe.strSource.isNullOrEmpty() && recipe.strSource == "") "" else "",
+                            onButtonClicked = {
+                                openShareDialog = !openShareDialog
+                                recipeDetailsViewModel.shareRecipeLink(
+                                    context.getString(R.string.app_name),
+                                    context.getString(R.string.i_found_this_amazing_recipe_try_this_out),
+                                    context = context
+                                )
+                            })
                     }
                     if (openRatingDialog) {
                         RateDialogComponent(onButtonClicked = {

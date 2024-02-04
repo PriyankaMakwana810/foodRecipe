@@ -4,5 +4,5 @@ data class GetCategoriesResponse(
     val meals: List<Categories>
 )
 data class Categories(
-    val strCategories: String
+    val strCategory: String
 )

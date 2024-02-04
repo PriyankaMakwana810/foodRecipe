@@ -1,13 +1,16 @@
 package com.tridya.foodrecipeblog.screens
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -29,7 +32,9 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -39,10 +44,11 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import coil.compose.AsyncImage
+import coil.request.CachePolicy
+import coil.request.ImageRequest.Builder
 import com.tridya.foodrecipeblog.R
 import com.tridya.foodrecipeblog.api.ApiState
-import com.tridya.foodrecipeblog.api.response.Categories
-import com.tridya.foodrecipeblog.api.response.Ingredients
 import com.tridya.foodrecipeblog.api.response.RecipeCard
 import com.tridya.foodrecipeblog.components.CustomButtonComponent
 import com.tridya.foodrecipeblog.components.ListFilterCategory
@@ -56,6 +62,7 @@ import com.tridya.foodrecipeblog.components.ShowProgress
 import com.tridya.foodrecipeblog.components.SimpleTextComponent
 import com.tridya.foodrecipeblog.components.TitleSearchResults
 import com.tridya.foodrecipeblog.components.ToolbarComponent
+import com.tridya.foodrecipeblog.navigation.Screen
 import com.tridya.foodrecipeblog.ui.theme.black
 import com.tridya.foodrecipeblog.ui.theme.white
 import com.tridya.foodrecipeblog.utils.showShortToast
@@ -78,7 +85,10 @@ fun SearchScreen(
     val recipeScrollState = rememberLazyGridState()
     val coroutineScope = rememberCoroutineScope()
 
+    var recipeCategoryList: List<String> = emptyList()
+    var recipeIngredientsList: List<String> = emptyList()
     val context = LocalContext.current
+
     Surface(
         modifier = Modifier.fillMaxSize(), color = white
     ) {
@@ -89,13 +99,30 @@ fun SearchScreen(
             searchViewModel.getCategoryList()
             searchViewModel.getIngredientList()
         }
+        when (stateCategoryResult) {
+            is ApiState.Loading -> {
+            }
+
+            is ApiState.Success -> {
+                recipeCategoryList = (stateCategoryResult as ApiState.Success<List<String>>).data
+                recipeIngredientsList =
+                    (stateIngredientResult as ApiState.Success<List<String>>).data
+                Log.e("TAG", "SearchScreen: $recipeCategoryList")
+                Log.e("TAG", "SearchScreen: $recipeIngredientsList")
+            }
+
+            is ApiState.Error -> {
+                val error = (stateCategoryResult as ApiState.Error).message
+                Log.e("TAG", "SearchScreen: Something Went Wrong ")
+            }
+        }
         if (showBottomSheet) {
             FilterBottomSheet(
                 onDismiss = {
                     showBottomSheet = false
                 },
-                (stateCategoryResult as ApiState.Success<List<Categories>>).data,
-                (stateIngredientResult as ApiState.Success<List<Ingredients>>).data
+                recipeCategoryList,
+                recipeIngredientsList
             )
         }
         Column(
@@ -133,7 +160,7 @@ fun SearchScreen(
                             val listRecipes =
                                 (stateRecipeResult as ApiState.Success<List<RecipeCard>>).data
                             TitleSearchResults(
-                                title = "Search Result", results = "${listRecipes.size + 1} results"
+                                title = "Search Result", results = "${listRecipes.size} results"
                             )
                             LazyVerticalGrid(
                                 state = recipeScrollState,
@@ -141,7 +168,13 @@ fun SearchScreen(
                                 modifier = Modifier.padding(horizontal = 10.dp)
                             ) {
                                 items(listRecipes) { item: RecipeCard ->
-                                    RecipesItemsComponent(recipe = item)
+                                    RecipesItemsComponent(recipe = item, onRecipeItemClicked = {
+                                        item.isSearched = true
+                                        searchViewModel.addRecipe(item)
+                                        navController.navigate(Screen.RecipeDetailScreen.route + "/${item.idMeal}") {
+                                            this.launchSingleTop = true
+                                        }
+                                    })
                                 }
                             }
                         }
@@ -163,43 +196,62 @@ fun SearchScreen(
                     }
                 } else {
                     TitleSearchResults()
-                    LazyVerticalGrid(
-                        columns = GridCells.Fixed(2),
-                        modifier = Modifier.padding(horizontal = 10.dp)
-                    ) {
-                        val isListEmpty = allSearchedRecipes.isEmpty()
-                        if (!isListEmpty) {
+                    val isListEmpty = allSearchedRecipes.isEmpty()
+                    if (!isListEmpty) {
+                        LazyVerticalGrid(
+                            columns = GridCells.Fixed(2),
+                            modifier = Modifier.padding(horizontal = 10.dp)
+                        ) {
                             items(allSearchedRecipes) { item: RecipeCard ->
                                 RecipesItemsComponent(recipe = item)
                             }
-                        } else {
-                            item {
-                                NormalTextComponent(
-                                    modifier = Modifier
-                                        .fillMaxSize()
-                                        .align(Alignment.CenterHorizontally),
-                                    value = "Nothing Here",
-                                    fontSize = 20.sp,
-                                    align = TextAlign.Center
-                                )
-                            }
+                        }
+                    } else {
+                        Column(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            AsyncImage(
+                                model = Builder(LocalContext.current)
+                                    .data(R.drawable.nothing_found)
+                                    .memoryCachePolicy(CachePolicy.ENABLED)
+                                    .diskCachePolicy(CachePolicy.ENABLED)
+                                    .crossfade(true)
+                                    .build(),
+                                modifier = Modifier
+                                    .padding(top = 10.dp)
+                                    .size(300.dp),
+                                placeholder = painterResource(id = R.drawable.nothing_found),
+                                contentDescription = "Nothing Here!",
+                                contentScale = ContentScale.Fit,
+                            )
+                            Spacer(modifier = Modifier.height(20.dp))
+                            NormalTextComponent(
+                                modifier = Modifier,
+                                value = "Nothing Here",
+                                fontSize = 20.sp,
+                                align = TextAlign.Center
+                            )
                         }
 
                     }
+
                 }
             }
         }
     }
 }
 
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FilterBottomSheet(
     onDismiss: () -> Unit = {},
-    categories: List<Categories>,
-    ingredients: List<Ingredients>,
+    categories: List<String>,
+    ingredients: List<String>,
 ) {
-
+    val context = LocalContext.current
     ModalBottomSheet(containerColor = white,
         onDismissRequest = { onDismiss() },
         sheetState = SheetState(initialValue = SheetValue.Expanded, skipPartiallyExpanded = true),
@@ -240,7 +292,7 @@ fun FilterBottomSheet(
                 textColor = black,
                 textAlign = TextAlign.Start
             )
-            ListFilterCategory(categories.map { it.strCategories }, onItemSelected = {
+            ListFilterCategory(categories, onItemSelected = {
                 onDismiss()
             })
             SimpleTextComponent(
@@ -251,7 +303,7 @@ fun FilterBottomSheet(
                 textColor = black,
                 textAlign = TextAlign.Start
             )
-            ListFilterIngredients(ingredients.map { it.strIngredient }.take(10), onItemSelected = {
+            ListFilterIngredients(ingredients, onItemSelected = {
                 onDismiss()
             })
             CustomButtonComponent(
@@ -259,7 +311,10 @@ fun FilterBottomSheet(
                     .width(190.dp)
                     .padding(20.dp)
                     .align(Alignment.CenterHorizontally), value = "Filter"
-            ) {}
+            ) {
+                onDismiss()
+                showShortToast(context, "Filter applied Successfully.")
+            }
         }
 
     }

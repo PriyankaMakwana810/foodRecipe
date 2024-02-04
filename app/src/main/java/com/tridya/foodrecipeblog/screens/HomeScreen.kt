@@ -132,8 +132,8 @@ fun HomeScreen(
                                 state = recipeScrollState,
                                 modifier = Modifier.padding(
                                     start = 15.dp,
-                                    top = 15.dp,
-                                    bottom = 15.dp
+                                    top = 10.dp,
+                                    bottom = 10.dp
                                 ),
                                 horizontalArrangement = Arrangement.spacedBy(5.dp),
                             ) {
@@ -158,7 +158,7 @@ fun HomeScreen(
                     }
 
                     SimpleTextComponent(
-                        modifier = Modifier.padding(top = 20.dp, start = 20.dp),
+                        modifier = Modifier.padding(top = 10.dp, start = 20.dp),
                         value = stringResource(R.string.new_recipes),
                         fontSize = 20.sp,
                         fontWeight = FontWeight(600),
@@ -171,10 +171,10 @@ fun HomeScreen(
                         }
 
                         is ApiState.Success -> {
-                            val listNewRecipes: List<RecipeCard> = (newRecipes as ApiState.Success<List<ResponseOfRecipes>>).data.map { it.toEntity() }
+                            val listNewRecipes: List<RecipeCard> =
+                                (newRecipes as ApiState.Success<List<ResponseOfRecipes>>).data.map { it.toEntity() }
 
                             LazyRow(
-
                                 modifier = Modifier.padding(start = 15.dp),
                                 horizontalArrangement = Arrangement.spacedBy(5.dp),
                             ) {

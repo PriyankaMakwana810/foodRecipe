@@ -17,9 +17,9 @@ class HomeRepository @Inject constructor(
     suspend fun getCountries() = apiInterface.getCountries()
     suspend fun getAreas() = mealDbApiInterface.getAreaList()
     suspend fun getRecipesByArea(area: String) = mealDbApiInterface.getRecipesByArea(area)
-    fun getSelectedTask(recipeId: Int): Flow<RecipeCard> {
+   /* fun getSelectedTask(recipeId: Int): Flow<RecipeCard> {
         return recipeDao.getSelectedRecipe(recipeId = recipeId)
-    }
+    }*/
 
     suspend fun getNewRecipe(category: String = "Miscellaneous") =
         mealDbApiInterface.getRecipesByCategories(category = category)

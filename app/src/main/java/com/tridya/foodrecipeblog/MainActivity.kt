@@ -30,6 +30,7 @@ class MainActivity : ComponentActivity() {
 
         val splashScreen = installSplashScreen()
         splashScreen.setKeepOnScreenCondition { splashViewModel.isLoading.value }
+
         enableEdgeToEdge(
             statusBarStyle = SystemBarStyle.light(
                 Color.TRANSPARENT,

@@ -1,11 +1,10 @@
 package com.tridya.foodrecipeblog.viewModels
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tridya.foodrecipeblog.api.ApiState
 import com.tridya.foodrecipeblog.api.repo.SearchRepository
-import com.tridya.foodrecipeblog.api.response.Categories
-import com.tridya.foodrecipeblog.api.response.Ingredients
 import com.tridya.foodrecipeblog.api.response.RecipeCard
 import com.tridya.foodrecipeblog.utils.Constants
 import com.tridya.foodrecipeblog.utils.PrefUtils
@@ -25,25 +24,17 @@ class SearchViewModel @Inject constructor(
         MutableStateFlow<List<RecipeCard>>(emptyList())
     val allSearchedRecipes: StateFlow<List<RecipeCard>> = _allSearchedRecipes
 
-    var categories: List<Categories> = emptyList()
-    var ingredients: List<Ingredients> = emptyList()
-
     private val _recipesByName = MutableStateFlow<ApiState<List<RecipeCard>>>(ApiState.Loading)
     val recipesByName: StateFlow<ApiState<List<RecipeCard>>> = _recipesByName
 
-    private val _categoryList = MutableStateFlow<ApiState<List<Categories>>>(ApiState.Loading)
-    val categoryList: StateFlow<ApiState<List<Categories>>> = _categoryList
+    private val _categoryList = MutableStateFlow<ApiState<List<String>>>(ApiState.Loading)
+    val categoryList: StateFlow<ApiState<List<String>>> = _categoryList
 
-    private val _ingredientList = MutableStateFlow<ApiState<List<Ingredients>>>(ApiState.Loading)
-    val ingredientList: StateFlow<ApiState<List<Ingredients>>> = _ingredientList
-
-//    private var _categoryList: MutableState<List<Categories>> = mutableStateOf(listOf())
-//    val categoryList: State<List<Categories>> get() = _categoryList
+    private val _ingredientList = MutableStateFlow<ApiState<List<String>>>(ApiState.Loading)
+    val ingredientList: StateFlow<ApiState<List<String>>> = _ingredientList
 
     init {
         getAllStoredRecipes()
-//        getIngredientList()
-//        getCategoryList()
     }
 
     private fun getAllStoredRecipes() {
@@ -74,8 +65,9 @@ class SearchViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val response = repository.getCategoriesList()
-                categories = response.meals
-                _categoryList.value = ApiState.Success(response.meals)
+//                categories = response.meals
+                _categoryList.value = ApiState.Success(response.meals.map { it.strCategory })
+                Log.e("TAG", "getCategoryList: ${response.meals.map { it.strCategory }}")
             } catch (e: Exception) {
                 _categoryList.value = ApiState.Error("API Error: ${e.message}")
             }
@@ -86,11 +78,17 @@ class SearchViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val response = repository.getIngredientList()
-                ingredients = response.meals
-                _ingredientList.value = ApiState.Success(response.meals)
+                _ingredientList.value =
+                    ApiState.Success(response.meals.map { it.strIngredient }.subList(0, 10))
             } catch (e: Exception) {
                 _ingredientList.value = ApiState.Error("API Error: ${e.message}")
             }
+        }
+    }
+
+    fun addRecipe(recipe: RecipeCard) {
+        viewModelScope.launch {
+            repository.addRecipe(recipe)
         }
     }
 

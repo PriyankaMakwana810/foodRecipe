@@ -1,5 +1,6 @@
 package com.tridya.foodrecipeblog.viewModels
 
+import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tridya.foodrecipeblog.api.ApiState
@@ -21,6 +22,12 @@ class RecipeDetailsViewModel @Inject constructor(
 ) : ViewModel() {
     private val _recipeDetails = MutableStateFlow<ApiState<RecipeCard>>(ApiState.Loading)
     val recipeDetails: StateFlow<ApiState<RecipeCard>> = _recipeDetails
+
+    private val _selectedRecipe =
+        MutableStateFlow<RecipeCard?>(null)
+    val selectedRecipe: StateFlow<RecipeCard?> = _selectedRecipe
+
+
     fun getRecipeDetailsByID(recipeId: String) {
         viewModelScope.launch {
             try {
@@ -30,6 +37,30 @@ class RecipeDetailsViewModel @Inject constructor(
             } catch (e: Exception) {
                 _recipeDetails.value = ApiState.Error("API Error: ${e.message}")
             }
+        }
+    }
+
+    fun getRecipeDetailsFromDB(recipeId: String) {
+        try {
+            viewModelScope.launch {
+                _selectedRecipe.value = repository.getSelectedRecipe(recipeId)
+            }
+        } catch (e: Exception) {
+            _selectedRecipe.value = null
+        }
+    }
+
+    fun shareRecipeLink(subject: String, text: String, context: android.content.Context) {
+        val sendIntent: Intent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_SUBJECT, subject)
+            putExtra(Intent.EXTRA_TEXT, text)
+            type = "text/plain"
+        }
+
+        // Verify that the intent will resolve to an activity
+        if (sendIntent.resolveActivity(context.packageManager) != null) {
+            context.startActivity(sendIntent)
         }
     }
 }
