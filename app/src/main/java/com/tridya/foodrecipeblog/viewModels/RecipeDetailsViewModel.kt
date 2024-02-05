@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tridya.foodrecipeblog.api.ApiState
 import com.tridya.foodrecipeblog.api.repo.RecipeDetailsRepository
-import com.tridya.foodrecipeblog.api.response.RecipeCard
+import com.tridya.foodrecipeblog.database.tables.RecipeCard
 import com.tridya.foodrecipeblog.utils.Constants
 import com.tridya.foodrecipeblog.utils.PrefUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -31,9 +31,14 @@ class RecipeDetailsViewModel @Inject constructor(
     fun getRecipeDetailsByID(recipeId: String) {
         viewModelScope.launch {
             try {
-                val response = repository.getRecipeDetailsByID(recipeId)
-                _recipeDetails.value = ApiState.Success(response.meals.first())
-
+                val storedRecipe = repository.getSelectedRecipe(recipeId)
+                if (storedRecipe != null) {
+                    _recipeDetails.value = ApiState.Success(storedRecipe)
+                } else {
+                    val response = repository.getRecipeDetailsByID(recipeId)
+                    repository.addRecipe(response.meals.first())
+                    _recipeDetails.value = ApiState.Success(response.meals.first())
+                }
             } catch (e: Exception) {
                 _recipeDetails.value = ApiState.Error("API Error: ${e.message}")
             }
@@ -47,6 +52,12 @@ class RecipeDetailsViewModel @Inject constructor(
             }
         } catch (e: Exception) {
             _selectedRecipe.value = null
+        }
+    }
+
+    fun updateRecipeIsSaved(isSaved: Boolean, recipeId: String) {
+        viewModelScope.launch {
+            repository.updateIsSaved(isSaved, recipeId)
         }
     }
 

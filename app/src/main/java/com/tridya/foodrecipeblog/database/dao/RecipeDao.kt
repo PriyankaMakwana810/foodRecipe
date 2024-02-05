@@ -6,7 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.tridya.foodrecipeblog.api.response.RecipeCard
+import com.tridya.foodrecipeblog.database.tables.RecipeCard
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -33,7 +33,7 @@ interface RecipeDao {
     suspend fun deleteAllRecipes()
 
     @Query("UPDATE recipe_table Set isSaved =:isSaved WHERE idMeal = :idMeal")
-    suspend fun updateRecipeSaved(isSaved: Boolean, idMeal: Int)
+    suspend fun updateRecipeSaved(isSaved: Boolean, idMeal: String)
 
     @Query("SELECT * FROM recipe_table WHERE isSaved =:isSaved ORDER BY id DESC")
     fun getSavedRecipes(isSaved: Boolean): Flow<List<RecipeCard>>

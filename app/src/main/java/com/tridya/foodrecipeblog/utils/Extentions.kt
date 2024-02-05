@@ -2,8 +2,8 @@ package com.tridya.foodrecipeblog.utils
 
 import android.content.Context
 import android.widget.Toast
-import com.tridya.foodrecipeblog.api.response.RecipeCard
-import com.tridya.foodrecipeblog.api.response.RecipeDetails
+import com.tridya.foodrecipeblog.database.tables.RecipeCard
+import com.tridya.foodrecipeblog.database.tables.RecipeDetails
 import com.tridya.foodrecipeblog.api.response.ResponseOfRecipes
 import java.text.SimpleDateFormat
 import java.util.Locale

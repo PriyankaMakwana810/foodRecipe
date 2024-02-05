@@ -39,7 +39,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.tridya.foodrecipeblog.R
 import com.tridya.foodrecipeblog.api.ApiState
-import com.tridya.foodrecipeblog.api.response.RecipeCard
+import com.tridya.foodrecipeblog.database.tables.RecipeCard
 import com.tridya.foodrecipeblog.components.CustomRecipeDetailsTabs
 import com.tridya.foodrecipeblog.components.NormalTextComponent
 import com.tridya.foodrecipeblog.components.ProfileSectionOfRecipe
@@ -50,6 +50,7 @@ import com.tridya.foodrecipeblog.components.ShowIngredients
 import com.tridya.foodrecipeblog.components.ShowProcedure
 import com.tridya.foodrecipeblog.components.ShowProgress
 import com.tridya.foodrecipeblog.components.ToolbarComponent
+import com.tridya.foodrecipeblog.navigation.Screen
 import com.tridya.foodrecipeblog.ui.theme.black
 import com.tridya.foodrecipeblog.ui.theme.gray3
 import com.tridya.foodrecipeblog.ui.theme.white
@@ -64,16 +65,9 @@ fun RecipeDetailScreen(
 ) {
     val context = LocalContext.current
     val stateRecipeDetails by recipeDetailsViewModel.recipeDetails.collectAsState()
-    val recipeDetailsFromDb by recipeDetailsViewModel.selectedRecipe.collectAsState()
-    var recipe: RecipeCard
 
     LaunchedEffect(true) {
         recipeDetailsViewModel.getRecipeDetailsByID(recipeId)
-        if (recipeDetailsFromDb != null) {
-            recipe = recipeDetailsFromDb as RecipeCard
-        } else {
-            recipeDetailsViewModel.getRecipeDetailsByID(recipeId)
-        }
     }
 
     Surface(
@@ -90,7 +84,7 @@ fun RecipeDetailScreen(
             }
 
             is ApiState.Success -> {
-                recipe = (stateRecipeDetails as ApiState.Success<RecipeCard>).data
+                val recipe = (stateRecipeDetails as ApiState.Success<RecipeCard>).data
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
@@ -132,13 +126,32 @@ fun RecipeDetailScreen(
                                     painter = painterResource(id = R.drawable.v_ic_menu_review),
                                     contentDescription = "Review"
                                 )
-                            }, onClick = { expanded = false })
-                            DropdownMenuItem(text = { Text(text = "Unsave") }, leadingIcon = {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.v_ic_menu_unsave),
-                                    contentDescription = "Unsave"
-                                )
-                            }, onClick = { expanded = false })
+                            }, onClick = {
+                                expanded = false
+                                navController.navigate(Screen.ReviewScreen.route)
+                            })
+                            DropdownMenuItem(
+                                text = { Text(text = if (recipe.isSaved) "Unsave" else "Save") },
+                                leadingIcon = {
+                                    Icon(
+                                        painter = painterResource(id = R.drawable.v_ic_menu_unsave),
+                                        contentDescription = "Unsave or Save"
+                                    )
+                                },
+                                onClick = {
+                                    if (recipe.isSaved) {
+                                        recipeDetailsViewModel.updateRecipeIsSaved(
+                                            false,
+                                            recipe.idMeal
+                                        )
+                                    } else {
+                                        recipeDetailsViewModel.updateRecipeIsSaved(
+                                            true,
+                                            recipe.idMeal
+                                        )
+                                    }
+                                    expanded = false
+                                })
                         }
                     }
 

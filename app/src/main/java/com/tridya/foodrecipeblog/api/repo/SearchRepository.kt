@@ -2,7 +2,7 @@ package com.tridya.foodrecipeblog.api.repo
 
 import com.tridya.foodrecipeblog.api.ApiConstants
 import com.tridya.foodrecipeblog.api.ApiInterface
-import com.tridya.foodrecipeblog.api.response.RecipeCard
+import com.tridya.foodrecipeblog.database.tables.RecipeCard
 import com.tridya.foodrecipeblog.database.dao.RecipeDao
 import com.tridya.foodrecipeblog.database.dao.RecipeDetailsDao
 import kotlinx.coroutines.Dispatchers

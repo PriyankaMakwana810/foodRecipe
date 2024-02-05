@@ -6,7 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.tridya.foodrecipeblog.api.response.RecipeDetails
+import com.tridya.foodrecipeblog.database.tables.RecipeDetails
 import kotlinx.coroutines.flow.Flow
 
 @Dao

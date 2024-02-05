@@ -26,6 +26,7 @@ object Constants {
     const val REGISTER = "register_screen"
     const val HOME = "home_screen"
     const val RECIPE_DETAIL = "recipe_detail_screen"
+    const val REVIEW = "review_screen"
     const val SEARCH = "search_screen"
     const val SAVED = "saved_screen"
     const val NOTIFICATION = "notification_screen"
@@ -39,4 +40,9 @@ object Constants {
     const val IS_ADDED_TO_DATABASE = "is_added_to_database"
     const val IS_NEW_RECIPE_ADDED = "is_new_recipe_added_to_db"
 
+    const val TOKEN = "token"
+    const val TAP_ON_NOTIFICATION = "TAP_ON_NOTIFICATION"
+    const val NOTIFICATION_ID = "NOTIFICATION_ID"
+    const val NOTIFICATION_CHANNEL = "notification_channel"
+    const val NOTIFICATION_CHANNEL_ID = "fcm_default_channel"
 }

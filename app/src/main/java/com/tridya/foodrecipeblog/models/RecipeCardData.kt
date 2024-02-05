@@ -1,6 +1,6 @@
 package com.tridya.foodrecipeblog.models
 
-import com.tridya.foodrecipeblog.api.response.RecipeCard
+import com.tridya.foodrecipeblog.database.tables.RecipeCard
 
 /*@Entity(tableName = "recipe_table")
 data class RecipeCard(

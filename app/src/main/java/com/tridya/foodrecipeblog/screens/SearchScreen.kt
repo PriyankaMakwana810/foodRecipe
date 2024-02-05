@@ -49,7 +49,7 @@ import coil.request.CachePolicy
 import coil.request.ImageRequest.Builder
 import com.tridya.foodrecipeblog.R
 import com.tridya.foodrecipeblog.api.ApiState
-import com.tridya.foodrecipeblog.api.response.RecipeCard
+import com.tridya.foodrecipeblog.database.tables.RecipeCard
 import com.tridya.foodrecipeblog.components.CustomButtonComponent
 import com.tridya.foodrecipeblog.components.ListFilterCategory
 import com.tridya.foodrecipeblog.components.ListFilterIngredients

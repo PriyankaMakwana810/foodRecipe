@@ -36,7 +36,7 @@ import androidx.navigation.compose.rememberNavController
 import com.tridya.foodrecipeblog.R
 import com.tridya.foodrecipeblog.api.ApiState
 import com.tridya.foodrecipeblog.api.response.Areas
-import com.tridya.foodrecipeblog.api.response.RecipeCard
+import com.tridya.foodrecipeblog.database.tables.RecipeCard
 import com.tridya.foodrecipeblog.api.response.ResponseOfRecipes
 import com.tridya.foodrecipeblog.components.ItemNewRecipe
 import com.tridya.foodrecipeblog.components.ItemRecipeCard

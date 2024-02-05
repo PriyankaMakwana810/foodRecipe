@@ -12,6 +12,7 @@ import com.tridya.foodrecipeblog.screens.IntroScreen
 import com.tridya.foodrecipeblog.screens.NotificationScreen
 import com.tridya.foodrecipeblog.screens.ProfileScreen
 import com.tridya.foodrecipeblog.screens.RecipeDetailScreen
+import com.tridya.foodrecipeblog.screens.ReviewScreen
 import com.tridya.foodrecipeblog.screens.SavedScreen
 import com.tridya.foodrecipeblog.screens.SearchScreen
 import com.tridya.foodrecipeblog.screens.login.LoginScreen
@@ -47,6 +48,9 @@ fun NavigationCompose(navController: NavHostController, paddingValues: PaddingVa
                 )
             }
 
+        }
+        composable(route = Screen.ReviewScreen.route) {
+            ReviewScreen(navController = navController, paddingValues = paddingValues)
         }
         composable(route = Screen.SavedScreen.route) {
             SavedScreen(navController = navController, paddingValues)

@@ -1,7 +1,8 @@
-package com.tridya.foodrecipeblog.api.response
+package com.tridya.foodrecipeblog.database.tables
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.tridya.foodrecipeblog.database.tables.randomName
 import com.tridya.foodrecipeblog.utils.generateRandomRating
 import com.tridya.foodrecipeblog.utils.generateRandomTimeToCook
 import com.tridya.foodrecipeblog.utils.generateUserProfilePhotoForUser

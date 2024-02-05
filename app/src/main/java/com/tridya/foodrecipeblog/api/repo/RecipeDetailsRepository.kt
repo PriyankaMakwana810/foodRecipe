@@ -2,9 +2,8 @@ package com.tridya.foodrecipeblog.api.repo
 
 import com.tridya.foodrecipeblog.api.ApiConstants
 import com.tridya.foodrecipeblog.api.ApiInterface
-import com.tridya.foodrecipeblog.api.response.RecipeCard
+import com.tridya.foodrecipeblog.database.tables.RecipeCard
 import com.tridya.foodrecipeblog.database.dao.RecipeDao
-import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -18,6 +17,10 @@ class RecipeDetailsRepository @Inject constructor(
 
     fun getSelectedRecipe(recipeId: String): RecipeCard {
         return recipeDao.getSelectedRecipe(recipeId = recipeId)
+    }
+
+    suspend fun updateIsSaved(isSaved: Boolean, recipeId: String) {
+        recipeDao.updateRecipeSaved(isSaved = isSaved, idMeal = recipeId)
     }
 
     suspend fun addRecipe(recipe: RecipeCard) {

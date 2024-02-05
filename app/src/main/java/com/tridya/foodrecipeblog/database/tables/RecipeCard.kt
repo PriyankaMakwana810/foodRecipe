@@ -1,4 +1,4 @@
-package com.tridya.foodrecipeblog.api.response
+package com.tridya.foodrecipeblog.database.tables
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
