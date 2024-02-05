@@ -1,5 +1,6 @@
 package com.tridya.foodrecipeblog.utils
 
+import com.tridya.foodrecipeblog.database.tables.Notifications
 import com.tridya.foodrecipeblog.models.IngredientModel
 import com.tridya.foodrecipeblog.models.NotificationModel
 import com.tridya.foodrecipeblog.models.ProcedureModel
@@ -49,6 +50,13 @@ object StaticData {
         "All",
         "Read",
         "Unread"
+    )
+    val dummyNotification = Notifications(
+        0,
+        "NewRecipes",
+        "New Recipes Are Added check it.",
+        System.currentTimeMillis(),
+        true
     )
     val listOfNotifications = listOf<NotificationModel>(
         NotificationModel(
@@ -189,7 +197,7 @@ object StaticData {
         ReviewModel(
             0,
             "Bella Throne",
-            "https://bit.ly/3S7gpTv",
+            "https://unsplash.com/photos/closeup-photography-of-woman-smiling-mEZ3PoFGs_k",
             "12/06/2023 19:35",
             "Lorem Ipsum tempor incididunt ut labore et dolore,inise voluptate velit esse cillum",
             9,
@@ -198,7 +206,7 @@ object StaticData {
         ReviewModel(
             1,
             "Christopher Oshana",
-            "https://bit.ly/4b2Cmf7",
+            "https://unsplash.com/photos/man-taking-selfie-tidSLv-UaNs",
             "12/06/2023 20:00",
             "Lorem Ipsum tempor incididunt ut labore et dolore,inise voluptate.",
             7,
@@ -207,7 +215,7 @@ object StaticData {
         ReviewModel(
             2,
             "Kyle Austin",
-            "https://bit.ly/3Hwof40",
+            "https://unsplash.com/photos/man-in-black-button-up-shirt-ZHvM3XIOHoE",
             "12/06/2023 20:00",
             "Lorem Ipsum tempor incididunt ut labore et dolore,inise voluptate.",
             7,
@@ -216,7 +224,7 @@ object StaticData {
         ReviewModel(
             3,
             "Jeniffern Wilson",
-            "https://bit.ly/3vTQGWW",
+            "https://unsplash.com/photos/woman-in-black-and-white-checkered-hoodie-OFAbs8e8Zic",
             "12/06/2023 19:35",
             "Lorem Ipsum tempor incididunt ut labore et dolore,inise voluptate velit esse cillum",
             9,
@@ -225,7 +233,7 @@ object StaticData {
         ReviewModel(
             4,
             "Kate Johnson",
-            "https://bit.ly/3vUnu21",
+            "https://unsplash.com/photos/woman-in-white-off-shoulder-dress-uR51HXLO7G0",
             "12/06/2023 20:00",
             "Lorem Ipsum tempor incididunt ut labore et dolore,inise voluptate.",
             7,
@@ -234,7 +242,7 @@ object StaticData {
         ReviewModel(
             5,
             "Kyle Austin",
-            "https://bit.ly/3Hwof40",
+            "https://unsplash.com/photos/man-in-black-button-up-shirt-ZHvM3XIOHoE",
             "12/06/2023 20:00",
             "Lorem Ipsum tempor incididunt ut labore et dolore,inise voluptate.",
             7,

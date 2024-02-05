@@ -25,8 +25,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -39,7 +41,6 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.tridya.foodrecipeblog.R
 import com.tridya.foodrecipeblog.api.ApiState
-import com.tridya.foodrecipeblog.database.tables.RecipeCard
 import com.tridya.foodrecipeblog.components.CustomRecipeDetailsTabs
 import com.tridya.foodrecipeblog.components.NormalTextComponent
 import com.tridya.foodrecipeblog.components.ProfileSectionOfRecipe
@@ -50,10 +51,12 @@ import com.tridya.foodrecipeblog.components.ShowIngredients
 import com.tridya.foodrecipeblog.components.ShowProcedure
 import com.tridya.foodrecipeblog.components.ShowProgress
 import com.tridya.foodrecipeblog.components.ToolbarComponent
+import com.tridya.foodrecipeblog.database.tables.RecipeCard
 import com.tridya.foodrecipeblog.navigation.Screen
 import com.tridya.foodrecipeblog.ui.theme.black
 import com.tridya.foodrecipeblog.ui.theme.gray3
 import com.tridya.foodrecipeblog.ui.theme.white
+import com.tridya.foodrecipeblog.utils.showShortToast
 import com.tridya.foodrecipeblog.viewModels.RecipeDetailsViewModel
 
 @Composable
@@ -77,6 +80,7 @@ fun RecipeDetailScreen(
         var expanded by remember { mutableStateOf(false) }
         var openShareDialog by remember { mutableStateOf(false) }
         var openRatingDialog by remember { mutableStateOf(false) }
+        val clipboardManager = LocalClipboardManager.current
 
         when (stateRecipeDetails) {
             is ApiState.Loading -> {
@@ -200,12 +204,13 @@ fun RecipeDetailScreen(
                     }
                     if (openShareDialog) {
                         ShareDialogComponent(
-                            link = if (recipe.strSource.isNullOrEmpty() && recipe.strSource == "") "" else "",
+                            link = if (recipe.strSource.isNullOrEmpty() && recipe.strSource == "") "" else recipe.strSource!!,
                             onButtonClicked = {
                                 openShareDialog = !openShareDialog
+                                clipboardManager.setText(AnnotatedString(recipe.strSource.toString()))
                                 recipeDetailsViewModel.shareRecipeLink(
-                                    context.getString(R.string.app_name),
                                     context.getString(R.string.i_found_this_amazing_recipe_try_this_out),
+                                    recipe.strSource.toString(),
                                     context = context
                                 )
                             })
@@ -213,6 +218,10 @@ fun RecipeDetailScreen(
                     if (openRatingDialog) {
                         RateDialogComponent(onButtonClicked = {
                             openRatingDialog = !openRatingDialog
+                            showShortToast(
+                                context,
+                                context.getString(R.string.thanks_for_rating_this_recipe)
+                            )
                         })
                     }
                 }

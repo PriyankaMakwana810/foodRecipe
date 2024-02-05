@@ -9,6 +9,8 @@ import com.tridya.foodrecipeblog.database.tables.RecipeCard
 import com.tridya.foodrecipeblog.utils.Constants
 import com.tridya.foodrecipeblog.utils.PrefUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -29,7 +31,7 @@ class RecipeDetailsViewModel @Inject constructor(
 
 
     fun getRecipeDetailsByID(recipeId: String) {
-        viewModelScope.launch {
+        CoroutineScope(Dispatchers.IO).launch {
             try {
                 val storedRecipe = repository.getSelectedRecipe(recipeId)
                 if (storedRecipe != null) {
@@ -65,7 +67,7 @@ class RecipeDetailsViewModel @Inject constructor(
         val sendIntent: Intent = Intent().apply {
             action = Intent.ACTION_SEND
             putExtra(Intent.EXTRA_SUBJECT, subject)
-            putExtra(Intent.EXTRA_TEXT, text)
+            putExtra(Intent.EXTRA_TEXT, subject + text)
             type = "text/plain"
         }
 

@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface NotificationDao {
     @Query("SELECT * FROM notifications_table ORDER BY id ASC")
-    fun getAllNotification(): Flow<List<Notifications>>
+    fun getAllNotifications(): Flow<List<Notifications>>
 
     @Query("SELECT * FROM notifications_table WHERE isRead = 0")
     fun getUnreadNotifications(): Flow<List<Notifications>>

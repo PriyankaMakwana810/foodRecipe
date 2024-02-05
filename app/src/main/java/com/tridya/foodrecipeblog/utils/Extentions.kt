@@ -2,9 +2,9 @@ package com.tridya.foodrecipeblog.utils
 
 import android.content.Context
 import android.widget.Toast
+import com.tridya.foodrecipeblog.api.response.ResponseOfRecipes
 import com.tridya.foodrecipeblog.database.tables.RecipeCard
 import com.tridya.foodrecipeblog.database.tables.RecipeDetails
-import com.tridya.foodrecipeblog.api.response.ResponseOfRecipes
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -48,6 +48,7 @@ fun RecipeCard.toEntity(): RecipeDetails {
         userProfilePhoto = userProfilePhoto
     )
 }
+
 fun convertToRecipeCard(recipeDetails: RecipeDetails): RecipeCard {
     return RecipeCard(
         id = recipeDetails.id,
@@ -59,6 +60,7 @@ fun convertToRecipeCard(recipeDetails: RecipeDetails): RecipeCard {
         // ... (map other properties accordingly)
     )
 }
+
 fun convertListToRecipeCardList(recipeDetailsList: List<RecipeDetails>): List<RecipeCard> {
     return recipeDetailsList.map { convertToRecipeCard(it) }
 }
@@ -80,28 +82,28 @@ fun RecipeDetails.toEntity(): RecipeCard {
     )
 }*/
 
- fun generateRandomRating(): Float {
+fun generateRandomRating(): Float {
     return (1..5).random().toFloat()
 }
 
- fun generateRandomTimeToCook(): Long {
+fun generateRandomTimeToCook(): Long {
     return (1..30).random().toLong()
 }
 
- fun generateRandomName(): String {
+fun generateRandomName(): String {
     val longNames = listOf(
         "Bella Throne", "Christopher Oshana", "Kyle Austin", "Jeniffern Wilson", "Kate Johnson",
     )
     return longNames.random()
 }
 
- fun generateUserProfilePhotoForUser(username: String): String {
+fun generateUserProfilePhotoForUser(username: String): String {
     val userToPhotoMap = mapOf(
-        "Bella Throne" to "https://bit.ly/3S7gpTv",
-        "Christopher Oshana" to "https://bit.ly/4b2Cmf7",
-        "Kyle Austin" to "https://bit.ly/3Hwof40",
-        "Jeniffern Wilson" to "https://bit.ly/3vTQGWW",
-        "Kate Johnson" to "https://bit.ly/3vUnu21",
+        "Bella Throne" to "https://unsplash.com/photos/closeup-photography-of-woman-smiling-mEZ3PoFGs_k",
+        "Christopher Oshana" to "https://unsplash.com/photos/man-taking-selfie-tidSLv-UaNs",
+        "Kyle Austin" to "https://unsplash.com/photos/man-in-black-button-up-shirt-ZHvM3XIOHoE",
+        "Jeniffern Wilson" to "https://unsplash.com/photos/woman-in-black-and-white-checkered-hoodie-OFAbs8e8Zic",
+        "Kate Johnson" to "https://unsplash.com/photos/woman-in-white-off-shoulder-dress-uR51HXLO7G0",
         // Add more mappings as needed
     )
     return userToPhotoMap[username] ?: "https://example.com/default.jpg"

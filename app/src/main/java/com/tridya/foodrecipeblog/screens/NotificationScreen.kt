@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
@@ -17,19 +18,27 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.tridya.foodrecipeblog.R
 import com.tridya.foodrecipeblog.components.CustomNotificationTabs
-import com.tridya.foodrecipeblog.components.ListNotificationsByFilter
-import com.tridya.foodrecipeblog.components.ListShowNotifications
+import com.tridya.foodrecipeblog.components.NotificationList
 import com.tridya.foodrecipeblog.components.ToolbarComponent
 import com.tridya.foodrecipeblog.ui.theme.white
+import com.tridya.foodrecipeblog.viewModels.NotificationViewModel
 
 @Composable
-fun NotificationScreen(navController: NavController, paddingValues: PaddingValues) {
+fun NotificationScreen(
+    navController: NavController,
+    paddingValues: PaddingValues,
+    notificationViewModel: NotificationViewModel = hiltViewModel(),
+) {
     var selectedTab by remember { mutableIntStateOf(0) }
     val scrollState = rememberScrollState()
+    val allNotifications by notificationViewModel.allNotifications.collectAsState()
+    val readNotifications by notificationViewModel.readNotifications.collectAsState()
+    val unreadNotifications by notificationViewModel.unreadNotifications.collectAsState()
 
     Surface(
         modifier = Modifier.fillMaxSize(), color = white
@@ -59,15 +68,15 @@ fun NotificationScreen(navController: NavController, paddingValues: PaddingValue
                 })
                 when (selectedTab) {
                     0 -> {
-                        ListShowNotifications()
+                        NotificationList(notifications = allNotifications)
                     }
 
                     1 -> {
-                        ListNotificationsByFilter(dateTitle = "Today")
+                        NotificationList(notifications = readNotifications)
                     }
 
                     2 -> {
-                        ListNotificationsByFilter(dateTitle = "Yesterday")
+                        NotificationList(notifications = unreadNotifications)
                     }
                 }
             }

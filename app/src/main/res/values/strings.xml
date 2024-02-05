@@ -73,6 +73,7 @@
     <string name="follow">Follow</string>
     <string name="i_found_this_amazing_recipe_try_this_out">I found this amazing Recipe, try this out.</string>
     <string name="foodrecipe">FoodRecipe:</string>
+    <string name="thanks_for_rating_this_recipe">Thanks for Rating this recipe!</string>
 
 
 </resources>

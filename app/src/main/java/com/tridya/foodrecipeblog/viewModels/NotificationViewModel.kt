@@ -1,0 +1,80 @@
+package com.tridya.foodrecipeblog.viewModels
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.tridya.foodrecipeblog.api.repo.NotificationRepository
+import com.tridya.foodrecipeblog.database.tables.Notifications
+import com.tridya.foodrecipeblog.database.tables.RecipeCard
+import com.tridya.foodrecipeblog.utils.Constants
+import com.tridya.foodrecipeblog.utils.PrefUtils
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
+import javax.inject.Inject
+import javax.inject.Named
+
+@HiltViewModel
+class NotificationViewModel @Inject constructor(
+    private val repository: NotificationRepository,
+    @Named(Constants.SHARED_COMMON) val sharedPreferences: PrefUtils,
+) : ViewModel() {
+    private val _allSavedRecipes =
+        MutableStateFlow<List<RecipeCard>>(emptyList())
+    val allSavedRecipes: StateFlow<List<RecipeCard>> = _allSavedRecipes
+
+    private var _allNotifications =
+        MutableStateFlow<List<Notifications>>(emptyList())
+    val allNotifications: StateFlow<List<Notifications>> = _allNotifications
+
+    private var _readNotifications =
+        MutableStateFlow<List<Notifications>>(emptyList())
+    val readNotifications: StateFlow<List<Notifications>> = _readNotifications
+
+    private var _unreadNotifications =
+        MutableStateFlow<List<Notifications>>(emptyList())
+    val unreadNotifications: StateFlow<List<Notifications>> = _unreadNotifications
+
+    init {
+        getAllNotifications()
+        getReadNotifications()
+        getUnreadNotifications()
+    }
+
+    private fun getAllNotifications() {
+        try {
+            viewModelScope.launch {
+                repository.getAllNotifications.collect {
+                    _allNotifications.value = it
+                }
+            }
+        } catch (e: Exception) {
+            _allNotifications.value = emptyList()
+        }
+    }
+
+    private fun getReadNotifications() {
+        try {
+            viewModelScope.launch {
+                repository.getReadNotifications.collect {
+                    _readNotifications.value = it
+                }
+            }
+        } catch (e: Exception) {
+            _readNotifications.value = emptyList()
+        }
+    }
+
+    private fun getUnreadNotifications() {
+        try {
+            viewModelScope.launch {
+                repository.getUnreadNotifications.collect {
+                    _unreadNotifications.value = it
+                }
+            }
+        } catch (e: Exception) {
+            _unreadNotifications.value = emptyList()
+        }
+    }
+
+}

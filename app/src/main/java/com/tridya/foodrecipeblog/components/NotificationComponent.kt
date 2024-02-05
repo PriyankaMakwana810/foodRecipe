@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -24,12 +25,19 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tridya.foodrecipeblog.R
+import com.tridya.foodrecipeblog.database.tables.Notifications
 import com.tridya.foodrecipeblog.models.NotificationModel
 import com.tridya.foodrecipeblog.ui.theme.black
 import com.tridya.foodrecipeblog.ui.theme.gray3
 import com.tridya.foodrecipeblog.ui.theme.gray4
 import com.tridya.foodrecipeblog.ui.theme.secondary20
+import com.tridya.foodrecipeblog.utils.StaticData.dummyNotification
 import com.tridya.foodrecipeblog.utils.StaticData.listOfNotifications
+import com.tridya.foodrecipeblog.utils.TimeStamp.getRelativeTime
+import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
 @Preview
 @Composable
@@ -101,6 +109,56 @@ fun NotificationItemComponent(
         }
     }
 }
+@Composable
+fun NotificationList(notifications: List<Notifications>) {
+    LazyColumn {
+        var currentDate: LocalDate? = null
+
+        items(notifications) { notification ->
+            val notificationDate = Instant.ofEpochMilli(notification.time ?: 0)
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate()
+
+            // Check if a new date is encountered
+            if (currentDate == null || notificationDate != currentDate) {
+                currentDate = notificationDate
+                // Display date header
+                DateHeader(date = notificationDate)
+            }
+
+            // Display notification item
+            NotificationItem(notification = notification)
+        }
+    }
+}
+
+@Composable
+fun DateHeader(date: LocalDate) {
+    val today = LocalDate.now()
+    val yesterday = today.minusDays(1)
+
+    val headerText = when (date) {
+        today -> "Today"
+        yesterday -> "Yesterday"
+        else -> date.format(DateTimeFormatter.ofPattern("dd MMMM yyyy"))
+    }
+    SimpleTextComponent(
+        modifier = Modifier.padding(vertical = 10.dp),
+        value = headerText,
+        fontSize = 16.sp,
+        fontWeight = FontWeight.Bold,
+        textColor = black
+    )
+/*    Text(
+        text = headerText,
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color.Gray)
+            .padding(8.dp),
+        fontWeight = FontWeight.Bold,
+        color = Color.White
+    )*/
+}
 
 @Preview
 @Composable
@@ -133,6 +191,85 @@ fun ListNotificationsByFilter(
             items(listOfNotifications) { item: NotificationModel ->
                 NotificationItemComponent(notification = item)
             }
+        }
+    }
+}
+
+@Composable
+fun NotificationItem(
+    modifier: Modifier = Modifier,
+    notification: Notifications = dummyNotification,
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(vertical = 10.dp)
+            .clip(RoundedCornerShape(12.dp))
+            .background(gray4)
+            .padding(vertical = 12.dp, horizontal = 16.dp),
+        verticalAlignment = Alignment.Top,
+        horizontalArrangement = Arrangement.spacedBy(5.dp)
+    ) {
+        Column(
+            modifier = modifier.weight(1f),
+            horizontalAlignment = Alignment.Start,
+            verticalArrangement = Arrangement.spacedBy(5.dp)
+        ) {
+            Text(
+                text = notification.title.toString(),
+                style = TextStyle(
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight(600),
+                    color = black,
+                )
+            )
+            Text(
+                text = notification.messageBody.toString(),
+                style = TextStyle(
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight(400),
+                    color = gray3,
+                ),
+            )
+            Text(
+                text = getRelativeTime(notification.time!!),
+                style = TextStyle(
+                    fontSize = 10.sp,
+                    fontWeight = FontWeight(400),
+                    color = gray3,
+                ),
+            )
+        }
+        Box(
+            modifier = Modifier
+                .clip(RoundedCornerShape(10.dp))
+                .background(secondary20)
+                .size(30.dp)
+        ) {
+            Image(
+                modifier = Modifier.align(Alignment.Center),
+                painter = painterResource(id = R.drawable.v_ic_message),
+                contentDescription = ""
+            )
+            if (notification.isRead == true) {
+                Image(
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .padding(2.dp),
+                    painter = painterResource(id = R.drawable.v_ic_unread),
+                    contentDescription = "unread",
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun NotificationModelList(notifications: List<NotificationModel>) {
+    LazyColumn {
+        items(notifications) { notification ->
+            // Composable for displaying a single notification item
+            NotificationItemComponent(notification = notification)
         }
     }
 }

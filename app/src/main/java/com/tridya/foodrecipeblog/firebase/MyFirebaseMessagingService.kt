@@ -21,13 +21,14 @@ import com.tridya.foodrecipeblog.utils.Constants.SHARED_COMMON
 import com.tridya.foodrecipeblog.utils.Constants.TAP_ON_NOTIFICATION
 import com.tridya.foodrecipeblog.utils.Constants.TOKEN
 import com.tridya.foodrecipeblog.utils.PrefUtils
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Named
 
-
+@AndroidEntryPoint
 class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     @Inject
@@ -52,13 +53,13 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             title,
             body,
             remoteMessage.sentTime,
-            remoteMessage.notification?.clickAction?.isNotEmpty()
+            false
         )
         CoroutineScope(Dispatchers.IO).launch {
             notificationId = notificationDao.addNotification(notification).toInt()
         }
         sendNotification(
-            notificationId = notificationId,
+            id = notificationId,
             title = title ?: getString(R.string.app_name),
             messageBody = body ?: ""
         )
@@ -72,11 +73,11 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     }
 
 
-    private fun sendNotification(title: String, messageBody: String, notificationId: Int) {
+    private fun sendNotification(title: String, messageBody: String, id: Int) {
 
         val intent = Intent(this, MainActivity::class.java)
         intent.putExtra(TAP_ON_NOTIFICATION, true)
-        intent.putExtra(NOTIFICATION_ID, notificationId)
+        intent.putExtra(NOTIFICATION_ID, id)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         val requestCode = 0
         val pendingIntent = PendingIntent.getActivity(

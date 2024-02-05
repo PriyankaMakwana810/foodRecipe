@@ -20,6 +20,7 @@ class SearchViewModel @Inject constructor(
     private val repository: SearchRepository,
     @Named(Constants.SHARED_COMMON) val sharedPreferences: PrefUtils,
 ) : ViewModel() {
+
     private val _allSearchedRecipes =
         MutableStateFlow<List<RecipeCard>>(emptyList())
     val allSearchedRecipes: StateFlow<List<RecipeCard>> = _allSearchedRecipes
