@@ -74,6 +74,10 @@
     <string name="i_found_this_amazing_recipe_try_this_out">I found this amazing Recipe, try this out.</string>
     <string name="foodrecipe">FoodRecipe:</string>
     <string name="thanks_for_rating_this_recipe">Thanks for Rating this recipe!</string>
+    <string name="recipe">Recipe</string>
+    <string name="followers">Followers</string>
+    <string name="following">Following</string>
+    <string name="sharing_a_recipe_is_like_passing_on_a_delicious_secret_a_gift_of_flavors_waiting_to_be_savored_it_s_a_culinary_journey_that_transforms_ingredients_into_memories_inviting_others_to_create_and_share_in_the_joy_of_a_well_loved_dish">Sharing a recipe is like passing on a delicious secret, a gift of flavors waiting to be savored. It\'s a culinary journey that transforms ingredients into memories, inviting others to create and share in the joy of a well-loved dish.</string>
 
 
 </resources>

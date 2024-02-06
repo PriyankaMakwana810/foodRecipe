@@ -35,8 +35,8 @@ fun TextFieldCustom(
     value: String,
     hintText: String,
     onTextChanged: (String) -> Unit,
-    isError: Boolean,
-    errorText: String,
+    isError: Boolean = false,
+    errorText: String = "",
 ) {
     var textValue by remember {
         mutableStateOf("")

@@ -6,7 +6,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -17,13 +20,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
+import coil.request.CachePolicy
+import coil.request.ImageRequest
 import com.tridya.foodrecipeblog.R
 import com.tridya.foodrecipeblog.database.tables.Notifications
 import com.tridya.foodrecipeblog.models.NotificationModel
@@ -109,25 +117,58 @@ fun NotificationItemComponent(
         }
     }
 }
+
 @Composable
 fun NotificationList(notifications: List<Notifications>) {
-    LazyColumn {
-        var currentDate: LocalDate? = null
+    if (notifications.isEmpty()) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(R.drawable.nothing_found)
+                    .memoryCachePolicy(CachePolicy.ENABLED)
+                    .diskCachePolicy(CachePolicy.ENABLED)
+                    .crossfade(true)
+                    .build(),
+                modifier = Modifier
+                    .padding(top = 10.dp)
+                    .size(300.dp),
+                placeholder = painterResource(id = R.drawable.nothing_found),
+                contentDescription = "Nothing Here!",
+                contentScale = ContentScale.Fit,
+            )
+            Spacer(modifier = Modifier.height(20.dp))
+            NormalTextComponent(
+                modifier = Modifier,
+                value = "Nothing Here",
+                fontSize = 20.sp,
+                align = TextAlign.Center
+            )
+        }
+    } else {
+        LazyColumn {
+            var currentDate: LocalDate? = null
 
-        items(notifications) { notification ->
-            val notificationDate = Instant.ofEpochMilli(notification.time ?: 0)
-                .atZone(ZoneId.systemDefault())
-                .toLocalDate()
+            items(notifications) { notification ->
+                val notificationDate = Instant.ofEpochMilli(notification.time ?: 0)
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDate()
 
-            // Check if a new date is encountered
-            if (currentDate == null || notificationDate != currentDate) {
-                currentDate = notificationDate
-                // Display date header
-                DateHeader(date = notificationDate)
+                // Check if a new date is encountered
+                if (currentDate == null || notificationDate != currentDate) {
+                    currentDate = notificationDate
+                    // Display date header
+                    DateHeader(date = notificationDate)
+                }
+
+                // Display notification item
+                NotificationItem(notification = notification)
             }
-
-            // Display notification item
-            NotificationItem(notification = notification)
         }
     }
 }
@@ -149,15 +190,6 @@ fun DateHeader(date: LocalDate) {
         fontWeight = FontWeight.Bold,
         textColor = black
     )
-/*    Text(
-        text = headerText,
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(Color.Gray)
-            .padding(8.dp),
-        fontWeight = FontWeight.Bold,
-        color = Color.White
-    )*/
 }
 
 @Preview

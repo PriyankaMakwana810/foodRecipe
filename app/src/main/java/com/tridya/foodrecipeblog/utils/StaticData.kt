@@ -51,6 +51,11 @@ object StaticData {
         "Read",
         "Unread"
     )
+    val profileTitle = listOf(
+        "Recipe",
+        "Videos",
+        "Tag"
+    )
     val dummyNotification = Notifications(
         0,
         "NewRecipes",

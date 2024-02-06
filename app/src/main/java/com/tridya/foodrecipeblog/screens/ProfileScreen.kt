@@ -29,24 +29,22 @@ fun ProfileScreen(navController: NavController, paddingValues: PaddingValues) {
         modifier = Modifier.fillMaxSize(), color = white
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
+            modifier = Modifier.fillMaxSize()
         ) {
-            ToolbarComponent(
-                toolbarTitle = stringResource(R.string.profile),
+            ToolbarComponent(toolbarTitle = stringResource(R.string.profile),
                 showBackArrow = false,
                 showMenuIcon = true,
                 onMenuClicked = {})
             Column(
-                modifier = Modifier.padding(horizontal = 20.dp)
+                modifier = Modifier
+                    .padding(paddingValues)
+                    .padding(horizontal = 20.dp)
             ) {
                 UserProfileSectionUI()
                 CustomProfileTabs()
                 LazyColumn {
                     items(recipesByCountry.filter { it.isSaved }) { item ->
-                        RecipesItemsComponent(
-                            recipe = item,
+                        RecipesItemsComponent(recipe = item,
                             isFromSaved = true,
                             onRecipeItemClicked = {
                                 navController.navigate(Screen.RecipeDetailScreen.route + "/${item.idMeal}") {

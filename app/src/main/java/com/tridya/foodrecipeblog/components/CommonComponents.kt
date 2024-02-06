@@ -45,7 +45,6 @@ import com.tridya.foodrecipeblog.R
 import com.tridya.foodrecipeblog.database.tables.RecipeCard
 import com.tridya.foodrecipeblog.models.UserProfile
 import com.tridya.foodrecipeblog.ui.theme.black
-import com.tridya.foodrecipeblog.ui.theme.gray2
 import com.tridya.foodrecipeblog.ui.theme.gray3
 import com.tridya.foodrecipeblog.ui.theme.gray4
 import com.tridya.foodrecipeblog.ui.theme.primary100
@@ -53,6 +52,7 @@ import com.tridya.foodrecipeblog.ui.theme.primary80
 import com.tridya.foodrecipeblog.ui.theme.secondary100
 import com.tridya.foodrecipeblog.ui.theme.white
 import com.tridya.foodrecipeblog.utils.StaticData.notificationTitle
+import com.tridya.foodrecipeblog.utils.StaticData.profileTitle
 import com.tridya.foodrecipeblog.utils.StaticData.tabsList
 import com.tridya.foodrecipeblog.utils.StaticData.userProfile
 
@@ -295,7 +295,7 @@ fun UserProfileSectionUI(modifier: Modifier = Modifier, user: UserProfile = user
         ) {
             AsyncImage(
                 modifier = Modifier
-                    .padding(vertical = 10.dp)
+                    .padding(bottom = 10.dp)
                     .clip(shape = CircleShape)
                     .size(130.dp),
                 model = ImageRequest.Builder(LocalContext.current)
@@ -313,45 +313,21 @@ fun UserProfileSectionUI(modifier: Modifier = Modifier, user: UserProfile = user
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-
-                Column(
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    NormalTextComponent(value = "Recipe", fontSize = 12.sp, textColor = gray4)
-                    NormalTextComponent(
-                        value = userProfile.numOfRecipes.toString(),
-                        fontSize = 20.sp,
-                        textColor = black,
-                        fontWeight = FontWeight(600)
-                    )
-                }
-                Column(
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    NormalTextComponent(value = "Followers", fontSize = 12.sp, textColor = gray4)
-                    NormalTextComponent(
-                        value = userProfile.followers.toString(),
-                        fontSize = 20.sp,
-                        textColor = black,
-                        fontWeight = FontWeight(600)
-                    )
-                }
-                Column(
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    NormalTextComponent(value = "Following", fontSize = 12.sp, textColor = gray4)
-                    NormalTextComponent(
-                        value = userProfile.following.toString(),
-                        fontSize = 20.sp,
-                        textColor = black,
-                        fontWeight = FontWeight(600)
-                    )
-                }
+                ProfileText(
+                    stringResource(id = R.string.recipe),
+                    userProfile.numOfRecipes.toString()
+                )
+                ProfileText(
+                    stringResource(id = R.string.followers),
+                    userProfile.followers.toString()
+                )
+                ProfileText(
+                    stringResource(id = R.string.following),
+                    userProfile.following.toString()
+                )
             }
         }
+
         Column(
             modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.Start
@@ -368,14 +344,34 @@ fun UserProfileSectionUI(modifier: Modifier = Modifier, user: UserProfile = user
                 textColor = gray3
             )
             Spacer(modifier = Modifier.height(15.dp))
-            NormalTextComponent(
+            ExpandableText(
+                text = "Private Chef\n" +
+                        "Passionate about food and life \uD83E\uDD58\uD83C\uDF72\uD83C\uDF5D\uD83C\uDF71\n"
+            )
+            /*NormalTextComponent(
                 value = "Private Chef\n" +
                         "Passionate about food and life \uD83E\uDD58\uD83C\uDF72\uD83C\uDF5D\uD83C\uDF71\n" +
                         "More...",
                 fontSize = 12.sp,
                 textColor = gray2
-            )
+            )*/
         }
+    }
+}
+
+@Composable
+fun ProfileText(title: String, body: String) {
+    Column(
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        NormalTextComponent(value = title, fontSize = 12.sp, textColor = gray4)
+        NormalTextComponent(
+            value = body,
+            fontSize = 20.sp,
+            textColor = black,
+            fontWeight = FontWeight(600)
+        )
     }
 }
 
@@ -400,7 +396,7 @@ fun CustomProfileTabs(
         },
         divider = {}
     ) {
-        notificationTitle.forEachIndexed { index, text ->
+        profileTitle.forEachIndexed { index, text ->
             val selected = selectedIndex == index
             Tab(
                 modifier = if (selected) Modifier

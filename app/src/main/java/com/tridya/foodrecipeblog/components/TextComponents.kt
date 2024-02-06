@@ -1,8 +1,10 @@
 package com.tridya.foodrecipeblog.components
 
 import android.util.Log
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
@@ -12,6 +14,7 @@ import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Divider
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -202,39 +205,62 @@ fun DividerTextComponent() {
     }
 }
 
+const val DEFAULT_MINIMUM_TEXT_LINE = 2
 
 @Composable
-fun ExpandableSeeMoreText(initialText: String, maxLines: Int = 3) {
-    var expanded by remember { mutableStateOf(false) }
-
-    val displayedText = buildAnnotatedString {
-        withStyle(style = SpanStyle(color = gray2)) {
-            if (expanded || initialText.length <= 100) {
-                append(initialText)
-            } else {
-                append(initialText.substring(0, 100))
-            }
+fun ExpandableText(
+    modifier: Modifier = Modifier,
+    textModifier: Modifier = Modifier,
+    style: TextStyle = LocalTextStyle.current,
+    fontStyle: FontStyle? = null,
+    text: String,
+    collapsedMaxLine: Int = DEFAULT_MINIMUM_TEXT_LINE,
+    showMoreText: String = "More..",
+    showMoreStyle: SpanStyle = SpanStyle(fontWeight = FontWeight.W500),
+    showLessText: String = " Show Less",
+    showLessStyle: SpanStyle = showMoreStyle,
+    textAlign: TextAlign? = null
+) {
+    var isExpanded by remember { mutableStateOf(false) }
+    var clickable by remember { mutableStateOf(false) }
+    var lastCharIndex by remember { mutableStateOf(0) }
+    Box(modifier = Modifier
+        .clickable(clickable) {
+            isExpanded = !isExpanded
         }
-
-        if (!expanded && initialText.length > 100) {
-            withStyle(style = SpanStyle(color = primary80)) {
-                append("\nMore...")
-            }
-        }
+        .then(modifier)
+    ) {
+        Text(
+            modifier = textModifier
+                .fillMaxWidth()
+                .animateContentSize(),
+            text = buildAnnotatedString {
+                if (clickable) {
+                    if (isExpanded) {
+                        append(text)
+                        withStyle(style = showLessStyle) { append(showLessText) }
+                    } else {
+                        val adjustText = text.substring(startIndex = 0, endIndex = lastCharIndex)
+                            .dropLast(showMoreText.length)
+                            .dropLastWhile { Character.isWhitespace(it) || it == '.' }
+                        append("\n" + adjustText)
+                        withStyle(style = showMoreStyle) { append(showMoreText) }
+                    }
+                } else {
+                    append(text)
+                }
+            },
+            maxLines = if (isExpanded) Int.MAX_VALUE else collapsedMaxLine,
+            fontStyle = fontStyle,
+            onTextLayout = { textLayoutResult ->
+                if (!isExpanded && textLayoutResult.hasVisualOverflow) {
+                    clickable = true
+                    lastCharIndex = textLayoutResult.getLineEnd(collapsedMaxLine - 1)
+                }
+            },
+            style = style,
+            textAlign = textAlign
+        )
     }
 
-    ClickableText(
-        text = displayedText,
-        onClick = { offset ->
-            if (offset > initialText.length) {
-                expanded = !expanded
-            }
-        },
-        style = TextStyle(
-            color = gray2,
-            fontSize = 12.sp,
-            lineHeight = 20.sp,
-        ),
-        maxLines = if (expanded) Int.MAX_VALUE else maxLines
-    )
 }
