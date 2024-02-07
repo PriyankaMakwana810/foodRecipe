@@ -54,7 +54,9 @@ fun ToolbarComponent(
             )
         }
         Text(
-            text = toolbarTitle, modifier = Modifier
+            text = toolbarTitle,
+            modifier = Modifier
+                .padding(10.dp)
                 .fillMaxWidth()
                 .align(Alignment.Center),
             // Text Style/Medium Text/Bold

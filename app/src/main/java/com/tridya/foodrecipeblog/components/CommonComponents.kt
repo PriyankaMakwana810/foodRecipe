@@ -300,8 +300,10 @@ fun UserProfileSectionUI(modifier: Modifier = Modifier, user: UserProfile = user
                     .size(130.dp),
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(userProfile.profilePic)
+                    .allowHardware(true)
                     .memoryCachePolicy(CachePolicy.ENABLED)
                     .diskCachePolicy(CachePolicy.ENABLED)
+                    .error(R.drawable.img_user_profile_1)
                     .crossfade(true)
                     .build(),
                 placeholder = painterResource(id = R.drawable.img_user_profile_1),

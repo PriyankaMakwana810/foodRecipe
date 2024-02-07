@@ -22,6 +22,7 @@ data class RecipeCard(
     val ratings: Float = generateRandomRating(),
     var postedBy: String = randomName,
     val userProfilePhoto: String = generateUserProfilePhotoForUser(randomName),
+    val isAddedByUser: Boolean = false,
     var strDrinkAlternate: String? = null,
     var strCategory: String? = null,
     var strArea: String? = null,

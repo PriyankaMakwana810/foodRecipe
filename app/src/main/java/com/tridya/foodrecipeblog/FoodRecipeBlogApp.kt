@@ -26,6 +26,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.tridya.foodrecipeblog.models.BottomNavigationItem
 import com.tridya.foodrecipeblog.navigation.NavigationCompose
+import com.tridya.foodrecipeblog.navigation.Screen
 import com.tridya.foodrecipeblog.ui.theme.primary100
 import com.tridya.foodrecipeblog.ui.theme.white
 import com.tridya.foodrecipeblog.utils.Constants.HOME
@@ -61,7 +62,9 @@ fun FoodRecipeBlogApp() {
                         if (index == 2) {
                             FloatingActionButton(
 //                                    modifier = Modifier.size(40.dp),
-                                onClick = {},
+                                onClick = {
+                                          navController.navigate(Screen.NewRecipeScreen.route)
+                                },
                                 containerColor = primary100,
                                 contentColor = white,
                                 shape = CircleShape,

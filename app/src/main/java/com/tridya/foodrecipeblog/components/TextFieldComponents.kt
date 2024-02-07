@@ -1,5 +1,6 @@
 package com.tridya.foodrecipeblog.components
 
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
@@ -26,7 +27,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.tridya.foodrecipeblog.ui.theme.black
+import com.tridya.foodrecipeblog.ui.theme.gray2
 import com.tridya.foodrecipeblog.ui.theme.gray3
+import com.tridya.foodrecipeblog.ui.theme.primary80
 import com.tridya.foodrecipeblog.ui.theme.secondary100
 import com.tridya.foodrecipeblog.ui.theme.white
 
@@ -57,6 +60,7 @@ fun TextFieldCustom(
             )
         },
         isError = isError,
+
         supportingText = {
             if (isError) {
                 ErrorTextInputField(text = errorText)
@@ -67,14 +71,17 @@ fun TextFieldCustom(
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
         shape = RoundedCornerShape(size = 10.dp),
         modifier = Modifier
-            .fillMaxWidth(),
-//            .border(width = 1.5.dp, color = gray3, shape = RoundedCornerShape(size = 10.dp)),
+            .fillMaxWidth()
+            .border(width = 1.5.dp, color = gray3, shape = RoundedCornerShape(size = 10.dp)),
         colors = OutlinedTextFieldDefaults.colors(
             cursorColor = black,
             unfocusedContainerColor = white,
             focusedContainerColor = white,
             unfocusedBorderColor = gray3,
-            focusedBorderColor = gray3,
+            focusedBorderColor = primary80,
+            focusedTextColor = black,
+            disabledTextColor = gray2,
+            unfocusedTextColor = black
         )
     )
 }
@@ -129,7 +136,10 @@ fun TextFieldPassword(
             unfocusedContainerColor = white,
             focusedContainerColor = white,
             unfocusedBorderColor = gray3,
-            focusedBorderColor = gray3,
+            focusedBorderColor = primary80,
+            focusedTextColor = black,
+            disabledTextColor = gray2,
+            unfocusedTextColor = black
         )
     )
 }

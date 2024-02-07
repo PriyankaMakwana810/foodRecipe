@@ -49,7 +49,6 @@ import coil.request.CachePolicy
 import coil.request.ImageRequest.Builder
 import com.tridya.foodrecipeblog.R
 import com.tridya.foodrecipeblog.api.ApiState
-import com.tridya.foodrecipeblog.database.tables.RecipeCard
 import com.tridya.foodrecipeblog.components.CustomButtonComponent
 import com.tridya.foodrecipeblog.components.ListFilterCategory
 import com.tridya.foodrecipeblog.components.ListFilterIngredients
@@ -62,6 +61,7 @@ import com.tridya.foodrecipeblog.components.ShowProgress
 import com.tridya.foodrecipeblog.components.SimpleTextComponent
 import com.tridya.foodrecipeblog.components.TitleSearchResults
 import com.tridya.foodrecipeblog.components.ToolbarComponent
+import com.tridya.foodrecipeblog.database.tables.RecipeCard
 import com.tridya.foodrecipeblog.navigation.Screen
 import com.tridya.foodrecipeblog.ui.theme.black
 import com.tridya.foodrecipeblog.ui.theme.white
@@ -105,14 +105,26 @@ fun SearchScreen(
 
             is ApiState.Success -> {
                 recipeCategoryList = (stateCategoryResult as ApiState.Success<List<String>>).data
-                recipeIngredientsList =
-                    (stateIngredientResult as ApiState.Success<List<String>>).data
-                Log.e("TAG", "SearchScreen: $recipeCategoryList")
                 Log.e("TAG", "SearchScreen: $recipeIngredientsList")
             }
 
             is ApiState.Error -> {
                 val error = (stateCategoryResult as ApiState.Error).message
+                Log.e("TAG", "SearchScreen: Something Went Wrong ")
+            }
+        }
+        when (stateIngredientResult) {
+            is ApiState.Loading -> {
+            }
+
+            is ApiState.Success -> {
+                recipeIngredientsList =
+                    (stateIngredientResult as ApiState.Success<List<String>>).data
+                Log.e("TAG", "SearchScreen: $recipeIngredientsList")
+            }
+
+            is ApiState.Error -> {
+                val error = (stateIngredientResult as ApiState.Error).message
                 Log.e("TAG", "SearchScreen: Something Went Wrong ")
             }
         }

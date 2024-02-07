@@ -65,13 +65,6 @@ fun LoginScreen(navController: NavController) {
     val loginViewModel: LoginViewModel = hiltViewModel()
     val context = LocalContext.current
 
-    if (loginViewModel.sharedPreferences.isLoggedIn) {
-        navController.navigate(Screen.HomeScreen.route) {
-            popUpTo(Screen.IntroScreen.route) {
-                inclusive = false
-            }
-        }
-    }
     val loginState by remember { loginViewModel.loginState }
 
     val callbackManager = remember { CallbackManager.Factory.create() }
@@ -212,7 +205,7 @@ fun LoginScreen(navController: NavController) {
                     if (loginState.isLoginSuccessful) {
                         navController.navigate(Screen.HomeScreen.route) {
                             popUpTo(Screen.IntroScreen.route) {
-                                inclusive = true
+                                inclusive = false
                             }
                         }
                     }

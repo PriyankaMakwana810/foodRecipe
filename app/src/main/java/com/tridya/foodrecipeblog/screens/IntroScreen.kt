@@ -24,15 +24,20 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.tridya.foodrecipeblog.R
 import com.tridya.foodrecipeblog.components.ButtonComponent
 import com.tridya.foodrecipeblog.components.SimpleTextComponent
 import com.tridya.foodrecipeblog.navigation.Screen
 import com.tridya.foodrecipeblog.ui.theme.white
+import com.tridya.foodrecipeblog.viewModels.HomeViewModel
 
 @Composable
-fun IntroScreen(navController: NavController) {
+fun IntroScreen(
+    navController: NavController,
+    homeViewModel: HomeViewModel = hiltViewModel(),
+) {
 
     Surface(
         modifier = Modifier
@@ -87,12 +92,24 @@ fun IntroScreen(navController: NavController) {
             }
 
             Column(
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 50.dp).align(Alignment.BottomCenter),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 50.dp)
+                    .align(Alignment.BottomCenter),
                 verticalArrangement = Arrangement.Bottom,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 ButtonComponent(value = "Start Cooking", onButtonClicked = {
-                    navController.navigate(Screen.LoginScreen.route)
+                    if (homeViewModel.sharedPreferences.isLoggedIn) {
+                        navController.navigate(Screen.HomeScreen.route) {
+                            popUpTo(Screen.IntroScreen.route) {
+                                inclusive = false
+                            }
+                        }
+                    }else{
+                        navController.navigate(Screen.LoginScreen.route)
+
+                    }
                 })
                 Spacer(modifier = Modifier.height(100.dp))
             }
