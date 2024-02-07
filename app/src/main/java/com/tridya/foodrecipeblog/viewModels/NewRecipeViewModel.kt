@@ -2,8 +2,12 @@ package com.tridya.foodrecipeblog.viewModels
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.net.Uri
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
@@ -29,10 +33,12 @@ class NewRecipeViewModel @Inject constructor(
 ) : ViewModel() {
     val recipeNameState: MutableState<String> = mutableStateOf("")
     val categoryState: MutableState<String> = mutableStateOf("")
-    val timeToCookState: MutableState<Long> = mutableStateOf(0L)
+    val timeToCookState: MutableState<String> = mutableStateOf("")
     val procedureState: MutableState<String> = mutableStateOf("")
     var ingredient: MutableState<String> = mutableStateOf("")
     var measurement: MutableState<String> = mutableStateOf("")
+    var photoUri:MutableState<Uri?> = mutableStateOf(null)
+
 
     //    var ingredientsList by remember { mutableStateOf(listOf<Pair<String, String>>()) }
     var area: MutableState<String> = mutableStateOf("")
@@ -101,7 +107,7 @@ class NewRecipeViewModel @Inject constructor(
                 idMeal = generateUniqueMealId(),
                 isAddedByUser = true,
                 strMeal = recipeName,
-                timeToCook = timeToCook,
+                timeToCook = timeToCook.toLong(),
                 tagline = "",
                 isSaved = false,
                 isSearched = false,

@@ -1,5 +1,9 @@
 package com.tridya.foodrecipeblog.screens
 
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -24,8 +28,13 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -39,6 +48,8 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.tridya.foodrecipeblog.R
 import com.tridya.foodrecipeblog.components.CustomButtonComponent
+import com.tridya.foodrecipeblog.components.ImageAddingPreview
+import com.tridya.foodrecipeblog.components.LabelText
 import com.tridya.foodrecipeblog.components.NormalTextComponent
 import com.tridya.foodrecipeblog.components.SimpleTextComponent
 import com.tridya.foodrecipeblog.components.ToolbarComponent
@@ -47,6 +58,7 @@ import com.tridya.foodrecipeblog.ui.theme.gray2
 import com.tridya.foodrecipeblog.ui.theme.gray4
 import com.tridya.foodrecipeblog.ui.theme.secondary100
 import com.tridya.foodrecipeblog.ui.theme.white
+import com.tridya.foodrecipeblog.utils.showShortToast
 import com.tridya.foodrecipeblog.viewModels.NewRecipeViewModel
 
 @Composable
@@ -56,7 +68,14 @@ fun NewRecipeScreen(
     newRecipeViewModel: NewRecipeViewModel = hiltViewModel(),
 ) {
 
-//    val context = LocalContext.current
+    var photoUri: Uri? by remember { mutableStateOf(null) }
+
+    val launcher =
+        rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+            //When the user has selected a photo, its URL is returned here
+            photoUri = uri
+        }
+    val context = LocalContext.current
 //    var showDialog by remember { mutableStateOf(false) }
 
     val colorsOfTextFields = OutlinedTextFieldDefaults.colors(
@@ -79,7 +98,10 @@ fun NewRecipeScreen(
         ) {
             ToolbarComponent(
                 showBackArrow = true,
-                toolbarTitle = stringResource(R.string.add_new_recipe)
+                toolbarTitle = stringResource(R.string.add_new_recipe),
+                onBackClicked = {
+                    navController.navigateUp()
+                }
             )
             LazyColumn(
                 modifier = Modifier
@@ -105,11 +127,21 @@ fun NewRecipeScreen(
                     )
                     Spacer(modifier = Modifier.height(10.dp))
 
-                    Text(
-                        "Name of Recipe*",
-                        fontSize = 14.sp,
-                        modifier = Modifier.padding(bottom = 8.dp)
-                    )
+                    LabelText(title = "Image of Recipe*")
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        ImageAddingPreview(photoUri = photoUri, onEditClicked = {
+                            launcher.launch(
+                                PickVisualMediaRequest(
+                                    mediaType = ActivityResultContracts.PickVisualMedia.ImageOnly
+                                )
+                            )
+                        })
+                    }
+
+                    LabelText(title = "Name of Recipe*")
                     OutlinedTextField(
                         value = newRecipeViewModel.recipeNameState.value,
                         onValueChange = { newRecipeViewModel.recipeNameState.value = it },
@@ -131,7 +163,7 @@ fun NewRecipeScreen(
                     )
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    Text("Category*", modifier = Modifier.padding(bottom = 8.dp), fontSize = 14.sp)
+                    LabelText(title = "Category*")
                     OutlinedTextField(
                         value = newRecipeViewModel.categoryState.value,
                         onValueChange = { newRecipeViewModel.categoryState.value = it },
@@ -149,14 +181,11 @@ fun NewRecipeScreen(
                         colors = colorsOfTextFields
                     )
                     Spacer(modifier = Modifier.height(16.dp))
-                    Text(
-                        "Time to cook*",
-                        modifier = Modifier.padding(bottom = 8.dp),
-                        fontSize = 14.sp
-                    )
+
+                    LabelText(title = "Time to cook*")
                     OutlinedTextField(
-                        value = newRecipeViewModel.timeToCookState.value.toString(),
-                        onValueChange = { newRecipeViewModel.timeToCookState.value = it.toLong() },
+                        value = newRecipeViewModel.timeToCookState.value,
+                        onValueChange = { newRecipeViewModel.timeToCookState.value = it },
                         modifier = Modifier
                             .fillMaxWidth()
                             .border(width = 2.dp, color = gray4, shape = RoundedCornerShape(10.dp)),
@@ -173,7 +202,7 @@ fun NewRecipeScreen(
                     )
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    Text("Procedure *", modifier = Modifier.padding(bottom = 8.dp))
+                    LabelText(title = "Procedure *")
                     OutlinedTextField(
                         value = newRecipeViewModel.procedureState.value,
                         onValueChange = { newRecipeViewModel.procedureState.value = it },
@@ -193,7 +222,6 @@ fun NewRecipeScreen(
                     )
 
                     Spacer(modifier = Modifier.height(16.dp))
-                    // Ingredient and Measurement fields for each pair
                     newRecipeViewModel.ingredientMeasurementPairs.value.forEachIndexed { index, (ingredient, measurement) ->
                         Row(
                             modifier = Modifier.fillMaxWidth(),
@@ -203,10 +231,7 @@ fun NewRecipeScreen(
                                 modifier = Modifier.weight(0.5f),
                                 verticalArrangement = Arrangement.Top
                             ) {
-                                Text(
-                                    "Ingredient ${index + 1} *",
-                                    modifier = Modifier.padding(bottom = 8.dp)
-                                )
+                                LabelText(title = "Ingredient ${index + 1}*")
                                 OutlinedTextField(
                                     value = ingredient,
                                     onValueChange = { updatedIngredient ->
@@ -240,10 +265,7 @@ fun NewRecipeScreen(
                                 modifier = Modifier.weight(0.5f),
                                 verticalArrangement = Arrangement.Top
                             ) {
-                                Text(
-                                    "Measurement ${index + 1} *",
-                                    modifier = Modifier.padding(bottom = 8.dp)
-                                )
+                                LabelText(title = "Measurement ${index + 1}*")
                                 OutlinedTextField(
                                     value = measurement,
                                     onValueChange = { updatedMeasurement ->
@@ -289,8 +311,6 @@ fun NewRecipeScreen(
                             contentDescription = "Add",
                             tint = secondary100,
                         )
-
-                        // Text
                         Text(
                             text = "Add Ingredient and Measurement",
                             modifier = Modifier
@@ -306,7 +326,8 @@ fun NewRecipeScreen(
                         )
                     }
                     Spacer(modifier = Modifier.height(16.dp))
-                    Text("Area", modifier = Modifier.padding(bottom = 8.dp))
+
+                    LabelText(title = "Area")
                     OutlinedTextField(
                         value = newRecipeViewModel.area.value,
                         onValueChange = { newRecipeViewModel.area.value = it },
@@ -325,7 +346,7 @@ fun NewRecipeScreen(
                     )
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    Text("Source", modifier = Modifier.padding(bottom = 8.dp))
+                    LabelText(title = "Source")
                     OutlinedTextField(
                         value = newRecipeViewModel.source.value,
                         onValueChange = { newRecipeViewModel.source.value = it },
@@ -344,7 +365,7 @@ fun NewRecipeScreen(
                     )
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    Text("YouTube Link", modifier = Modifier.padding(bottom = 8.dp))
+                    LabelText(title = "YouTube Link")
                     OutlinedTextField(
                         value = newRecipeViewModel.youtubeLink.value,
                         onValueChange = { newRecipeViewModel.youtubeLink.value = it },
@@ -367,30 +388,17 @@ fun NewRecipeScreen(
                         modifier = Modifier
                             .fillMaxWidth(),
                         onButtonClicked = {
-                            newRecipeViewModel.validateAndSaveRecipe(navController)
+                            if (photoUri != null) {
+                                newRecipeViewModel.validateAndSaveRecipe(navController)
+                            } else {
+                                showShortToast(context, "Please add image of Recipe!!")
+                            }
                         }
                     )
                     Spacer(modifier = Modifier.height(20.dp))
                 }
             }
-            /*            if (showDialog) {
-                            AlertDialog(
-                                onDismissRequest = { showDialog = false },
-                                title = { Text("Error") },
-                                text = { Text("Please fill both Ingredient and Measurement fields") },
-                                confirmButton = {
-                                    Button(
-                                        colors = ButtonDefaults.buttonColors(
-                                            containerColor = primary100,
-                                            contentColor = black
-                                        ),
-                                        onClick = { showDialog = false },
-                                    ) {
-                                        Text("OK")
-                                    }
-                                }
-                            )
-                        }*/
+
         }
     }
 }

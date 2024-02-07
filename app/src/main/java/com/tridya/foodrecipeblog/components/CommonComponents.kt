@@ -1,7 +1,10 @@
 package com.tridya.foodrecipeblog.components
 
+import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,6 +17,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
@@ -50,6 +55,7 @@ import com.tridya.foodrecipeblog.ui.theme.gray4
 import com.tridya.foodrecipeblog.ui.theme.primary100
 import com.tridya.foodrecipeblog.ui.theme.primary80
 import com.tridya.foodrecipeblog.ui.theme.secondary100
+import com.tridya.foodrecipeblog.ui.theme.shadow
 import com.tridya.foodrecipeblog.ui.theme.white
 import com.tridya.foodrecipeblog.utils.StaticData.notificationTitle
 import com.tridya.foodrecipeblog.utils.StaticData.profileTitle
@@ -377,6 +383,45 @@ fun ProfileText(title: String, body: String) {
     }
 }
 
+@Preview
+@Composable
+fun ImageAddingPreview(
+    modifier: Modifier = Modifier,
+    photoUri: Uri? = null,
+    onEditClicked: () -> Unit = {},
+) {
+    Box {
+        AsyncImage(
+            modifier = Modifier
+                .align(Alignment.Center)
+                .clip(shape = CircleShape)
+                .size(130.dp)
+                .border(width = 3.dp, color = primary80, shape = CircleShape),
+            model = ImageRequest.Builder(LocalContext.current)
+                .data(photoUri ?: R.drawable.food_image)
+                .memoryCachePolicy(CachePolicy.ENABLED)
+                .diskCachePolicy(CachePolicy.ENABLED)
+                .error(R.drawable.food_image)
+                .crossfade(true)
+                .build(),
+            placeholder = painterResource(id = R.drawable.food_image),
+            contentDescription = "image description",
+            contentScale = ContentScale.Crop,
+        )
+        Icon(
+            imageVector = Icons.Default.Edit,
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .background(color = shadow, shape = CircleShape)
+                .padding(5.dp)
+                .clickable { onEditClicked() },
+            contentDescription = "Localized description",
+            tint = white,
+        )
+
+    }
+
+}
 
 @Preview
 @Composable
