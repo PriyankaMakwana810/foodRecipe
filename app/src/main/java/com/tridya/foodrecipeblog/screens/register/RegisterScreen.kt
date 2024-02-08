@@ -130,7 +130,7 @@ fun RegisterScreen(navController: NavController) {
     }
 
     OneTapSignInWithGoogle(state = oneTapSignInState,
-        clientId = "567930687823-8g419u2eg5rom36u5dc3u078j0a6ppq3.apps.googleusercontent.com",
+        clientId = stringResource(id = R.string.google_one_tap_client_id),
         rememberAccount = false,
         onTokenIdReceived = { tokenId ->
             authenticated = true

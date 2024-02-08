@@ -24,13 +24,13 @@ import javax.inject.Named
 class LoginViewModel @Inject constructor(
     private val repository: LoginRepository,
     @Named(SHARED_COMMON) val sharedPreferences: PrefUtils,
-//    val client: SignInClient,
 ) : ViewModel() {
 
     private val error = MutableLiveData<String>()
     private lateinit var disposable: Disposable
     var loginState = mutableStateOf(LoginState())
         private set
+
 
     fun onUiEvent(loginUiEvent: LoginUiEvent) {
         when (loginUiEvent) {

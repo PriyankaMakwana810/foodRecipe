@@ -10,9 +10,11 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,7 +22,9 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -30,6 +34,7 @@ import com.tridya.foodrecipeblog.R
 import com.tridya.foodrecipeblog.components.ButtonComponent
 import com.tridya.foodrecipeblog.components.SimpleTextComponent
 import com.tridya.foodrecipeblog.navigation.Screen
+import com.tridya.foodrecipeblog.ui.theme.poppinsFont
 import com.tridya.foodrecipeblog.ui.theme.white
 import com.tridya.foodrecipeblog.viewModels.HomeViewModel
 
@@ -60,7 +65,7 @@ fun IntroScreen(
                 Spacer(modifier = Modifier.height(80.dp))
                 Image(
                     painter = painterResource(id = R.drawable.img_recipe_cap),
-                    contentDescription = "100K+ Premium Recipe",
+                    contentDescription = stringResource(id = R.string._100k_premium_recipe),
                     modifier = Modifier
                         .size(80.dp)
                         .align(Alignment.CenterHorizontally)
@@ -79,12 +84,22 @@ fun IntroScreen(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Spacer(modifier = Modifier.height(20.dp))
-                    SimpleTextComponent(
-                        value = stringResource(id = R.string.get_cooking),
-                        fontSize = 50.sp,
-                        fontWeight = FontWeight(600)
+                    Text(
+                        text = stringResource(id = R.string.get_cooking),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .heightIn(),
+                        style = TextStyle(
+                            fontSize = 50.sp,
+                            lineHeight = 60.sp,
+                            fontWeight = FontWeight(600),
+                            fontFamily = poppinsFont,
+                            color = white,
+                            textAlign = TextAlign.Center,
+                        )
                     )
-                    Spacer(modifier = Modifier.height(10.dp))
+
+                    Spacer(modifier = Modifier.height(15.dp))
                     SimpleTextComponent(
                         value = stringResource(id = R.string.simple_way_to_find_tasty_recipe),
                         fontSize = 16.sp, fontWeight = FontWeight(400)

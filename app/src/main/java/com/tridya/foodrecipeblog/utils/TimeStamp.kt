@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit
 object TimeStamp {
     const val FULL_DATE_FORMAT = "dd-MM-yyyy, hh:mm:ss a"
     const val FULL_DATE_FORMAT_SCHEDULE = "EEE dd MMM, hh:mm aa"
-    const val DATE_FORMAT_DDMMYYYY = "dd/MM/yyyy"
+    const val DATE_FORMAT_DDMMYYYY = "dd/MM/yyyy hh:mm"
     const val DATE_FORMAT_DDMMMYYYY = "dd MMM yyyy"
     const val DATE_FORMAT_MMDDYYYY = "MM/dd/yyyy"
     const val DATE_FORMAT_MMMDDYYYY = "MMM dd yyyy"
@@ -57,7 +57,7 @@ object TimeStamp {
 
     fun millisToFormat(millis: String): String {
         val timeZone = TimeZone.getTimeZone(TimeZone.getDefault().id)
-        return millisToFormat(millis.toLong(), FULL_DATE_FORMAT, timeZone)
+        return millisToFormat(millis.toLong(), DATE_FORMAT_DDMMYYYY, timeZone)
     }
 
     fun millisToFormat(millis: Long, format: String?): String {

@@ -47,6 +47,7 @@ import com.tridya.foodrecipeblog.ui.theme.gray3
 import com.tridya.foodrecipeblog.ui.theme.gray4
 import com.tridya.foodrecipeblog.ui.theme.white
 import com.tridya.foodrecipeblog.utils.StaticData.listOfReviews
+import com.tridya.foodrecipeblog.utils.TimeStamp.millisToFormat
 import com.tridya.foodrecipeblog.utils.showShortToast
 import com.tridya.foodrecipeblog.viewModels.CommonViewModel
 
@@ -66,12 +67,12 @@ fun ReviewScreen(
                 id = listOfReviews.last().id + 1,
                 userName = reviewViewModel.sharedPreferences.user?.userName!!,
                 profilePicPath = reviewViewModel.sharedPreferences.user?.profilePicPath!!,
-                time = System.currentTimeMillis().toString(),
+                time = millisToFormat(System.currentTimeMillis().toString()),
                 comment = reviewText
             )
             listOfReviews = listOfReviews + newReview
             reviewText = "" // Clear the text field after adding the review
-            showShortToast(context,"Review Added Successfully!")
+            showShortToast(context, context.getString(R.string.review_added_successfully))
         }
     }
     Surface(
@@ -95,12 +96,16 @@ fun ReviewScreen(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    NormalTextComponent(value = "200 Comments", fontSize = 12.sp, textColor = gray3)
-                    NormalTextComponent(value = "155 Saved", fontSize = 12.sp, textColor = gray3)
+                    NormalTextComponent(
+                        value = stringResource(R.string.comments, listOfReviews.size),
+                        fontSize = 12.sp,
+                        textColor = gray3
+                    )
+                    NormalTextComponent(value = stringResource(R.string._155_saved), fontSize = 12.sp, textColor = gray3)
                 }
                 NormalTextComponent(
                     modifier = Modifier.padding(top = 14.dp),
-                    value = "Leave a comment",
+                    value = stringResource(R.string.leave_a_comment),
                     fontSize = 16.sp,
                     textColor = black
                 )
@@ -113,7 +118,7 @@ fun ReviewScreen(
                         },
                         placeholder = {
                             Text(
-                                text = "Say Something...", style = TextStyle(
+                                text = stringResource(R.string.say_something), style = TextStyle(
                                     fontSize = 10.sp,
                                     fontWeight = FontWeight(400),
                                     color = gray4
@@ -147,7 +152,7 @@ fun ReviewScreen(
                     modifier = Modifier.padding(top = 20.dp, bottom = 10.dp),
                     verticalArrangement = Arrangement.spacedBy(20.dp)
                 ) {
-                    items(listOfReviews) { item ->
+                    items(listOfReviews.reversed()) { item ->
                         ReviewByUserComponent(review = item)
                     }
                 }

@@ -6,7 +6,9 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -48,8 +50,8 @@ fun ButtonComponent(modifier: Modifier = Modifier, value: String, onButtonClicke
             color = white,
             textAlign = TextAlign.Center,
         )
-        Spacer(modifier = Modifier.size(ButtonDefaults.IconSize))
-        Icon(painter = painterResource(id = R.drawable.arrow_right), contentDescription = "")
+        Spacer(modifier = Modifier.width(8.dp))
+        Icon(painter = painterResource(id = R.drawable.arrow_right), contentDescription = "",modifier = Modifier.padding(top = 4.dp))
 
     }
 }

@@ -23,6 +23,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -84,34 +85,35 @@ fun HomeScreen(
             .fillMaxSize()
             .padding(paddingValues), color = white
     ) {
-        when (areaState) {
-            is ApiState.Loading -> {
-//                ShowProgress()
-            }
-
-            is ApiState.Success -> {
-                val areas = (areaState as ApiState.Success<List<Areas>>).data
-                val listOfArea: List<String> = areas.map { meal -> meal.strArea }
-                var selectedArea by remember {
-                    mutableStateOf("")
+        Column(
+            Modifier
+                .verticalScroll(state = scrollState)
+                .fillMaxSize()
+        ) {
+            Spacer(modifier = Modifier.height(20.dp))
+            ProfileSection(modifier = Modifier.fillMaxWidth(), userName = "Hello $userName")
+            SearchBarWithFilter(ifHome = true, onSearchClicked = {
+                navController.navigate(Screen.SearchScreen.route) {
+                    this.launchSingleTop = true
                 }
-                Column(
-                    Modifier
-                        .verticalScroll(state = scrollState)
-                        .fillMaxSize()
-                ) {
-                    Spacer(modifier = Modifier.height(20.dp))
-                    ProfileSection(modifier = Modifier.fillMaxWidth(), userName = "Hello $userName")
-                    SearchBarWithFilter(ifHome = true, onSearchClicked = {
-                        navController.navigate(Screen.SearchScreen.route) {
-                            this.launchSingleTop = true
-                        }
-                    })
+            })
+            when (areaState) {
+                is ApiState.Loading -> {
+                    ShowProgress()
+                }
+
+                is ApiState.Success -> {
+                    val areas = (areaState as ApiState.Success<List<Areas>>).data
+                    val listOfArea: List<String> = areas.map { meal -> meal.strArea }
+                    var selectedArea by remember {
+                        mutableStateOf("")
+                    }
                     LaunchedEffect(Unit) {
                         selectedArea = listOfArea.first()
                         if (!homeViewModel.loaded.value)
                             homeViewModel.getRecipeByArea(listOfArea.first())
                     }
+
                     ListSelectCountry(listOfCountries = listOfArea) { selectedItem ->
                         println("Selected item: $selectedItem")
                         selectedArea = selectedItem
@@ -160,7 +162,6 @@ fun HomeScreen(
                             )
                         }
                     }
-
                     SimpleTextComponent(
                         modifier = Modifier.padding(top = 10.dp, start = 20.dp),
                         value = stringResource(R.string.new_recipes),
@@ -200,6 +201,7 @@ fun HomeScreen(
                             ) {
                                 item {
                                     NormalTextComponent(
+                                        modifier = Modifier.align(Alignment.CenterHorizontally),
                                         value = error,
                                         fontSize = 20.sp,
                                         align = TextAlign.Center
@@ -208,20 +210,19 @@ fun HomeScreen(
                             }
                         }
                     }
-
                 }
-            }
 
-            is ApiState.Error -> {
-                val error = (areaState as ApiState.Error).message
-                // Show error message
-                Text(
-                    text = "Failed to fetch data: $error",
-                    modifier = Modifier
-                        .padding(16.dp)
-                        .fillMaxWidth(),
-                    textAlign = TextAlign.Center
-                )
+                is ApiState.Error -> {
+                    val error = (areaState as ApiState.Error).message
+                    // Show error message
+                    Text(
+                        text = "Failed to fetch data: $error",
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .fillMaxWidth(),
+                        textAlign = TextAlign.Center
+                    )
+                }
             }
         }
     }

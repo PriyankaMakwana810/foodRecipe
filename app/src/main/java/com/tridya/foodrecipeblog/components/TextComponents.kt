@@ -28,6 +28,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -37,9 +38,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tridya.foodrecipeblog.R
 import com.tridya.foodrecipeblog.ui.theme.black
-import com.tridya.foodrecipeblog.ui.theme.gray2
 import com.tridya.foodrecipeblog.ui.theme.gray4
-import com.tridya.foodrecipeblog.ui.theme.primary80
+import com.tridya.foodrecipeblog.ui.theme.poppinsFont
 import com.tridya.foodrecipeblog.ui.theme.secondary100
 import com.tridya.foodrecipeblog.ui.theme.white
 
@@ -49,6 +49,7 @@ fun SimpleTextComponent(
     value: String,
     fontSize: TextUnit,
     fontWeight: FontWeight,
+    fontFamily: FontFamily = poppinsFont,
     textColor: Color = white,
     textAlign: TextAlign = TextAlign.Center,
 ) {
@@ -61,6 +62,7 @@ fun SimpleTextComponent(
             fontSize = fontSize,
             lineHeight = 40.sp,
             fontWeight = fontWeight,
+            fontFamily = fontFamily,
             color = textColor,
             textAlign = textAlign,
         )
@@ -149,8 +151,9 @@ fun ClickableTextLoginComponent(
     onTextSelected: (String) -> Unit,
 ) {
     val initialText =
-        if (tryingToLogin) "Already a member? " else "Don't have an account? "
-    val loginText = if (tryingToLogin) "Sign In" else "Sign up"
+        if (tryingToLogin) stringResource(R.string.already_a_member) else stringResource(R.string.don_t_have_an_account)
+    val loginText =
+        if (tryingToLogin) stringResource(R.string.sign_in) else stringResource(R.string.sign_up)
     val annotatedString = buildAnnotatedString {
         append(initialText)
         withStyle(style = SpanStyle(color = secondary100)) {
@@ -219,7 +222,7 @@ fun ExpandableText(
     showMoreStyle: SpanStyle = SpanStyle(fontWeight = FontWeight.W500),
     showLessText: String = " Show Less",
     showLessStyle: SpanStyle = showMoreStyle,
-    textAlign: TextAlign? = null
+    textAlign: TextAlign? = null,
 ) {
     var isExpanded by remember { mutableStateOf(false) }
     var clickable by remember { mutableStateOf(false) }

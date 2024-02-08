@@ -1,12 +1,12 @@
 <resources>
     <string name="app_name">FoodReciepeBlog</string>
-    
-<!--    google Signin client id-->
-    <string name="google_cloud_server_client_id">567930687823-htugu316ksushltbvthlp0230vodampm.apps.googleusercontent.com</string>
-<!--    web client id google signIn-->
 
-    <string name="google_cloud_web_client_id">567930687823-6rl4rv9bclio2i5gu9ni6a340b9bu9k7.apps.googleusercontent.com</string>
+    <!--    google Signin client id-->
+    <!--    <string name="google_cloud_server_client_id">567930687823-htugu316ksushltbvthlp0230vodampm.apps.googleusercontent.com</string>-->
+    <!--    web client id google signIn-->
+    <!--    <string name="google_cloud_web_client_id">567930687823-6rl4rv9bclio2i5gu9ni6a340b9bu9k7.apps.googleusercontent.com</string>-->
 
+    <string name="google_one_tap_client_id">567930687823-8g419u2eg5rom36u5dc3u078j0a6ppq3.apps.googleusercontent.com</string>
     <string name="_100k_premium_recipe">"100K+ Premium Recipe "</string>
     <string name="get_cooking">Get\nCooking</string>
     <string name="simple_way_to_find_tasty_recipe">Simple way to find Tasty Recipe</string>
@@ -40,7 +40,7 @@
     <string name="enter_name">Enter Name</string>
 
 
-<!--    facebook login details-->
+    <!--    facebook login details-->
 
     <string name="facebook_app_id">2750791605059480</string>
     <string name="fb_login_protocol_scheme">fb2750791605059480</string>
@@ -80,6 +80,15 @@
     <string name="sharing_a_recipe_is_like_passing_on_a_delicious_secret_a_gift_of_flavors_waiting_to_be_savored_it_s_a_culinary_journey_that_transforms_ingredients_into_memories_inviting_others_to_create_and_share_in_the_joy_of_a_well_loved_dish">Sharing a recipe is like passing on a delicious secret, a gift of flavors waiting to be savored. It\'s a culinary journey that transforms ingredients into memories, inviting others to create and share in the joy of a well-loved dish.</string>
     <string name="add_new_recipe">Add New Recipe</string>
     <string name="save_recipe">Save Recipe</string>
+    <string name="say_something">Say Something...</string>
+    <string name="review_added_successfully">Review Added Successfully!</string>
+    <string name="comments">%1$s Comments</string>
+    <string name="_155_saved">155 Saved</string>
+    <string name="leave_a_comment">Leave a comment</string>
+    <string name="no_internet_connection">No internet Connection!!</string>
+    <string name="already_a_member">"Already a member? "</string>
+    <string name="don_t_have_an_account">"Don't have an account? "</string>
+    <string name="sign_up">Sign up</string>
 
 
 </resources>
