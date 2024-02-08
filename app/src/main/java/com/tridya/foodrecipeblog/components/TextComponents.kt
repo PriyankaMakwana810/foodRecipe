@@ -99,8 +99,8 @@ fun SmallTextLabel(modifier: Modifier = Modifier, value: String) {
             .padding(vertical = 10.dp),
         style = TextStyle(
             fontSize = 14.sp,
+            fontFamily = poppinsFont,
             fontWeight = FontWeight.Normal,
-            fontStyle = FontStyle.Normal
         ),
         color = black,
     )
@@ -139,6 +139,7 @@ fun YellowSmallText(value: String, onClick: () -> Unit) {
         style = TextStyle(
             fontSize = 12.sp,
             fontWeight = FontWeight.Normal,
+            fontFamily = poppinsFont,
             fontStyle = FontStyle.Normal
         ),
         color = secondary100,
@@ -168,6 +169,7 @@ fun ClickableTextLoginComponent(
         style = TextStyle(
             fontSize = 14.sp,
             fontWeight = FontWeight(500),
+            fontFamily = poppinsFont,
             fontStyle = FontStyle.Normal,
             textAlign = TextAlign.Center
         ),
@@ -199,6 +201,7 @@ fun DividerTextComponent() {
             fontSize = 12.sp,
             modifier = Modifier.padding(8.dp),
             fontWeight = FontWeight(500),
+            fontFamily = poppinsFont,
             color = gray4
         )
         Divider(

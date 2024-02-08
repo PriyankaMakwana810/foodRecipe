@@ -64,7 +64,7 @@ fun SocialIcons(
         ) {
             Image(
                 painter = painterResource(id = R.drawable.facebook_svg),
-                contentDescription = "Google Logo",
+                contentDescription = "Facebook Logo",
             )
         }
     }

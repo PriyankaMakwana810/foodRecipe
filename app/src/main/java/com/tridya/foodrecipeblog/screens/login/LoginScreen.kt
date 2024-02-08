@@ -171,7 +171,6 @@ fun LoginScreen(navController: NavController) {
                 textColor = black,
                 textAlign = TextAlign.Left
             )
-
             SimpleTextComponent(
                 value = stringResource(R.string.welcome_back),
                 fontSize = 20.sp,
@@ -179,7 +178,7 @@ fun LoginScreen(navController: NavController) {
                 textColor = black,
                 textAlign = TextAlign.Left
             )
-            Spacer(modifier = Modifier.height(30.dp))
+            Spacer(modifier = Modifier.height(40.dp))
 
             SmallTextLabel(value = stringResource(R.string.email))
             TextFieldCustom(
@@ -217,7 +216,7 @@ fun LoginScreen(navController: NavController) {
             YellowSmallText(value = stringResource(R.string.forgot_password), onClick = {
                 context.getString(R.string.this_functionality_is_under_development).toToast(context)
             })
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(25.dp))
             ButtonComponent(
                 modifier = Modifier.fillMaxWidth(),
                 value = stringResource(R.string.sign_in),
@@ -225,7 +224,6 @@ fun LoginScreen(navController: NavController) {
                     loginViewModel.onUiEvent(loginUiEvent = LoginUiEvent.Submit)
                 })
             Spacer(modifier = Modifier.height(20.dp))
-
             DividerTextComponent()
             Spacer(modifier = Modifier.height(20.dp))
             SocialIcons(onClickGoogle = {
@@ -233,7 +231,7 @@ fun LoginScreen(navController: NavController) {
             }, onClickFacebook = {
                 fbLauncher.launch(listOf("email", "public_profile"))
             })
-            Spacer(modifier = Modifier.height(50.dp))
+            Spacer(modifier = Modifier.height(55.dp))
             ClickableTextLoginComponent(tryingToLogin = false, onTextSelected = {
                 navController.navigate(Screen.RegisterScreen.route)
             })

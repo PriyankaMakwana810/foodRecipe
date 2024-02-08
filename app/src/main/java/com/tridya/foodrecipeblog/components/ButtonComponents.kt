@@ -24,6 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tridya.foodrecipeblog.R
+import com.tridya.foodrecipeblog.ui.theme.poppinsFont
 import com.tridya.foodrecipeblog.ui.theme.primary100
 import com.tridya.foodrecipeblog.ui.theme.primary20
 import com.tridya.foodrecipeblog.ui.theme.white
@@ -48,6 +49,7 @@ fun ButtonComponent(modifier: Modifier = Modifier, value: String, onButtonClicke
             text = value, fontSize = 16.sp,
             fontWeight = FontWeight(600),
             color = white,
+            fontFamily = poppinsFont,
             textAlign = TextAlign.Center,
         )
         Spacer(modifier = Modifier.width(8.dp))

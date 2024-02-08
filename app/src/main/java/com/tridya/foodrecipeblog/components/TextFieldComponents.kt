@@ -1,6 +1,5 @@
 package com.tridya.foodrecipeblog.components
 
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
@@ -29,6 +28,7 @@ import androidx.navigation.NavHostController
 import com.tridya.foodrecipeblog.ui.theme.black
 import com.tridya.foodrecipeblog.ui.theme.gray2
 import com.tridya.foodrecipeblog.ui.theme.gray3
+import com.tridya.foodrecipeblog.ui.theme.poppinsFont
 import com.tridya.foodrecipeblog.ui.theme.primary80
 import com.tridya.foodrecipeblog.ui.theme.secondary100
 import com.tridya.foodrecipeblog.ui.theme.white
@@ -50,17 +50,23 @@ fun TextFieldCustom(
             textValue = it
             onTextChanged(it)
         },
+        textStyle = TextStyle(
+            fontSize = 12.sp,
+            fontFamily = poppinsFont,
+            fontWeight = FontWeight(400),
+            color = black
+        ),
         placeholder = {
             Text(
                 text = hintText, style = TextStyle(
-                    fontSize = 10.sp,
+                    fontSize = 12.sp,
+                    fontFamily = poppinsFont,
                     fontWeight = FontWeight(400),
                     color = gray3
                 )
             )
         },
         isError = isError,
-
         supportingText = {
             if (isError) {
                 ErrorTextInputField(text = errorText)
@@ -100,28 +106,34 @@ fun TextFieldPassword(
     }
     OutlinedTextField(
         value = value,
-
         onValueChange = {
             textValue = it
             onValueChange(it)
         },
-        maxLines = 1,
-        singleLine = true,
+        textStyle = TextStyle(
+            fontSize = 12.sp,
+            fontFamily = poppinsFont,
+            fontWeight = FontWeight(400),
+            color = black
+        ),
         placeholder = {
             Text(
                 text = hintText, style = TextStyle(
-                    fontSize = 10.sp,
+                    fontSize = 12.sp,
+                    fontFamily = poppinsFont,
                     fontWeight = FontWeight(400),
                     color = gray3
                 )
             )
         },
+        isError = isError,
         supportingText = {
             if (isError) {
                 ErrorTextInputField(text = errorText)
             }
         },
-        isError = isError,
+        maxLines = 1,
+        singleLine = true,
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Password,
             imeAction = imeAction
@@ -222,7 +234,12 @@ fun ErrorTextInputField(
     Text(
         modifier = modifier,
         text = text,
-        style = MaterialTheme.typography.bodyMedium,
+        style = TextStyle(
+            fontSize = 12.sp,
+            fontFamily = poppinsFont,
+            fontWeight = FontWeight(400),
+            color = black
+        ),
         color = MaterialTheme.colorScheme.error
     )
 }

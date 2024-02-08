@@ -1,5 +1,6 @@
 package com.tridya.foodrecipeblog.screens.register
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -23,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -57,11 +59,14 @@ import com.tridya.foodrecipeblog.ui.theme.white
 import com.tridya.foodrecipeblog.viewModels.RegisterViewModel
 import org.json.JSONException
 
+@SuppressLint("VisibleForTests")
 @Composable
 fun RegisterScreen(navController: NavController) {
+
     val registrationViewModel: RegisterViewModel = hiltViewModel()
     val scrollState = rememberScrollState()
     val context = LocalContext.current
+
     val registrationState by remember {
         registrationViewModel.registrationState
     }
@@ -154,7 +159,7 @@ fun RegisterScreen(navController: NavController) {
                 .background(white)
                 .verticalScroll(state = scrollState)
         ) {
-            Spacer(modifier = Modifier.height(30.dp))
+            Spacer(modifier = Modifier.height(40.dp))
 
             SimpleTextComponent(
                 value = stringResource(R.string.create_an_account),
@@ -216,7 +221,8 @@ fun RegisterScreen(navController: NavController) {
                     )
                 },
                 isError = registrationState.errorState.passwordErrorState.hasError,
-                errorText = stringResource(id = registrationState.errorState.passwordErrorState.errorMessageStringResource)
+                errorText = stringResource(id = registrationState.errorState.passwordErrorState.errorMessageStringResource),
+                imeAction = ImeAction.Next
             )
 
             SmallTextLabel(value = stringResource(R.string.confirm_password))
@@ -237,9 +243,8 @@ fun RegisterScreen(navController: NavController) {
             Spacer(modifier = Modifier.height(20.dp))
 
             CheckboxComponent(value = "Accept terms & Condition")
-//            YellowSmallText(value = stringResource(R.string.forgot_password))
 
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(25.dp))
 
             ButtonComponent(modifier = Modifier.fillMaxWidth(),
                 value = stringResource(R.string.sign_in),
@@ -251,7 +256,7 @@ fun RegisterScreen(navController: NavController) {
                     }
 
                 })
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(15.dp))
             DividerTextComponent()
             Spacer(modifier = Modifier.height(20.dp))
             SocialIcons(onClickGoogle = {
@@ -259,7 +264,7 @@ fun RegisterScreen(navController: NavController) {
             }, onClickFacebook = {
                 fbLauncher.launch(listOf("email", "public_profile"))
             })
-            Spacer(modifier = Modifier.height(50.dp))
+            Spacer(modifier = Modifier.height(20.dp))
             ClickableTextLoginComponent(tryingToLogin = true, onTextSelected = {
                 navController.navigate(Screen.LoginScreen.route)
             })
