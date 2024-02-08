@@ -16,4 +16,7 @@ class NotificationRepository @Inject constructor(
     val getAllNotifications: Flow<List<Notifications>> = notificationDao.getAllNotifications()
     val getReadNotifications: Flow<List<Notifications>> = notificationDao.getReadNotifications()
     val getUnreadNotifications: Flow<List<Notifications>> = notificationDao.getUnreadNotifications()
+    suspend fun updateNotificationState(isRead: Boolean, notificationId: Int) {
+        notificationDao.updateNotificationRead(isRead = isRead, notificationId = notificationId)
+    }
 }

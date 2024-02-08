@@ -8,6 +8,8 @@ import com.tridya.foodrecipeblog.database.tables.RecipeCard
 import com.tridya.foodrecipeblog.utils.Constants
 import com.tridya.foodrecipeblog.utils.PrefUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -35,12 +37,18 @@ class NotificationViewModel @Inject constructor(
         MutableStateFlow<List<Notifications>>(emptyList())
     val unreadNotifications: StateFlow<List<Notifications>> = _unreadNotifications
 
+
     init {
         getAllNotifications()
         getReadNotifications()
         getUnreadNotifications()
     }
 
+    fun updateNotificationState(isRead: Boolean, id: Int){
+        CoroutineScope(Dispatchers.IO).launch {
+            repository.updateNotificationState(isRead,id)
+        }
+    }
     private fun getAllNotifications() {
         try {
             viewModelScope.launch {

@@ -99,14 +99,15 @@ fun generateRandomName(): String {
 
 fun generateUserProfilePhotoForUser(username: String): String {
     val userToPhotoMap = mapOf(
-        "Bella Throne" to "https://unsplash.com/photos/closeup-photography-of-woman-smiling-mEZ3PoFGs_k",
-        "Christopher Oshana" to "https://unsplash.com/photos/man-taking-selfie-tidSLv-UaNs",
-        "Kyle Austin" to "https://unsplash.com/photos/man-in-black-button-up-shirt-ZHvM3XIOHoE",
-        "Jeniffern Wilson" to "https://unsplash.com/photos/woman-in-black-and-white-checkered-hoodie-OFAbs8e8Zic",
-        "Kate Johnson" to "https://unsplash.com/photos/woman-in-white-off-shoulder-dress-uR51HXLO7G0",
+        "Bella Throne" to "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        "Christopher Oshana" to "https://images.unsplash.com/photo-1529068755536-a5ade0dcb4e8?q=80&w=1781&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        "Kyle Austin" to "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=1780&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        "Jeniffern Wilson" to "https://images.unsplash.com/photo-1612427404252-f424ef7a7cf5?q=80&w=1780&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        "Kate Johnson" to "https://images.unsplash.com/photo-1609505848912-b7c3b8b4beda?q=80&w=1965&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
         // Add more mappings as needed
     )
-    return userToPhotoMap[username] ?: "https://example.com/default.jpg"
+    return userToPhotoMap[username]
+        ?: "https://images.unsplash.com/photo-1609505848912-b7c3b8b4beda?q=80&w=1965&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
 }
 
 fun convertDateTimeToLong(dateTime: String): Long? {

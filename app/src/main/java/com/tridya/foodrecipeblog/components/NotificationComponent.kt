@@ -2,6 +2,7 @@ package com.tridya.foodrecipeblog.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -167,7 +168,9 @@ fun NotificationList(notifications: List<Notifications>) {
                 }
 
                 // Display notification item
-                NotificationItem(notification = notification)
+                NotificationItem(notification = notification, onNotificationClicked = {
+
+                })
             }
         }
     }
@@ -231,6 +234,7 @@ fun ListNotificationsByFilter(
 fun NotificationItem(
     modifier: Modifier = Modifier,
     notification: Notifications = dummyNotification,
+    onNotificationClicked: () -> Unit = {},
 ) {
     Row(
         modifier = modifier
@@ -238,7 +242,8 @@ fun NotificationItem(
             .padding(vertical = 10.dp)
             .clip(RoundedCornerShape(12.dp))
             .background(gray4)
-            .padding(vertical = 12.dp, horizontal = 16.dp),
+            .padding(vertical = 12.dp, horizontal = 16.dp)
+            .clickable { onNotificationClicked },
         verticalAlignment = Alignment.Top,
         horizontalArrangement = Arrangement.spacedBy(5.dp)
     ) {

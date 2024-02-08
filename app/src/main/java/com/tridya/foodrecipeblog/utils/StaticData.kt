@@ -202,7 +202,7 @@ object StaticData {
         ReviewModel(
             0,
             "Bella Throne",
-            "https://unsplash.com/photos/closeup-photography-of-woman-smiling-mEZ3PoFGs_k",
+            "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
             "12/06/2023 19:35",
             "Lorem Ipsum tempor incididunt ut labore et dolore,inise voluptate velit esse cillum",
             9,
@@ -211,7 +211,7 @@ object StaticData {
         ReviewModel(
             1,
             "Christopher Oshana",
-            "https://unsplash.com/photos/man-taking-selfie-tidSLv-UaNs",
+            "https://images.unsplash.com/photo-1529068755536-a5ade0dcb4e8?q=80&w=1781&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
             "12/06/2023 20:00",
             "Lorem Ipsum tempor incididunt ut labore et dolore,inise voluptate.",
             7,
@@ -220,7 +220,7 @@ object StaticData {
         ReviewModel(
             2,
             "Kyle Austin",
-            "https://unsplash.com/photos/man-in-black-button-up-shirt-ZHvM3XIOHoE",
+            "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=1780&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
             "12/06/2023 20:00",
             "Lorem Ipsum tempor incididunt ut labore et dolore,inise voluptate.",
             7,
@@ -229,7 +229,7 @@ object StaticData {
         ReviewModel(
             3,
             "Jeniffern Wilson",
-            "https://unsplash.com/photos/woman-in-black-and-white-checkered-hoodie-OFAbs8e8Zic",
+            "https://images.unsplash.com/photo-1612427404252-f424ef7a7cf5?q=80&w=1780&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
             "12/06/2023 19:35",
             "Lorem Ipsum tempor incididunt ut labore et dolore,inise voluptate velit esse cillum",
             9,
@@ -238,7 +238,7 @@ object StaticData {
         ReviewModel(
             4,
             "Kate Johnson",
-            "https://unsplash.com/photos/woman-in-white-off-shoulder-dress-uR51HXLO7G0",
+            "https://images.unsplash.com/photo-1609505848912-b7c3b8b4beda?q=80&w=1965&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
             "12/06/2023 20:00",
             "Lorem Ipsum tempor incididunt ut labore et dolore,inise voluptate.",
             7,
@@ -247,7 +247,7 @@ object StaticData {
         ReviewModel(
             5,
             "Kyle Austin",
-            "https://unsplash.com/photos/man-in-black-button-up-shirt-ZHvM3XIOHoE",
+            "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=1780&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
             "12/06/2023 20:00",
             "Lorem Ipsum tempor incididunt ut labore et dolore,inise voluptate.",
             7,

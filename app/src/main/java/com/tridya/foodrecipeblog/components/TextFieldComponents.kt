@@ -71,8 +71,8 @@ fun TextFieldCustom(
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
         shape = RoundedCornerShape(size = 10.dp),
         modifier = Modifier
-            .fillMaxWidth()
-            .border(width = 1.5.dp, color = gray3, shape = RoundedCornerShape(size = 10.dp)),
+            .fillMaxWidth(),
+//            .border(width = 1.5.dp, color = gray3, shape = RoundedCornerShape(size = 10.dp)),
         colors = OutlinedTextFieldDefaults.colors(
             cursorColor = black,
             unfocusedContainerColor = white,

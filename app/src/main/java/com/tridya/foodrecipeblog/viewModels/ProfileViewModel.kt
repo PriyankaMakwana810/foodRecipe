@@ -18,9 +18,9 @@ class ProfileViewModel @Inject constructor(
     private val repository: CommonRepository,
     @Named(Constants.SHARED_COMMON) val sharedPreferences: PrefUtils,
 ) : ViewModel() {
-    private val _allSavedRecipes =
+    private val _allPostedRecipes =
         MutableStateFlow<List<RecipeCard>>(emptyList())
-    val allSavedRecipes: StateFlow<List<RecipeCard>> = _allSavedRecipes
+    val allPostedRecipes: StateFlow<List<RecipeCard>> = _allPostedRecipes
 
     init {
         getAllSavedRecipes()
@@ -29,12 +29,12 @@ class ProfileViewModel @Inject constructor(
     private fun getAllSavedRecipes() {
         try {
             viewModelScope.launch {
-                repository.getAllSavedRecipe.collect {
-                    _allSavedRecipes.value = it
+                repository.getAllPostedRecipe.collect {
+                    _allPostedRecipes.value = it
                 }
             }
         } catch (e: Exception) {
-            _allSavedRecipes.value = emptyList()
+            _allPostedRecipes.value = emptyList()
         }
     }
 

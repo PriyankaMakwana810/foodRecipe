@@ -25,6 +25,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -32,6 +33,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.tridya.foodrecipeblog.R
@@ -39,15 +41,39 @@ import com.tridya.foodrecipeblog.components.CustomButtonComponent
 import com.tridya.foodrecipeblog.components.NormalTextComponent
 import com.tridya.foodrecipeblog.components.ReviewByUserComponent
 import com.tridya.foodrecipeblog.components.ToolbarComponent
+import com.tridya.foodrecipeblog.models.ReviewModel
 import com.tridya.foodrecipeblog.ui.theme.black
 import com.tridya.foodrecipeblog.ui.theme.gray3
 import com.tridya.foodrecipeblog.ui.theme.gray4
 import com.tridya.foodrecipeblog.ui.theme.white
 import com.tridya.foodrecipeblog.utils.StaticData.listOfReviews
+import com.tridya.foodrecipeblog.utils.showShortToast
+import com.tridya.foodrecipeblog.viewModels.CommonViewModel
 
 @Composable
-fun ReviewScreen(navController: NavController, paddingValues: PaddingValues) {
+fun ReviewScreen(
+    navController: NavController,
+    paddingValues: PaddingValues,
+    reviewViewModel: CommonViewModel = hiltViewModel(),
+) {
     var reviewText by remember { mutableStateOf("") }
+    var listOfReviews by remember { mutableStateOf(listOfReviews) }
+    val context = LocalContext.current
+
+    val addReview: () -> Unit = {
+        if (reviewText.isNotBlank()) {
+            val newReview = ReviewModel(
+                id = listOfReviews.last().id + 1,
+                userName = reviewViewModel.sharedPreferences.user?.userName!!,
+                profilePicPath = reviewViewModel.sharedPreferences.user?.profilePicPath!!,
+                time = System.currentTimeMillis().toString(),
+                comment = reviewText
+            )
+            listOfReviews = listOfReviews + newReview
+            reviewText = "" // Clear the text field after adding the review
+            showShortToast(context,"Review Added Successfully!")
+        }
+    }
     Surface(
         modifier = Modifier.fillMaxSize(), color = white
     ) {
@@ -106,13 +132,16 @@ fun ReviewScreen(navController: NavController, paddingValues: PaddingValues) {
                             focusedContainerColor = white,
                             unfocusedBorderColor = gray3,
                             focusedBorderColor = black,
+                            focusedTextColor = black
                         )
                     )
                     Spacer(modifier = Modifier.width(10.dp))
                     CustomButtonComponent(
                         modifier = Modifier.align(Alignment.CenterVertically),
                         value = stringResource(id = R.string.send)
-                    ) {}
+                    ) {
+                        addReview()
+                    }
                 }
                 LazyColumn(
                     modifier = Modifier.padding(top = 20.dp, bottom = 10.dp),

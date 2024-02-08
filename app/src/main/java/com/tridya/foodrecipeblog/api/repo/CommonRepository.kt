@@ -17,6 +17,8 @@ class CommonRepository @Inject constructor(
     val getAllRecipes: Flow<List<RecipeCard>> = recipeDao.getAllRecipes()
 
     val getAllSavedRecipe: Flow<List<RecipeCard>> = recipeDao.getSavedRecipes(true)
+
+    val getAllPostedRecipe: Flow<List<RecipeCard>> = recipeDao.getPostedRecipes(true)
     suspend fun addRecipe(recipe: RecipeCard) {
         recipeDao.addRecipe(recipe = recipe)
     }

@@ -37,13 +37,13 @@ import com.tridya.foodrecipeblog.components.RecipesItemsComponent
 import com.tridya.foodrecipeblog.components.ToolbarComponent
 import com.tridya.foodrecipeblog.navigation.Screen
 import com.tridya.foodrecipeblog.ui.theme.white
-import com.tridya.foodrecipeblog.viewModels.SavedViewModel
+import com.tridya.foodrecipeblog.viewModels.CommonViewModel
 
 @Composable
 fun SavedScreen(
     navController: NavController,
     paddingValues: PaddingValues,
-    savedViewModel: SavedViewModel = hiltViewModel(),
+    savedViewModel: CommonViewModel = hiltViewModel(),
 ) {
 
     val context = LocalContext.current

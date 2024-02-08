@@ -4,10 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.net.Uri
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
@@ -37,7 +34,7 @@ class NewRecipeViewModel @Inject constructor(
     val procedureState: MutableState<String> = mutableStateOf("")
     var ingredient: MutableState<String> = mutableStateOf("")
     var measurement: MutableState<String> = mutableStateOf("")
-    var photoUri:MutableState<Uri?> = mutableStateOf(null)
+    var photoUri: MutableState<Uri?> = mutableStateOf(null)
 
 
     //    var ingredientsList by remember { mutableStateOf(listOf<Pair<String, String>>()) }
@@ -72,7 +69,7 @@ class NewRecipeViewModel @Inject constructor(
         }
     }
 
-    fun validateAndSaveRecipe(navController: NavController) {
+    fun validateAndSaveRecipe(navController: NavController, photoUri: Uri) {
         val recipeName = recipeNameState.value
         val category = categoryState.value
         val timeToCook = timeToCookState.value
@@ -117,7 +114,7 @@ class NewRecipeViewModel @Inject constructor(
                 strCategory = category,
                 strArea = area,
                 strInstructions = procedure,
-                strMealThumb = "",
+                strMealThumb = photoUri.toString(),
                 strYoutube = youtubeLink,
                 strIngredient1 = ingredientList.getOrNull(0),
                 strIngredient2 = ingredientList.getOrNull(1),
@@ -168,6 +165,9 @@ class NewRecipeViewModel @Inject constructor(
             showShortToast(context = context, "Added Successfully!!")
             navController.navigate(Screen.ProfileScreen.route) {
                 this.launchSingleTop = true
+                popUpTo(Screen.HomeScreen.route) {
+                    inclusive = false
+                }
             }
         } else {
             showShortToast(context = context, "Please fill all non-optional fields")

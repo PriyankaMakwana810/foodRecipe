@@ -14,7 +14,7 @@ import javax.inject.Inject
 import javax.inject.Named
 
 @HiltViewModel
-class SavedViewModel @Inject constructor(
+class CommonViewModel @Inject constructor(
     private val repository: CommonRepository,
     @Named(Constants.SHARED_COMMON) val sharedPreferences: PrefUtils,
 ) : ViewModel() {

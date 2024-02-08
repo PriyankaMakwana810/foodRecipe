@@ -83,14 +83,30 @@ fun ReviewByUserComponent(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            var selected by remember { mutableStateOf(false) }
+            var likeSelected by remember { mutableStateOf(false) }
+            var dislikeSelected by remember { mutableStateOf(false) }
+
+            var likeCount by remember { mutableStateOf(review.likedCount) }
+            var dislikeCount by remember { mutableStateOf(review.disLikedCount) }
+
             FilterChip(
                 modifier = Modifier.height(25.dp),
-                selected = selected,
-                onClick = { selected = !selected },
+                selected = likeSelected,
+                onClick = {
+                    if (!likeSelected) {
+                        likeSelected = true
+                        dislikeSelected = false
+                        likeCount++
+                        // If dislike was selected before, decrement dislike count
+                        if (dislikeCount > 0) dislikeCount--
+                    } else {
+                        likeSelected = false
+                        likeCount--
+                    }
+                },
                 label = {
                     Text(
-                        text = stringResource(R.string.thumbs_up, review.likedCount),
+                        text = stringResource(R.string.thumbs_up, likeCount),
                         style = TextStyle(fontSize = 12.sp)
                     )
                 },
@@ -105,11 +121,22 @@ fun ReviewByUserComponent(
             )
             FilterChip(
                 modifier = Modifier.height(25.dp),
-                selected = selected,
-                onClick = { selected = !selected },
+                selected = dislikeSelected,
+                onClick = {
+                    if (!dislikeSelected) {
+                        dislikeSelected = true
+                        likeSelected = false
+                        dislikeCount++
+                        // If like was selected before, decrement like count
+                        if (likeCount > 0) likeCount--
+                    } else {
+                        dislikeSelected = false
+                        dislikeCount--
+                    }
+                },
                 label = {
                     Text(
-                        text = stringResource(R.string.thums_down, review.disLikedCount),
+                        text = stringResource(R.string.thums_down, dislikeCount),
                         style = TextStyle(fontSize = 12.sp)
                     )
                 },

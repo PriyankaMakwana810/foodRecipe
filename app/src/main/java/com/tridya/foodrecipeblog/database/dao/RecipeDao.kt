@@ -37,7 +37,8 @@ interface RecipeDao {
 
     @Query("SELECT * FROM recipe_table WHERE isSaved =:isSaved ORDER BY id DESC")
     fun getSavedRecipes(isSaved: Boolean): Flow<List<RecipeCard>>
-
+    @Query("SELECT * FROM recipe_table WHERE isAddedByUser =:isAddedByUser ORDER BY id DESC")
+    fun getPostedRecipes(isAddedByUser: Boolean): Flow<List<RecipeCard>>
     @Query("SELECT * FROM recipe_table WHERE isSearched =:isSearched ORDER BY id DESC")
     fun getSearchedRecipes(isSearched: Boolean): Flow<List<RecipeCard>>
 

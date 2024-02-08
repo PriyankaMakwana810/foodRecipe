@@ -4,7 +4,6 @@ import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,13 +17,10 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material3.Icon
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -38,6 +34,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -48,14 +45,15 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.tridya.foodrecipeblog.R
 import com.tridya.foodrecipeblog.components.CustomButtonComponent
+import com.tridya.foodrecipeblog.components.CustomOutlinedTextField
 import com.tridya.foodrecipeblog.components.ImageAddingPreview
 import com.tridya.foodrecipeblog.components.LabelText
 import com.tridya.foodrecipeblog.components.NormalTextComponent
+import com.tridya.foodrecipeblog.components.ProcedureTextField
 import com.tridya.foodrecipeblog.components.SimpleTextComponent
 import com.tridya.foodrecipeblog.components.ToolbarComponent
 import com.tridya.foodrecipeblog.ui.theme.black
 import com.tridya.foodrecipeblog.ui.theme.gray2
-import com.tridya.foodrecipeblog.ui.theme.gray4
 import com.tridya.foodrecipeblog.ui.theme.secondary100
 import com.tridya.foodrecipeblog.ui.theme.white
 import com.tridya.foodrecipeblog.utils.showShortToast
@@ -76,18 +74,7 @@ fun NewRecipeScreen(
             photoUri = uri
         }
     val context = LocalContext.current
-//    var showDialog by remember { mutableStateOf(false) }
 
-    val colorsOfTextFields = OutlinedTextFieldDefaults.colors(
-        cursorColor = black,
-        unfocusedContainerColor = white,
-        focusedContainerColor = white,
-        unfocusedBorderColor = gray4,
-        focusedBorderColor = gray4,
-        focusedTextColor = black,
-        disabledTextColor = gray2,
-        unfocusedTextColor = black
-    )
     Surface(
         modifier = Modifier.fillMaxSize(), color = white
     ) {
@@ -142,86 +129,47 @@ fun NewRecipeScreen(
                     }
 
                     LabelText(title = "Name of Recipe*")
-                    OutlinedTextField(
+                    CustomOutlinedTextField(
                         value = newRecipeViewModel.recipeNameState.value,
                         onValueChange = { newRecipeViewModel.recipeNameState.value = it },
-                        textStyle = TextStyle(
-                            fontSize = 12.sp
-                        ),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .border(width = 2.dp, color = gray4, shape = RoundedCornerShape(10.dp)),
-                        shape = RoundedCornerShape(10.dp),
-                        placeholder = {
-                            Text(
-                                "Name of Recipe",
-                                fontSize = 12.sp,
-                                color = gray4
-                            )
-                        },
-                        colors = colorsOfTextFields
+                        placeholder = "Name of Recipe"
                     )
+
                     Spacer(modifier = Modifier.height(16.dp))
 
                     LabelText(title = "Category*")
-                    OutlinedTextField(
+                    CustomOutlinedTextField(
                         value = newRecipeViewModel.categoryState.value,
                         onValueChange = { newRecipeViewModel.categoryState.value = it },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .border(width = 2.dp, color = gray4, shape = RoundedCornerShape(10.dp)),
-                        shape = RoundedCornerShape(10.dp),
-                        placeholder = {
-                            Text(
-                                "Category",
-                                fontSize = 12.sp,
-                                color = gray4
-                            )
-                        },
-                        colors = colorsOfTextFields
+                        placeholder = "Category"
                     )
+
                     Spacer(modifier = Modifier.height(16.dp))
 
                     LabelText(title = "Time to cook*")
-                    OutlinedTextField(
+
+                    CustomOutlinedTextField(
                         value = newRecipeViewModel.timeToCookState.value,
                         onValueChange = { newRecipeViewModel.timeToCookState.value = it },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .border(width = 2.dp, color = gray4, shape = RoundedCornerShape(10.dp)),
-                        shape = RoundedCornerShape(10.dp),
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                        placeholder = {
-                            Text(
-                                "Time to Cook",
-                                fontSize = 12.sp,
-                                color = gray4
-                            )
-                        },
-                        colors = colorsOfTextFields
+                        placeholder = "Time to Cook",
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Number,
+                            imeAction = ImeAction.Next
+                        )
                     )
+
                     Spacer(modifier = Modifier.height(16.dp))
 
                     LabelText(title = "Procedure *")
-                    OutlinedTextField(
+
+                    ProcedureTextField(
                         value = newRecipeViewModel.procedureState.value,
                         onValueChange = { newRecipeViewModel.procedureState.value = it },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .border(width = 2.dp, color = gray4, shape = RoundedCornerShape(10.dp)),
-                        shape = RoundedCornerShape(10.dp),
-                        colors = colorsOfTextFields,
-                        placeholder = {
-                            Text(
-                                "Steps to cook recipe..",
-                                fontSize = 12.sp,
-                                color = gray4
-                            )
-                        },
-                        minLines = 3
+                        placeholder = "Steps to cook recipe.."
                     )
 
                     Spacer(modifier = Modifier.height(16.dp))
+
                     newRecipeViewModel.ingredientMeasurementPairs.value.forEachIndexed { index, (ingredient, measurement) ->
                         Row(
                             modifier = Modifier.fillMaxWidth(),
@@ -232,7 +180,7 @@ fun NewRecipeScreen(
                                 verticalArrangement = Arrangement.Top
                             ) {
                                 LabelText(title = "Ingredient ${index + 1}*")
-                                OutlinedTextField(
+                                CustomOutlinedTextField(
                                     value = ingredient,
                                     onValueChange = { updatedIngredient ->
                                         val updatedList =
@@ -241,22 +189,7 @@ fun NewRecipeScreen(
                                         newRecipeViewModel.ingredientMeasurementPairs.value =
                                             updatedList
                                     },
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .border(
-                                            width = 2.dp,
-                                            color = gray4,
-                                            shape = RoundedCornerShape(10.dp)
-                                        ),
-                                    shape = RoundedCornerShape(10.dp),
-                                    placeholder = {
-                                        Text(
-                                            "Ingredient ${index + 1}",
-                                            fontSize = 12.sp,
-                                            color = gray4
-                                        )
-                                    },
-                                    colors = colorsOfTextFields
+                                    placeholder = "Ingredient ${index + 1}"
                                 )
 
                             }
@@ -266,7 +199,7 @@ fun NewRecipeScreen(
                                 verticalArrangement = Arrangement.Top
                             ) {
                                 LabelText(title = "Measurement ${index + 1}*")
-                                OutlinedTextField(
+                                CustomOutlinedTextField(
                                     value = measurement,
                                     onValueChange = { updatedMeasurement ->
                                         val updatedList =
@@ -275,24 +208,8 @@ fun NewRecipeScreen(
                                         newRecipeViewModel.ingredientMeasurementPairs.value =
                                             updatedList
                                     },
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .border(
-                                            width = 2.dp,
-                                            color = gray4,
-                                            shape = RoundedCornerShape(10.dp)
-                                        ),
-                                    shape = RoundedCornerShape(10.dp),
-                                    placeholder = {
-                                        Text(
-                                            "Measurement ${index + 1}",
-                                            fontSize = 12.sp,
-                                            color = gray4
-                                        )
-                                    },
-                                    colors = colorsOfTextFields
+                                    placeholder = "Measurement ${index + 1}"
                                 )
-
                             }
                         }
                     }
@@ -328,60 +245,35 @@ fun NewRecipeScreen(
                     Spacer(modifier = Modifier.height(16.dp))
 
                     LabelText(title = "Area")
-                    OutlinedTextField(
+                    CustomOutlinedTextField(
                         value = newRecipeViewModel.area.value,
                         onValueChange = { newRecipeViewModel.area.value = it },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .border(width = 2.dp, color = gray4, shape = RoundedCornerShape(10.dp)),
-                        shape = RoundedCornerShape(10.dp),
-                        placeholder = {
-                            Text(
-                                "Name of Recipe",
-                                fontSize = 12.sp,
-                                color = gray4
-                            )
-                        },
-                        colors = colorsOfTextFields
+                        placeholder = "Name of Recipe"
                     )
+
                     Spacer(modifier = Modifier.height(16.dp))
 
                     LabelText(title = "Source")
-                    OutlinedTextField(
+                    CustomOutlinedTextField(
                         value = newRecipeViewModel.source.value,
                         onValueChange = { newRecipeViewModel.source.value = it },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .border(width = 2.dp, color = gray4, shape = RoundedCornerShape(10.dp)),
-                        shape = RoundedCornerShape(10.dp),
-                        placeholder = {
-                            Text(
-                                "Name of Recipe",
-                                fontSize = 12.sp,
-                                color = gray4
-                            )
-                        },
-                        colors = colorsOfTextFields
+                        placeholder = "Source of Recipe"
                     )
+
                     Spacer(modifier = Modifier.height(16.dp))
 
                     LabelText(title = "YouTube Link")
-                    OutlinedTextField(
+
+                    CustomOutlinedTextField(
                         value = newRecipeViewModel.youtubeLink.value,
                         onValueChange = { newRecipeViewModel.youtubeLink.value = it },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .border(width = 2.dp, color = gray4, shape = RoundedCornerShape(10.dp)),
-                        shape = RoundedCornerShape(10.dp),
-                        placeholder = {
-                            Text(
-                                "Name of Recipe",
-                                fontSize = 12.sp,
-                                color = gray4
-                            )
-                        },
-                        colors = colorsOfTextFields
+                        placeholder = "link of youtube",
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Text,
+                            imeAction = ImeAction.Done
+                        )
                     )
+
                     Spacer(modifier = Modifier.height(20.dp))
                     CustomButtonComponent(
                         value = stringResource(R.string.save_recipe),
@@ -389,7 +281,7 @@ fun NewRecipeScreen(
                             .fillMaxWidth(),
                         onButtonClicked = {
                             if (photoUri != null) {
-                                newRecipeViewModel.validateAndSaveRecipe(navController)
+                                newRecipeViewModel.validateAndSaveRecipe(navController, photoUri!!)
                             } else {
                                 showShortToast(context, "Please add image of Recipe!!")
                             }
