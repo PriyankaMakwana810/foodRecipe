@@ -54,16 +54,16 @@ fun IntroScreen(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .fillMaxHeight(),
-                verticalArrangement = Arrangement.Top,
-                horizontalAlignment = Alignment.CenterHorizontally
+                    .fillMaxHeight()
+                    .padding(30.dp),
             ) {
-                Spacer(modifier = Modifier.height(100.dp))
+                Spacer(modifier = Modifier.height(80.dp))
                 Image(
-                    painter = painterResource(id = R.drawable.app_logo),
+                    painter = painterResource(id = R.drawable.img_recipe_cap),
                     contentDescription = "100K+ Premium Recipe",
                     modifier = Modifier
-                        .size(100.dp)
+                        .size(80.dp)
+                        .align(Alignment.CenterHorizontally)
                 )
                 SimpleTextComponent(
                     modifier = Modifier.padding(14.dp),
@@ -71,47 +71,46 @@ fun IntroScreen(
                     fontSize = 18.sp,
                     fontWeight = FontWeight(600)
                 )
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f),
+                    verticalArrangement = Arrangement.Bottom,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Spacer(modifier = Modifier.height(20.dp))
+                    SimpleTextComponent(
+                        value = stringResource(id = R.string.get_cooking),
+                        fontSize = 50.sp,
+                        fontWeight = FontWeight(600)
+                    )
+                    Spacer(modifier = Modifier.height(10.dp))
+                    SimpleTextComponent(
+                        value = stringResource(id = R.string.simple_way_to_find_tasty_recipe),
+                        fontSize = 16.sp, fontWeight = FontWeight(400)
+                    )
 
-            }
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                SimpleTextComponent(
-                    value = stringResource(id = R.string.get_cooking),
-                    fontSize = 50.sp,
-                    fontWeight = FontWeight(600)
-                )
-                Spacer(modifier = Modifier.height(20.dp))
+                    Spacer(modifier = Modifier.height(70.dp))
 
-                SimpleTextComponent(
-                    value = stringResource(id = R.string.simple_way_to_find_tasty_recipe),
-                    fontSize = 16.sp, fontWeight = FontWeight(400)
-                )
-            }
+                    ButtonComponent(modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 50.dp),
+                        value = "Start Cooking",
+                        onButtonClicked = {
+                            if (homeViewModel.sharedPreferences.isLoggedIn) {
+                                navController.navigate(Screen.HomeScreen.route) {
+                                    popUpTo(Screen.IntroScreen.route) {
+                                        inclusive = false
+                                    }
+                                }
+                            } else {
+                                navController.navigate(Screen.LoginScreen.route)
 
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 50.dp)
-                    .align(Alignment.BottomCenter),
-                verticalArrangement = Arrangement.Bottom,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                ButtonComponent(value = "Start Cooking", onButtonClicked = {
-                    if (homeViewModel.sharedPreferences.isLoggedIn) {
-                        navController.navigate(Screen.HomeScreen.route) {
-                            popUpTo(Screen.IntroScreen.route) {
-                                inclusive = false
                             }
-                        }
-                    }else{
-                        navController.navigate(Screen.LoginScreen.route)
+                        })
 
-                    }
-                })
-                Spacer(modifier = Modifier.height(100.dp))
+                    Spacer(modifier = Modifier.height(50.dp))
+                }
             }
 
         }

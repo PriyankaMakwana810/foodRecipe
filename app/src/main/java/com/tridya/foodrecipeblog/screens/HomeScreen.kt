@@ -36,7 +36,6 @@ import androidx.navigation.compose.rememberNavController
 import com.tridya.foodrecipeblog.R
 import com.tridya.foodrecipeblog.api.ApiState
 import com.tridya.foodrecipeblog.api.response.Areas
-import com.tridya.foodrecipeblog.database.tables.RecipeCard
 import com.tridya.foodrecipeblog.api.response.ResponseOfRecipes
 import com.tridya.foodrecipeblog.components.ItemNewRecipe
 import com.tridya.foodrecipeblog.components.ItemRecipeCard
@@ -46,6 +45,7 @@ import com.tridya.foodrecipeblog.components.ProfileSection
 import com.tridya.foodrecipeblog.components.SearchBarWithFilter
 import com.tridya.foodrecipeblog.components.ShowProgress
 import com.tridya.foodrecipeblog.components.SimpleTextComponent
+import com.tridya.foodrecipeblog.database.tables.RecipeCard
 import com.tridya.foodrecipeblog.navigation.Screen
 import com.tridya.foodrecipeblog.ui.theme.black
 import com.tridya.foodrecipeblog.ui.theme.white
@@ -61,7 +61,6 @@ fun HomeScreen(
 ) {
     val scrollState = rememberScrollState()
 
-    val allRecipes by homeViewModel.allRecipes.collectAsState()
     val areaState by homeViewModel.areas.collectAsState()
     val recipeByArea by homeViewModel.recipesByArea.collectAsState()
     val newRecipes by homeViewModel.newRecipes.collectAsState()
@@ -72,8 +71,12 @@ fun HomeScreen(
     val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
-        homeViewModel.getAreas()
-        homeViewModel.getNewRecipe()
+        if (homeViewModel.loaded.value) {
+            return@LaunchedEffect
+        } else {
+            homeViewModel.getAreas()
+            homeViewModel.getNewRecipe()
+        }
     }
 
     Surface(
@@ -106,7 +109,8 @@ fun HomeScreen(
                     })
                     LaunchedEffect(Unit) {
                         selectedArea = listOfArea.first()
-                        homeViewModel.getRecipeByArea(listOfArea.first())
+                        if (!homeViewModel.loaded.value)
+                            homeViewModel.getRecipeByArea(listOfArea.first())
                     }
                     ListSelectCountry(listOfCountries = listOfArea) { selectedItem ->
                         println("Selected item: $selectedItem")
@@ -220,8 +224,6 @@ fun HomeScreen(
                 )
             }
         }
-
-
     }
 }
 
