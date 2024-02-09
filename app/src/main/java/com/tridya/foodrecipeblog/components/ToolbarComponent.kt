@@ -58,7 +58,7 @@ fun ToolbarComponent(
         SimpleTextComponent(
             value = toolbarTitle,
             fontSize = 18.sp,
-            fontWeight = FontWeight.Medium,
+            fontWeight = FontWeight(600),
             textColor = black
         )
         if (showMenuIcon) {

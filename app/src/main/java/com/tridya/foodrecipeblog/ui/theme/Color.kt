@@ -26,6 +26,7 @@ val secondary20 = Color(0xFFFFE1B3)
 
 //Netural Colour
 val black = Color(0xFF000000)
+val blackShadow = Color(0xB3000000)
 val shadow = Color(0xCC000000)
 val gray1 = Color(0xFF484848)
 val gray2 = Color(0xFF797979)

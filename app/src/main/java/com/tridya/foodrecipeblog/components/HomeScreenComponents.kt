@@ -114,7 +114,7 @@ fun ProfileSection(
         }
         AsyncImage(
             modifier = Modifier
-                .size(40.dp)
+                .size(50.dp)
                 .clip(shape = RoundedCornerShape(10.dp))
                 .background(secondary40),
             model = ImageRequest.Builder(LocalContext.current)
@@ -535,6 +535,7 @@ fun SearchBarWithFilter(
                 Image(
                     painter = painterResource(id = R.drawable.v_ic_search),
                     contentDescription = stringResource(R.string.search),
+//                    modifier = Modifier.size(20.dp)
                 )
             },
 
@@ -551,7 +552,7 @@ fun SearchBarWithFilter(
                 unfocusedContainerColor = white,
                 focusedContainerColor = white,
                 unfocusedBorderColor = gray4,
-                focusedBorderColor = primary80,
+                focusedBorderColor = gray4,
                 disabledBorderColor = gray4,
                 focusedTextColor = black,
                 disabledTextColor = gray2,
@@ -562,8 +563,8 @@ fun SearchBarWithFilter(
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier
-                .width(40.dp)
-                .height(40.dp)
+                .width(50.dp)
+                .height(50.dp)
                 .background(color = Color(0xFF129575), shape = RoundedCornerShape(size = 10.dp))
                 .clickable { onFilterClicked() }
         ) {

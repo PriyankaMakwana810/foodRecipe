@@ -31,8 +31,8 @@ class SearchViewModel @Inject constructor(
     private val _categoryList = MutableStateFlow<ApiState<List<String>>>(ApiState.Loading)
     val categoryList: StateFlow<ApiState<List<String>>> = _categoryList
 
-    private val _ingredientList = MutableStateFlow<ApiState<List<String>>>(ApiState.Loading)
-    val ingredientList: StateFlow<ApiState<List<String>>> = _ingredientList
+/*    private val _ingredientList = MutableStateFlow<ApiState<List<String>>>(ApiState.Loading)
+    val ingredientList: StateFlow<ApiState<List<String>>> = _ingredientList*/
 
     init {
         getAllStoredRecipes()
@@ -75,18 +75,18 @@ class SearchViewModel @Inject constructor(
         }
     }
 
-    fun getIngredientList() {
+    /*fun getIngredientList() {
         viewModelScope.launch {
             try {
                 val response = repository.getIngredientList()
                 _ingredientList.value =
-                    ApiState.Success(response.meals.map { it.strIngredient }.subList(0, 10))
+                    ApiState.Success(response.meals.map { it.strIngredient }.subList(0, 5))
             } catch (e: Exception) {
                 _ingredientList.value = ApiState.Error("API Error: ${e.message}")
             }
         }
     }
-
+*/
     fun addRecipe(recipe: RecipeCard) {
         viewModelScope.launch {
             repository.addRecipe(recipe)

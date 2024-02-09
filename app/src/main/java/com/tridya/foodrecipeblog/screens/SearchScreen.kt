@@ -77,7 +77,7 @@ fun SearchScreen(
     val allSearchedRecipes by searchViewModel.allSearchedRecipes.collectAsState()
     val stateRecipeResult by searchViewModel.recipesByName.collectAsState()
     val stateCategoryResult by searchViewModel.categoryList.collectAsState()
-    val stateIngredientResult by searchViewModel.ingredientList.collectAsState()
+//    val stateIngredientResult by searchViewModel.ingredientList.collectAsState()
 
     var searchPerformed by remember { mutableStateOf(false) }
 
@@ -85,7 +85,6 @@ fun SearchScreen(
     val coroutineScope = rememberCoroutineScope()
 
     var recipeCategoryList: List<String> = emptyList()
-    var recipeIngredientsList: List<String> = emptyList()
     val context = LocalContext.current
 
     Surface(
@@ -96,7 +95,6 @@ fun SearchScreen(
         }
         LaunchedEffect(true) {
             searchViewModel.getCategoryList()
-            searchViewModel.getIngredientList()
         }
         when (stateCategoryResult) {
             is ApiState.Loading -> {
@@ -104,7 +102,7 @@ fun SearchScreen(
 
             is ApiState.Success -> {
                 recipeCategoryList = (stateCategoryResult as ApiState.Success<List<String>>).data
-                Log.e("TAG", "SearchScreen: $recipeIngredientsList")
+                Log.e("TAG", "SearchScreen: $recipeCategoryList")
             }
 
             is ApiState.Error -> {
@@ -112,28 +110,13 @@ fun SearchScreen(
                 Log.e("TAG", "SearchScreen: Something Went Wrong $error ")
             }
         }
-        when (stateIngredientResult) {
-            is ApiState.Loading -> {
-            }
 
-            is ApiState.Success -> {
-                recipeIngredientsList =
-                    (stateIngredientResult as ApiState.Success<List<String>>).data
-                Log.e("TAG", "SearchScreen: $recipeIngredientsList")
-            }
-
-            is ApiState.Error -> {
-                val error = (stateIngredientResult as ApiState.Error).message
-                Log.e("TAG", "SearchScreen: Something Went Wrong $error")
-            }
-        }
         if (showBottomSheet) {
             FilterBottomSheet(
                 onDismiss = {
                     showBottomSheet = false
                 },
-                recipeCategoryList,
-                recipeIngredientsList
+                recipeCategoryList
             )
         }
         Column(
@@ -261,8 +244,7 @@ fun SearchScreen(
 @Composable
 fun FilterBottomSheet(
     onDismiss: () -> Unit = {},
-    categories: List<String>,
-    ingredients: List<String>,
+    categories: List<String>
 ) {
     val context = LocalContext.current
     ModalBottomSheet(containerColor = white,
@@ -306,17 +288,6 @@ fun FilterBottomSheet(
                 textAlign = TextAlign.Start
             )
             ListFilterCategory(categories, onItemSelected = {
-//                onDismiss()
-            })
-            SimpleTextComponent(
-                modifier = Modifier.padding(6.dp),
-                value = stringResource(R.string.ingredients),
-                fontSize = 16.sp,
-                fontWeight = FontWeight.SemiBold,
-                textColor = black,
-                textAlign = TextAlign.Start
-            )
-            ListFilterIngredients(ingredients, onItemSelected = {
 //                onDismiss()
             })
             CustomButtonComponent(

@@ -91,6 +91,7 @@
     <string name="don_t_have_an_account">"Don't have an account? "</string>
     <string name="sign_up">Sign up</string>
     <string name="search_result">Search Result</string>
+    <string name="you_haven_t_saved_any_recipe_yet">You haven\'t saved any Recipe yet!</string>
 
 
 </resources>

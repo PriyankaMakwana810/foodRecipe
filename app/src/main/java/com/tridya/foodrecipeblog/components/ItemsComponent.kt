@@ -53,6 +53,7 @@ import com.tridya.foodrecipeblog.R
 import com.tridya.foodrecipeblog.database.tables.RecipeCard
 import com.tridya.foodrecipeblog.models.recipesByCountry
 import com.tridya.foodrecipeblog.ui.theme.black
+import com.tridya.foodrecipeblog.ui.theme.blackShadow
 import com.tridya.foodrecipeblog.ui.theme.gray3
 import com.tridya.foodrecipeblog.ui.theme.poppinsFont
 import com.tridya.foodrecipeblog.ui.theme.primary100
@@ -102,7 +103,7 @@ fun RecipesItemsComponent(
                 .fillMaxSize()
                 .background(
                     Brush.verticalGradient(
-                        listOf(Color.Transparent,if (isFromDetail) shadow else black),
+                        listOf(Color.Transparent, if (isFromDetail) blackShadow else black),
                         0f,
                         500f,
                     ), shape = RoundedCornerShape(10.dp)
@@ -221,7 +222,10 @@ fun ListFilterTime(onItemSelected: (String) -> Unit = {}) {
                 },
                 label = {
                     Text(
-                        text = item, style = TextStyle(fontSize = 12.sp), fontFamily = poppinsFont
+                        text = item,
+                        style = TextStyle(fontSize = 12.sp),
+                        fontFamily = poppinsFont,
+                        modifier = Modifier.padding(top = 2.dp)
                     )
                 },
                 colors = FilterChipDefaults.filterChipColors(
@@ -293,7 +297,7 @@ fun ListFilterCategory(
     onItemSelected: (String) -> Unit = {},
 ) {
     var selectedItem by remember {
-        mutableStateOf(listCategoryFilter[5])
+        mutableStateOf(listCategoryFilter[0])
     }
 
     FlowRow(
@@ -309,7 +313,10 @@ fun ListFilterCategory(
                 },
                 label = {
                     Text(
-                        text = item, style = TextStyle(fontSize = 12.sp), fontFamily = poppinsFont
+                        text = item,
+                        style = TextStyle(fontSize = 12.sp),
+                        fontFamily = poppinsFont,
+                        modifier = Modifier.padding(top = 2.dp)
                     )
                 },
                 colors = FilterChipDefaults.filterChipColors(
