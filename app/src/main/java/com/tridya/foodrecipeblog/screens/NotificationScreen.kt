@@ -29,6 +29,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -94,16 +95,19 @@ fun NotificationScreen(
                 when (selectedTab) {
                     0 -> {
                         listOfNotifications = emptyList()
+                        notificationViewModel.getAllNotifications()
                         listOfNotifications = allNotifications
                     }
 
                     1 -> {
                         listOfNotifications = emptyList()
+                        notificationViewModel.getReadNotifications()
                         listOfNotifications = readNotifications
                     }
 
                     2 -> {
                         listOfNotifications = emptyList()
+                        notificationViewModel.getUnreadNotifications()
                         listOfNotifications = unreadNotifications
 //                        NotificationList(notifications = unreadNotifications)
                     }
@@ -125,7 +129,7 @@ fun NotificationScreen(
                                 .build(),
                             modifier = Modifier
                                 .padding(top = 10.dp)
-                                .size(300.dp),
+                                .size(200.dp),
                             placeholder = painterResource(id = R.drawable.nothing_found),
                             contentDescription = "Nothing Here!",
                             contentScale = ContentScale.Fit,
@@ -133,16 +137,21 @@ fun NotificationScreen(
                         Spacer(modifier = Modifier.height(20.dp))
                         NormalTextComponent(
                             modifier = Modifier,
-                            value = "Nothing Here",
-                            fontSize = 20.sp,
+                            value = "Nothing here!!",
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Medium,
                             align = TextAlign.Center
                         )
                     }
                 } else {
                     LazyColumn {
                         var currentDate: LocalDate? = null
-
-                        items(listOfNotifications) { notification ->
+                        val sortedNotifications = listOfNotifications.sortedByDescending {
+                            Instant.ofEpochMilli(it.time ?: 0)
+                                .atZone(ZoneId.systemDefault())
+                                .toLocalDate()
+                        }
+                        items(sortedNotifications) { notification ->
                             val notificationDate = Instant.ofEpochMilli(notification.time ?: 0)
                                 .atZone(ZoneId.systemDefault())
                                 .toLocalDate()

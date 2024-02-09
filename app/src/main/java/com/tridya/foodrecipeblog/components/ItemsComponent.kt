@@ -52,10 +52,13 @@ import coil.request.ImageRequest
 import com.tridya.foodrecipeblog.R
 import com.tridya.foodrecipeblog.database.tables.RecipeCard
 import com.tridya.foodrecipeblog.models.recipesByCountry
+import com.tridya.foodrecipeblog.ui.theme.black
 import com.tridya.foodrecipeblog.ui.theme.gray3
+import com.tridya.foodrecipeblog.ui.theme.poppinsFont
 import com.tridya.foodrecipeblog.ui.theme.primary100
 import com.tridya.foodrecipeblog.ui.theme.primary80
 import com.tridya.foodrecipeblog.ui.theme.secondary20
+import com.tridya.foodrecipeblog.ui.theme.shadow
 import com.tridya.foodrecipeblog.ui.theme.white
 import com.tridya.foodrecipeblog.utils.StaticData.listCategoryFilter
 import com.tridya.foodrecipeblog.utils.StaticData.listRateFilter
@@ -99,9 +102,9 @@ fun RecipesItemsComponent(
                 .fillMaxSize()
                 .background(
                     Brush.verticalGradient(
-                        listOf(Color.Transparent, Color.Black),
-                        0f,  // TODO: set start
-                        500f,  // TODO: set end
+                        listOf(Color.Transparent,if (isFromDetail) shadow else black),
+                        0f,
+                        500f,
                     ), shape = RoundedCornerShape(10.dp)
                 )
         ) {
@@ -133,6 +136,7 @@ fun RecipesItemsComponent(
                     Text(
                         text = if (isFromDetail) "" else recipe.strMeal, style = TextStyle(
                             fontSize = 14.sp,
+                            fontFamily = poppinsFont,
                             fontWeight = FontWeight(600),
                             color = Color(0xFFFFFFFF),
                         )
@@ -140,7 +144,8 @@ fun RecipesItemsComponent(
                     Spacer(modifier = Modifier.height(3.dp))
                     Text(
                         text = if (isFromDetail) "" else recipe.postedBy, style = TextStyle(
-                            fontSize = 10.sp,
+                            fontSize = 11.sp,
+                            fontFamily = poppinsFont,
                             fontWeight = FontWeight(400),
                             color = gray3,
                         )
@@ -161,6 +166,7 @@ fun RecipesItemsComponent(
                             style = TextStyle(
                                 fontSize = 11.sp,
                                 fontWeight = FontWeight(400),
+                                fontFamily = poppinsFont,
                                 color = gray3,
                             ), modifier = Modifier.padding(start = 8.dp)
                         )
@@ -215,7 +221,7 @@ fun ListFilterTime(onItemSelected: (String) -> Unit = {}) {
                 },
                 label = {
                     Text(
-                        text = item, style = TextStyle(fontSize = 12.sp)
+                        text = item, style = TextStyle(fontSize = 12.sp), fontFamily = poppinsFont
                     )
                 },
                 colors = FilterChipDefaults.filterChipColors(
@@ -253,7 +259,7 @@ fun ListFilterRate(onItemSelected: (String) -> Unit = {}) {
                 label = {
                     Text(
                         text = item,
-                        style = TextStyle(fontSize = 12.sp),
+                        style = TextStyle(fontSize = 12.sp)
                     )
                 },
                 trailingIcon = {
@@ -303,7 +309,7 @@ fun ListFilterCategory(
                 },
                 label = {
                     Text(
-                        text = item, style = TextStyle(fontSize = 12.sp)
+                        text = item, style = TextStyle(fontSize = 12.sp), fontFamily = poppinsFont
                     )
                 },
                 colors = FilterChipDefaults.filterChipColors(
@@ -345,7 +351,7 @@ fun ListFilterIngredients(
                 },
                 label = {
                     Text(
-                        text = item, style = TextStyle(fontSize = 12.sp)
+                        text = item, style = TextStyle(fontSize = 12.sp), fontFamily = poppinsFont
                     )
                 },
                 colors = FilterChipDefaults.filterChipColors(

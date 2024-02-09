@@ -67,8 +67,10 @@ import com.tridya.foodrecipeblog.database.tables.RecipeCard
 import com.tridya.foodrecipeblog.models.recipesByCountry
 import com.tridya.foodrecipeblog.ui.theme.black
 import com.tridya.foodrecipeblog.ui.theme.gray1
+import com.tridya.foodrecipeblog.ui.theme.gray2
 import com.tridya.foodrecipeblog.ui.theme.gray3
 import com.tridya.foodrecipeblog.ui.theme.gray4
+import com.tridya.foodrecipeblog.ui.theme.poppinsFont
 import com.tridya.foodrecipeblog.ui.theme.primary100
 import com.tridya.foodrecipeblog.ui.theme.primary80
 import com.tridya.foodrecipeblog.ui.theme.secondary20
@@ -80,6 +82,7 @@ import com.tridya.foodrecipeblog.utils.StaticData.listCountries
 fun ProfileSection(
     modifier: Modifier = Modifier,
     userName: String = "",
+    profilePicPath: String = "",
 ) {
     Row(
         modifier = modifier
@@ -95,7 +98,7 @@ fun ProfileSection(
         ) {
             SimpleTextComponent(
                 value = userName,
-                fontSize = 24.sp,
+                fontSize = 20.sp,
                 fontWeight = FontWeight(600),
                 textColor = black,
                 textAlign = TextAlign.Left
@@ -103,20 +106,26 @@ fun ProfileSection(
             SimpleTextComponent(
                 modifier = Modifier.padding(vertical = 6.dp),
                 value = stringResource(R.string.what_are_you_cooking_today),
-                fontSize = 14.sp,
+                fontSize = 12.sp,
                 fontWeight = FontWeight(400),
                 textColor = gray3,
                 textAlign = TextAlign.Left
             )
         }
-        Image(
-            painter = painterResource(id = R.drawable.img_profile),
-            contentDescription = "profile",
-            Modifier
-                .size(50.dp)
-                .clip(shape = RoundedCornerShape(30))
+        AsyncImage(
+            modifier = Modifier
+                .size(40.dp)
+                .clip(shape = RoundedCornerShape(10.dp))
                 .background(secondary40),
-            contentScale = ContentScale.FillBounds,
+            model = ImageRequest.Builder(LocalContext.current)
+                .data(profilePicPath)
+                .memoryCachePolicy(CachePolicy.ENABLED)
+                .diskCachePolicy(CachePolicy.ENABLED)
+                .crossfade(true)
+                .build(),
+            placeholder = painterResource(id = R.drawable.img_profile),
+            contentDescription = "image description",
+            contentScale = ContentScale.Crop,
         )
     }
 }
@@ -147,13 +156,13 @@ fun ListSelectCountry(
                     onItemSelected(item)
                 },
                 label = {
-                    Text(
-                        text = item, style = TextStyle(
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight(600),
-                            color = textColor,
-                            textAlign = TextAlign.Center
-                        )
+                    NormalTextComponent(
+                        modifier = Modifier.padding(vertical = 7.dp),
+                        value = item,
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight(600),
+                        textColor = textColor,
+                        align = TextAlign.Center
                     )
                 },
                 colors = FilterChipDefaults.filterChipColors(
@@ -165,7 +174,7 @@ fun ListSelectCountry(
                 border = FilterChipDefaults.filterChipBorder(
                     borderColor = white
                 ),
-                shape = RoundedCornerShape(12.dp)
+                shape = RoundedCornerShape(10.dp)
             )
         }
     }
@@ -206,7 +215,7 @@ fun ItemRecipeCard(
     Box(
         modifier = Modifier
             .clickable { onRecipeClicked() }
-            .padding(horizontal = 10.dp)
+            .padding(horizontal = 5.dp)
     ) {
         Box(
             modifier = Modifier
@@ -236,8 +245,9 @@ fun ItemRecipeCard(
                     containerColor = secondary20
                 ),
                 modifier = Modifier
+                    .padding(bottom = 1.dp)
                     .height(24.dp)
-                    .width(50.dp)
+                    .width(45.dp)
                     .align(Alignment.CenterEnd)
             ) {
                 RatingBar(rating = recipe.ratings.toString())
@@ -248,7 +258,7 @@ fun ItemRecipeCard(
                 .width(150.dp)
                 .padding(top = 80.dp)
                 .height(160.dp)
-                .background(color = Color(0xFFD9D9D9), shape = RoundedCornerShape(size = 12.dp)),
+                .background(color = gray4, shape = RoundedCornerShape(size = 12.dp)),
         ) {
             Column(
                 verticalArrangement = Arrangement.Center,
@@ -283,7 +293,7 @@ fun ItemRecipeCard(
                     horizontalAlignment = Alignment.Start
                 ) {
                     Text(
-                        text = "Time",
+                        text = stringResource(id = R.string.time),
                         // Text Style/Smaller Text/Regular
                         style = TextStyle(
                             fontSize = 11.sp,
@@ -292,7 +302,7 @@ fun ItemRecipeCard(
                         )
                     )
                     Text(
-                        text = "${recipe.timeToCook} Mins",
+                        text = recipe.timeToCook.toString() + stringResource(id = R.string.mins),
                         // Text Style/Smaller Text/Bold
                         style = TextStyle(
                             fontSize = 11.sp,
@@ -335,19 +345,19 @@ fun ItemRecipeCard(
 @Composable
 fun ItemNewRecipe(recipe: RecipeCard, onRecipeClicked: () -> Unit = {}) {
     Box(modifier = Modifier
-        .padding(top = 8.dp)
         .clickable { onRecipeClicked() }) {
         AsyncImage(
             modifier = Modifier
                 .padding(end = 25.dp)
-                .clip(shape = RoundedCornerShape(100.dp))
-                .size(90.dp)
+                .clip(shape = CircleShape)
+                .size(85.dp)
                 .align(alignment = Alignment.TopEnd)
                 .zIndex(1f),
             model = ImageRequest.Builder(LocalContext.current)
                 .data(recipe.strMealThumb)
                 .memoryCachePolicy(CachePolicy.ENABLED)
                 .diskCachePolicy(CachePolicy.ENABLED)
+                .error(R.drawable.food_image)
                 .crossfade(true)
                 .build(),
             placeholder = painterResource(id = R.drawable.food_image),
@@ -361,11 +371,11 @@ fun ItemNewRecipe(recipe: RecipeCard, onRecipeClicked: () -> Unit = {}) {
             elevation = CardDefaults.cardElevation(10.dp),
             modifier = Modifier
                 .width(300.dp)
-                .padding(vertical = 40.dp, horizontal = 10.dp)
-                .background(color = Color(0xFFFFFFFF), shape = RoundedCornerShape(size = 10.dp))
+                .padding(vertical = 40.dp, horizontal = 8.dp)
+                .background(color = white, shape = RoundedCornerShape(size = 10.dp))
         ) {
             Column(
-                modifier = Modifier.padding(18.dp),
+                modifier = Modifier.padding(10.dp),
             ) {
                 Text(
                     modifier = Modifier.width(150.dp),
@@ -373,14 +383,15 @@ fun ItemNewRecipe(recipe: RecipeCard, onRecipeClicked: () -> Unit = {}) {
                     // Text Style/Small Text/Bold
                     style = TextStyle(
                         fontSize = 14.sp,
+                        fontFamily = poppinsFont,
                         fontWeight = FontWeight(600),
-                        color = Color(0xFF484848),
+                        color = gray1,
                     ),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
                 RatingBar(
-                    modifier = Modifier.padding(vertical = 8.dp),
+                    modifier = Modifier.padding(vertical = 5.dp),
                     value = recipe.ratings,
                     style = RatingBarStyle.Fill(),
                     size = 12.dp,
@@ -401,13 +412,16 @@ fun ItemNewRecipe(recipe: RecipeCard, onRecipeClicked: () -> Unit = {}) {
                     ) {
                         AsyncImage(
                             modifier = Modifier
-                                .clip(shape = RoundedCornerShape(100.dp))
+                                .clip(shape = CircleShape)
                                 .size(25.dp),
                             model = ImageRequest.Builder(LocalContext.current)
                                 .data(recipe.userProfilePhoto)
                                 .crossfade(true)
+                                .error(R.drawable.img_profile)
+                                .memoryCachePolicy(CachePolicy.ENABLED)
+                                .diskCachePolicy(CachePolicy.ENABLED)
                                 .build(),
-                            placeholder = painterResource(id = R.drawable.img_user_profile_1),
+                            placeholder = painterResource(id = R.drawable.img_profile),
                             contentDescription = "image description",
                             contentScale = ContentScale.Crop,
                         )
@@ -417,20 +431,22 @@ fun ItemNewRecipe(recipe: RecipeCard, onRecipeClicked: () -> Unit = {}) {
                             style = TextStyle(
                                 fontSize = 11.sp,
                                 fontWeight = FontWeight(400),
+                                fontFamily = poppinsFont,
                                 color = gray3,
                             ),
                         )
                     }
                     Image(
                         painter = painterResource(id = R.drawable.v_ic_timer),
-                        contentDescription = "time"
+                        contentDescription = stringResource(id = R.string.time)
                     )
                     Text(
-                        text = "${recipe.timeToCook} Mins",
+                        text = recipe.timeToCook.toString() + stringResource(id = R.string.mins),
                         // Text Style/Smaller Text/Regular
                         style = TextStyle(
                             fontSize = 11.sp,
                             fontWeight = FontWeight(400),
+                            fontFamily = poppinsFont,
                             color = gray3,
                         ),
                         modifier = Modifier.padding(start = 8.dp)
@@ -494,23 +510,24 @@ fun SearchBarWithFilter(
                 .weight(1f)
                 .height(50.dp)
                 .clip(RoundedCornerShape(10.dp)),
-//                .border(width = 2.dp, Color(0xFFD9D9D9)),
             value = text,
+            textStyle = TextStyle(
+                fontSize = 12.sp,
+                fontFamily = poppinsFont,
+                fontWeight = FontWeight(400),
+                color = black
+            ),
             onValueChange = {
                 text = it
                 onTextChange(it.text)
             },
             enabled = !ifHome,
-            textStyle = TextStyle(
-                color = black,
-                fontSize = 14.sp,
-                fontWeight = FontWeight.Normal,
-            ),
             placeholder = {
                 Text(
                     text = hint,
                     color = gray4,
-                    fontSize = 14.sp,
+                    fontSize = 12.sp,
+                    fontFamily = poppinsFont,
                     fontWeight = FontWeight.Normal,
                 )
             },
@@ -533,17 +550,20 @@ fun SearchBarWithFilter(
                 cursorColor = black,
                 unfocusedContainerColor = white,
                 focusedContainerColor = white,
-                unfocusedBorderColor = Color(0xFFD9D9D9),
-                focusedBorderColor = black,
-                disabledBorderColor = Color(0xFFD9D9D9),
+                unfocusedBorderColor = gray4,
+                focusedBorderColor = primary80,
+                disabledBorderColor = gray4,
+                focusedTextColor = black,
+                disabledTextColor = gray2,
+                unfocusedTextColor = black
             )
         )
         Spacer(modifier = Modifier.width(20.dp))
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier
-                .width(50.dp)
-                .height(50.dp)
+                .width(40.dp)
+                .height(40.dp)
                 .background(color = Color(0xFF129575), shape = RoundedCornerShape(size = 10.dp))
                 .clickable { onFilterClicked() }
         ) {

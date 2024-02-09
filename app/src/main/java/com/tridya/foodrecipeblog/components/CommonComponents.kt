@@ -32,7 +32,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -52,6 +51,7 @@ import com.tridya.foodrecipeblog.models.UserProfile
 import com.tridya.foodrecipeblog.ui.theme.black
 import com.tridya.foodrecipeblog.ui.theme.gray3
 import com.tridya.foodrecipeblog.ui.theme.gray4
+import com.tridya.foodrecipeblog.ui.theme.poppinsFont
 import com.tridya.foodrecipeblog.ui.theme.primary100
 import com.tridya.foodrecipeblog.ui.theme.primary80
 import com.tridya.foodrecipeblog.ui.theme.secondary100
@@ -77,11 +77,13 @@ fun RatingBar(rating: String) {
                 .padding(vertical = 6.dp, horizontal = 6.dp)
         )
         Text(
+            modifier = Modifier.align(Alignment.CenterVertically).padding(top = 4.dp),
             text = rating,
             style = TextStyle(
                 fontSize = 11.sp,
                 fontWeight = FontWeight(400),
-                color = Color(0xFF000000),
+                fontFamily = poppinsFont,
+                color = black,
                 textAlign = TextAlign.End
             )
         )

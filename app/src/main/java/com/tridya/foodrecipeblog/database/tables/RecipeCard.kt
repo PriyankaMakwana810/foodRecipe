@@ -17,7 +17,7 @@ data class RecipeCard(
     var strMeal: String = "",
     val timeToCook: Long = generateRandomTimeToCook(),
     val tagline: String = "tagline",
-    val isSaved: Boolean = false,
+    var isSaved: Boolean = false,
     var isSearched: Boolean = false,
     val ratings: Float = generateRandomRating(),
     var postedBy: String = randomName,

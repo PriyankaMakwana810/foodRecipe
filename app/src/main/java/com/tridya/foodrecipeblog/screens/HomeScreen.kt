@@ -3,10 +3,8 @@ package com.tridya.foodrecipeblog.screens
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -37,7 +35,6 @@ import androidx.navigation.compose.rememberNavController
 import com.tridya.foodrecipeblog.R
 import com.tridya.foodrecipeblog.api.ApiState
 import com.tridya.foodrecipeblog.api.response.Areas
-import com.tridya.foodrecipeblog.api.response.ResponseOfRecipes
 import com.tridya.foodrecipeblog.components.ItemNewRecipe
 import com.tridya.foodrecipeblog.components.ItemRecipeCard
 import com.tridya.foodrecipeblog.components.ListSelectCountry
@@ -50,7 +47,6 @@ import com.tridya.foodrecipeblog.database.tables.RecipeCard
 import com.tridya.foodrecipeblog.navigation.Screen
 import com.tridya.foodrecipeblog.ui.theme.black
 import com.tridya.foodrecipeblog.ui.theme.white
-import com.tridya.foodrecipeblog.utils.toEntity
 import com.tridya.foodrecipeblog.viewModels.HomeViewModel
 import kotlinx.coroutines.launch
 
@@ -65,7 +61,7 @@ fun HomeScreen(
     val areaState by homeViewModel.areas.collectAsState()
     val recipeByArea by homeViewModel.recipesByArea.collectAsState()
     val newRecipes by homeViewModel.newRecipes.collectAsState()
-
+    val allSavedRecipe by homeViewModel.allSavedRecipes.collectAsState()
     val userName = homeViewModel.sharedPreferences.user?.userName
 
     val recipeScrollState = rememberLazyListState()
@@ -90,9 +86,16 @@ fun HomeScreen(
                 .verticalScroll(state = scrollState)
                 .fillMaxSize()
         ) {
-            Spacer(modifier = Modifier.height(20.dp))
-            ProfileSection(modifier = Modifier.fillMaxWidth(), userName = "Hello $userName")
+            ProfileSection(
+                modifier = Modifier.fillMaxWidth(),
+                userName = "Hello $userName",
+                profilePicPath = homeViewModel.sharedPreferences.user?.profilePicPath!!
+            )
             SearchBarWithFilter(ifHome = true, onSearchClicked = {
+                navController.navigate(Screen.SearchScreen.route) {
+                    this.launchSingleTop = true
+                }
+            }, onFilterClicked = {
                 navController.navigate(Screen.SearchScreen.route) {
                     this.launchSingleTop = true
                 }
@@ -111,7 +114,8 @@ fun HomeScreen(
                     LaunchedEffect(Unit) {
                         selectedArea = listOfArea.first()
                         if (!homeViewModel.loaded.value)
-                            homeViewModel.getRecipeByArea(listOfArea.first())
+                            homeViewModel.getAllSavedRecipes()
+                        homeViewModel.getRecipeByArea(listOfArea.first())
                     }
 
                     ListSelectCountry(listOfCountries = listOfArea) { selectedItem ->
@@ -129,11 +133,15 @@ fun HomeScreen(
 
                         is ApiState.Success -> {
                             val recipeByCountry =
-                                (recipeByArea as ApiState.Success<List<ResponseOfRecipes>>).data.map {
-                                    it.toEntity(
-                                        area = selectedArea
-                                    )
+                                (recipeByArea as ApiState.Success<List<RecipeCard>>).data
+                            recipeByCountry.forEach { recipeCard ->
+                                val isSaved = allSavedRecipe.any { savedRecipe ->
+                                    savedRecipe.idMeal == recipeCard.idMeal
                                 }
+                                if (isSaved) {
+                                    recipeCard.isSaved = true
+                                }
+                            }
                             LazyRow(
                                 state = recipeScrollState,
                                 modifier = Modifier.padding(
@@ -177,8 +185,16 @@ fun HomeScreen(
 
                         is ApiState.Success -> {
                             val listNewRecipes: List<RecipeCard> =
-                                (newRecipes as ApiState.Success<List<ResponseOfRecipes>>).data.map { it.toEntity() }
+                                (newRecipes as ApiState.Success<List<RecipeCard>>).data
 
+                            listNewRecipes.forEach { recipeCard ->
+                                val isSaved = allSavedRecipe.any { savedRecipe ->
+                                    savedRecipe.idMeal == recipeCard.idMeal
+                                }
+                                if (isSaved) {
+                                    recipeCard.isSaved = true
+                                }
+                            }
                             LazyRow(
                                 modifier = Modifier.padding(start = 15.dp),
                                 horizontalArrangement = Arrangement.spacedBy(5.dp),

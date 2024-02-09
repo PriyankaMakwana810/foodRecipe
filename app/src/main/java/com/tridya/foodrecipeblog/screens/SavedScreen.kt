@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -46,7 +47,6 @@ fun SavedScreen(
     savedViewModel: CommonViewModel = hiltViewModel(),
 ) {
 
-    val context = LocalContext.current
     val allSavedRecipe by savedViewModel.allSavedRecipes.collectAsState()
 
     Surface(
@@ -81,7 +81,8 @@ fun SavedScreen(
                     NormalTextComponent(
                         modifier = Modifier,
                         value = "Nothing Here",
-                        fontSize = 20.sp,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Medium,
                         align = TextAlign.Center
                     )
                 }

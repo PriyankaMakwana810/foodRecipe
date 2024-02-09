@@ -147,7 +147,8 @@ fun NotificationList(notifications: List<Notifications>) {
             NormalTextComponent(
                 modifier = Modifier,
                 value = "Nothing Here",
-                fontSize = 20.sp,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Medium,
                 align = TextAlign.Center
             )
         }
@@ -243,7 +244,7 @@ fun NotificationItem(
             .clip(RoundedCornerShape(12.dp))
             .background(gray4)
             .padding(vertical = 12.dp, horizontal = 16.dp)
-            .clickable { onNotificationClicked },
+            .clickable { onNotificationClicked() },
         verticalAlignment = Alignment.Top,
         horizontalArrangement = Arrangement.spacedBy(5.dp)
     ) {
@@ -279,22 +280,28 @@ fun NotificationItem(
         }
         Box(
             modifier = Modifier
-                .clip(RoundedCornerShape(10.dp))
-                .background(secondary20)
-                .size(30.dp)
         ) {
-            Image(
-                modifier = Modifier.align(Alignment.Center),
-                painter = painterResource(id = R.drawable.v_ic_message),
-                contentDescription = ""
-            )
-            if (notification.isRead == true) {
+            Box(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(10.dp))
+                    .background(secondary20)
+                    .size(30.dp)
+            ) {
+                Image(
+                    modifier = Modifier.align(Alignment.Center),
+                    painter = painterResource(id = R.drawable.v_ic_message),
+                    contentDescription = ""
+                )
+            }
+
+            if (notification.isRead == false) {
                 Image(
                     modifier = Modifier
                         .align(Alignment.TopEnd)
-                        .padding(2.dp),
+                        .padding(1.dp),
                     painter = painterResource(id = R.drawable.v_ic_unread),
                     contentDescription = "unread",
+                    contentScale = ContentScale.Fit
                 )
             }
         }

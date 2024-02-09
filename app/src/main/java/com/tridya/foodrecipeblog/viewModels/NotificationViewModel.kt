@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tridya.foodrecipeblog.api.repo.NotificationRepository
 import com.tridya.foodrecipeblog.database.tables.Notifications
-import com.tridya.foodrecipeblog.database.tables.RecipeCard
 import com.tridya.foodrecipeblog.utils.Constants
 import com.tridya.foodrecipeblog.utils.PrefUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,9 +20,6 @@ class NotificationViewModel @Inject constructor(
     private val repository: NotificationRepository,
     @Named(Constants.SHARED_COMMON) val sharedPreferences: PrefUtils,
 ) : ViewModel() {
-    private val _allSavedRecipes =
-        MutableStateFlow<List<RecipeCard>>(emptyList())
-    val allSavedRecipes: StateFlow<List<RecipeCard>> = _allSavedRecipes
 
     private var _allNotifications =
         MutableStateFlow<List<Notifications>>(emptyList())
@@ -44,12 +40,13 @@ class NotificationViewModel @Inject constructor(
         getUnreadNotifications()
     }
 
-    fun updateNotificationState(isRead: Boolean, id: Int){
+    fun updateNotificationState(isRead: Boolean, id: Int) {
         CoroutineScope(Dispatchers.IO).launch {
-            repository.updateNotificationState(isRead,id)
+            repository.updateNotificationState(isRead, id)
         }
     }
-    private fun getAllNotifications() {
+
+    fun getAllNotifications() {
         try {
             viewModelScope.launch {
                 repository.getAllNotifications.collect {
@@ -61,7 +58,7 @@ class NotificationViewModel @Inject constructor(
         }
     }
 
-    private fun getReadNotifications() {
+    fun getReadNotifications() {
         try {
             viewModelScope.launch {
                 repository.getReadNotifications.collect {
@@ -73,7 +70,7 @@ class NotificationViewModel @Inject constructor(
         }
     }
 
-    private fun getUnreadNotifications() {
+    fun getUnreadNotifications() {
         try {
             viewModelScope.launch {
                 repository.getUnreadNotifications.collect {

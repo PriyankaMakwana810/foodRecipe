@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -110,7 +109,7 @@ fun SearchScreen(
 
             is ApiState.Error -> {
                 val error = (stateCategoryResult as ApiState.Error).message
-                Log.e("TAG", "SearchScreen: Something Went Wrong ")
+                Log.e("TAG", "SearchScreen: Something Went Wrong $error ")
             }
         }
         when (stateIngredientResult) {
@@ -125,7 +124,7 @@ fun SearchScreen(
 
             is ApiState.Error -> {
                 val error = (stateIngredientResult as ApiState.Error).message
-                Log.e("TAG", "SearchScreen: Something Went Wrong ")
+                Log.e("TAG", "SearchScreen: Something Went Wrong $error")
             }
         }
         if (showBottomSheet) {
@@ -172,7 +171,8 @@ fun SearchScreen(
                             val listRecipes =
                                 (stateRecipeResult as ApiState.Success<List<RecipeCard>>).data
                             TitleSearchResults(
-                                title = "Search Result", results = "${listRecipes.size} results"
+                                title = stringResource(R.string.search_result),
+                                results = "${listRecipes.size} results"
                             )
                             LazyVerticalGrid(
                                 state = recipeScrollState,
@@ -199,7 +199,7 @@ fun SearchScreen(
                             ) {
                                 NormalTextComponent(
                                     value = error,
-                                    fontSize = 20.sp,
+                                    fontSize = 28.sp,
                                     fontWeight = FontWeight.Bold,
                                     align = TextAlign.Center
                                 )
@@ -220,7 +220,7 @@ fun SearchScreen(
                         }
                     } else {
                         Column(
-                            modifier = Modifier.fillMaxWidth(),
+                            modifier = Modifier.fillMaxSize(),
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.Center
                         ) {
@@ -233,16 +233,17 @@ fun SearchScreen(
                                     .build(),
                                 modifier = Modifier
                                     .padding(top = 10.dp)
-                                    .size(300.dp),
+                                    .size(250.dp),
                                 placeholder = painterResource(id = R.drawable.nothing_found),
-                                contentDescription = "Nothing Here!",
+                                contentDescription = "There is no Recent Search!!",
                                 contentScale = ContentScale.Fit,
                             )
                             Spacer(modifier = Modifier.height(20.dp))
                             NormalTextComponent(
                                 modifier = Modifier,
-                                value = "Nothing Here",
-                                fontSize = 20.sp,
+                                value = "There is no Recent Search!!",
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight.Medium,
                                 align = TextAlign.Center
                             )
                         }
@@ -305,7 +306,7 @@ fun FilterBottomSheet(
                 textAlign = TextAlign.Start
             )
             ListFilterCategory(categories, onItemSelected = {
-                onDismiss()
+//                onDismiss()
             })
             SimpleTextComponent(
                 modifier = Modifier.padding(6.dp),
@@ -316,7 +317,7 @@ fun FilterBottomSheet(
                 textAlign = TextAlign.Start
             )
             ListFilterIngredients(ingredients, onItemSelected = {
-                onDismiss()
+//                onDismiss()
             })
             CustomButtonComponent(
                 modifier = Modifier
