@@ -110,12 +110,12 @@ fun IntroScreen(
                     ButtonComponent(modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 50.dp),
-                        value = "Start Cooking",
+                        value = stringResource(R.string.start_cooking),
                         onButtonClicked = {
                             if (homeViewModel.sharedPreferences.isLoggedIn) {
                                 navController.navigate(Screen.HomeScreen.route) {
                                     popUpTo(Screen.IntroScreen.route) {
-                                        inclusive = false
+                                        inclusive = true
                                     }
                                 }
                             } else {

@@ -1,6 +1,5 @@
 package com.tridya.foodrecipeblog.screens
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -8,14 +7,10 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -28,12 +23,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -46,6 +40,7 @@ import com.tridya.foodrecipeblog.components.NormalTextComponent
 import com.tridya.foodrecipeblog.components.ProfileSectionOfRecipe
 import com.tridya.foodrecipeblog.components.RateDialogComponent
 import com.tridya.foodrecipeblog.components.RecipesItemsComponent
+import com.tridya.foodrecipeblog.components.ReusableDropdownMenu
 import com.tridya.foodrecipeblog.components.ShareDialogComponent
 import com.tridya.foodrecipeblog.components.ShowIngredients
 import com.tridya.foodrecipeblog.components.ShowProcedure
@@ -53,7 +48,6 @@ import com.tridya.foodrecipeblog.components.ShowProgress
 import com.tridya.foodrecipeblog.components.ToolbarComponent
 import com.tridya.foodrecipeblog.database.tables.RecipeCard
 import com.tridya.foodrecipeblog.navigation.Screen
-import com.tridya.foodrecipeblog.ui.theme.black
 import com.tridya.foodrecipeblog.ui.theme.gray3
 import com.tridya.foodrecipeblog.ui.theme.white
 import com.tridya.foodrecipeblog.utils.showShortToast
@@ -100,72 +94,57 @@ fun RecipeDetailScreen(
                         navController.navigateUp()
                     })
                     Box {
-                        DropdownMenu(
-                            modifier = Modifier.background(white),
-                            expanded = expanded,
-                            onDismissRequest = { expanded = false },
-                            offset = DpOffset(x = (-66).dp, y = (-10).dp)
-                        ) {
-                            DropdownMenuItem(text = { Text(text = "Share") }, leadingIcon = {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.v_ic_menu_share),
-                                    contentDescription = "Share"
-                                )
-                            }, onClick = {
-                                expanded = false
-                                openShareDialog = true
-                            })
-
-                            DropdownMenuItem(text = { Text(text = "Rate Recipe") }, leadingIcon = {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.v_ic_menu_star),
-                                    contentDescription = "Rate"
-                                )
-                            }, onClick = {
-                                expanded = false
-                                openRatingDialog = true
-                            })
-                            DropdownMenuItem(text = { Text(text = "Review") }, leadingIcon = {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.v_ic_menu_review),
-                                    contentDescription = "Review"
-                                )
-                            }, onClick = {
-                                expanded = false
-                                navController.navigate(Screen.ReviewScreen.route)
-                            })
-                            DropdownMenuItem(
-                                text = { Text(text = if (recipe.isSaved) "Unsave" else "Save") },
-                                leadingIcon = {
-                                    Icon(
-                                        painter = painterResource(id = R.drawable.v_ic_menu_unsave),
-                                        contentDescription = "Unsave or Save"
-                                    )
+                        ReusableDropdownMenu(
+                            items = listOf(
+                                Triple("Share", painterResource(id = R.drawable.v_ic_menu_share)) {
+                                    openShareDialog = true
                                 },
-                                onClick = {
-                                    if (recipe.isSaved) {
+                                Triple(
+                                    "Rate Recipe",
+                                    painterResource(id = R.drawable.v_ic_menu_star)
+                                ) {
+                                    openRatingDialog = true
+                                },
+                                Triple(
+                                    "Review",
+                                    painterResource(id = R.drawable.v_ic_menu_review)
+                                ) {
+                                    navController.navigate(Screen.ReviewScreen.route)
+                                },
+                                if (recipe.isSaved)
+                                    Triple(
+                                        "Unsave",
+                                        painterResource(id = R.drawable.v_ic_menu_unsave)
+                                    ) {
                                         recipeDetailsViewModel.updateRecipeIsSaved(
                                             false,
                                             recipe.idMeal
                                         )
-                                    } else {
+                                    }
+                                else
+                                    Triple(
+                                        "Save",
+                                        painterResource(id = R.drawable.v_ic_menu_unsave)
+                                    ) {
                                         recipeDetailsViewModel.updateRecipeIsSaved(
                                             true,
                                             recipe.idMeal
                                         )
                                     }
-                                    expanded = false
-                                })
-                        }
+                            ),
+                            expanded = expanded,
+                            onDismissRequest = { expanded = false }
+                        )
                     }
 
                     RecipesItemsComponent(
                         modifier = Modifier
                             .padding(horizontal = 10.dp)
-                            .heightIn(200.dp),
+                            .height(170.dp),
                         recipe = recipe,
                         isFromDetail = true,
-                        isFromSaved = true
+                        isFromSaved = true,
+                        padding = 0.dp
                     )
                     Row(
                         modifier = Modifier
@@ -174,24 +153,22 @@ fun RecipeDetailScreen(
                         verticalAlignment = Alignment.Top,
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        Text(
-                            text = recipe.strMeal, style = TextStyle(
-                                fontSize = 18.sp,
-                                fontWeight = FontWeight(600),
-                                color = black,
-                            ), modifier = Modifier.width(190.dp)
+                        NormalTextComponent(
+                            modifier = Modifier.width(190.dp),
+                            value = recipe.strMeal,
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight(600)
                         )
-                        Text(
-                            text = "(13k Reviews)",
-                            // Poppins/label/regular
-                            style = TextStyle(
-                                fontSize = 16.sp,
-                                fontWeight = FontWeight(400),
-                                color = gray3,
-                            )
+
+                        NormalTextComponent(
+                            value = stringResource(R.string._13k_reviews),
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight(400),
+                            textColor = gray3
                         )
                     }
                     ProfileSectionOfRecipe(recipe = recipe)
+
                     CustomRecipeDetailsTabs(onIngredientClicked = {
                         showProcedure = false
                     }, onProcedureClicked = {

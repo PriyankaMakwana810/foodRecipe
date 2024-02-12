@@ -21,6 +21,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
@@ -38,12 +40,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
@@ -59,7 +65,6 @@ import com.tridya.foodrecipeblog.ui.theme.poppinsFont
 import com.tridya.foodrecipeblog.ui.theme.primary100
 import com.tridya.foodrecipeblog.ui.theme.primary80
 import com.tridya.foodrecipeblog.ui.theme.secondary20
-import com.tridya.foodrecipeblog.ui.theme.shadow
 import com.tridya.foodrecipeblog.ui.theme.white
 import com.tridya.foodrecipeblog.utils.StaticData.listCategoryFilter
 import com.tridya.foodrecipeblog.utils.StaticData.listRateFilter
@@ -73,11 +78,12 @@ fun RecipesItemsComponent(
     isFromSaved: Boolean = false,
     isFromDetail: Boolean = false,
     onRecipeItemClicked: () -> Unit = {},
+    padding: Dp = 10.dp,
 ) {
     Box(
         modifier = modifier
             .height(180.dp)
-            .padding(10.dp)
+            .padding(horizontal = 10.dp, vertical = padding)
             .background(
                 color = white,
                 shape = RoundedCornerShape(10.dp),
@@ -116,7 +122,7 @@ fun RecipesItemsComponent(
                 ),
                 modifier = Modifier
                     .padding(8.dp)
-                    .height(24.dp)
+                    .height(22.dp)
                     .width(48.dp)
                     .align(Alignment.TopEnd)
             ) {
@@ -135,12 +141,15 @@ fun RecipesItemsComponent(
                     horizontalAlignment = Alignment.Start
                 ) {
                     Text(
-                        text = if (isFromDetail) "" else recipe.strMeal, style = TextStyle(
+                        text = if (isFromDetail) "" else recipe.strMeal,
+                        style = TextStyle(
                             fontSize = 14.sp,
                             fontFamily = poppinsFont,
                             fontWeight = FontWeight(600),
                             color = Color(0xFFFFFFFF),
-                        )
+                        ),
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis
                     )
                     Spacer(modifier = Modifier.height(3.dp))
                     Text(
@@ -198,6 +207,42 @@ fun RecipesItemsComponent(
                         }
                     }
                 }
+            }
+        }
+    }
+}
+
+@Composable
+fun ReusableDropdownMenu(
+    items: List<Triple<String, Painter, () -> Unit>>,
+    modifier: Modifier = Modifier,
+    expanded: Boolean,
+    onDismissRequest: () -> Unit,
+    offset: DpOffset = DpOffset(x = (-66).dp, y = (-10).dp),
+) {
+    Box(modifier = Modifier.padding(end = 20.dp)) {
+        DropdownMenu(
+            modifier = modifier.background(Color.White),
+            expanded = expanded,
+            onDismissRequest = onDismissRequest,
+            offset = offset
+        ) {
+            items.forEach { (text, iconPainter, onClick) ->
+                DropdownMenuItem(
+                    leadingIcon = {
+                        Icon(
+                            painter = iconPainter,
+                            contentDescription = text,
+                            tint = black,
+                            modifier = Modifier.padding(end = 8.dp)
+                        )
+                    },
+                    text = { NormalTextComponent(value = text, fontSize = 14.sp) },
+                    onClick = {
+                        onClick()
+                        onDismissRequest()
+                    }
+                )
             }
         }
     }

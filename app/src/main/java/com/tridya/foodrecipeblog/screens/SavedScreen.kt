@@ -93,13 +93,16 @@ fun SavedScreen(
                         .padding(horizontal = 10.dp),
                 ) {
                     items(allSavedRecipe) { item ->
-                        RecipesItemsComponent(recipe = item,
+                        RecipesItemsComponent(
+                            recipe = item,
                             isFromSaved = true,
                             onRecipeItemClicked = {
                                 navController.navigate(Screen.RecipeDetailScreen.route + "/${item.idMeal}") {
                                     this.launchSingleTop = true
                                 }
-                            })
+                            },
+                            padding = 10.dp
+                        )
                     }
                 }
             }

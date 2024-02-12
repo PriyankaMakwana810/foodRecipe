@@ -8,6 +8,7 @@ import com.tridya.foodrecipeblog.api.repo.SearchRepository
 import com.tridya.foodrecipeblog.database.tables.RecipeCard
 import com.tridya.foodrecipeblog.utils.Constants
 import com.tridya.foodrecipeblog.utils.PrefUtils
+import com.tridya.foodrecipeblog.utils.toEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -31,8 +32,8 @@ class SearchViewModel @Inject constructor(
     private val _categoryList = MutableStateFlow<ApiState<List<String>>>(ApiState.Loading)
     val categoryList: StateFlow<ApiState<List<String>>> = _categoryList
 
-/*    private val _ingredientList = MutableStateFlow<ApiState<List<String>>>(ApiState.Loading)
-    val ingredientList: StateFlow<ApiState<List<String>>> = _ingredientList*/
+    private val _recipesByCategory = MutableStateFlow<ApiState<List<RecipeCard>>>(ApiState.Loading)
+    val recipesByCategory: StateFlow<ApiState<List<RecipeCard>>> = _recipesByCategory
 
     init {
         getAllStoredRecipes()
@@ -75,21 +76,26 @@ class SearchViewModel @Inject constructor(
         }
     }
 
-    /*fun getIngredientList() {
-        viewModelScope.launch {
-            try {
-                val response = repository.getIngredientList()
-                _ingredientList.value =
-                    ApiState.Success(response.meals.map { it.strIngredient }.subList(0, 5))
-            } catch (e: Exception) {
-                _ingredientList.value = ApiState.Error("API Error: ${e.message}")
-            }
-        }
-    }
-*/
     fun addRecipe(recipe: RecipeCard) {
         viewModelScope.launch {
             repository.addRecipe(recipe)
+        }
+    }
+
+    fun getRecipeByCategories(category: String) {
+        viewModelScope.launch {
+            try {
+                val response = repository.getRecipeByCategories(category)
+                val actualResponse = response.meals.map {
+                    it.toEntity(
+                        category = "Miscellaneous"
+                    )
+                }
+                _recipesByName.value = ApiState.Success(actualResponse)
+
+            } catch (e: Exception) {
+                _recipesByName.value = ApiState.Error("API Error: ${e.message}")
+            }
         }
     }
 

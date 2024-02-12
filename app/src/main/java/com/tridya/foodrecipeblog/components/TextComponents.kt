@@ -18,6 +18,7 @@ import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -96,7 +97,7 @@ fun SmallTextLabel(modifier: Modifier = Modifier, value: String) {
         text = value,
         modifier = modifier
             .heightIn()
-            .padding(vertical = 10.dp),
+            .padding(vertical = 5.dp),
         style = TextStyle(
             fontSize = 14.sp,
             fontFamily = poppinsFont,
@@ -122,8 +123,10 @@ fun CheckboxComponent(value: String) {
             onCheckedChange = {
                 isChecked = it
             }, colors = CheckboxDefaults.colors(
-                checkedColor = secondary100
-            )
+                checkedColor = secondary100,
+                uncheckedColor = secondary100
+            ),
+            interactionSource = NoRippleInteractionSource()
         )
         YellowSmallText(value, onClick = {})
     }
@@ -135,6 +138,7 @@ fun YellowSmallText(value: String, onClick: () -> Unit) {
         text = value,
         Modifier
             .heightIn()
+            .padding(top = 4.dp)
             .clickable(onClick = { onClick.invoke() }),
         style = TextStyle(
             fontSize = 12.sp,
@@ -229,7 +233,7 @@ fun ExpandableText(
 ) {
     var isExpanded by remember { mutableStateOf(false) }
     var clickable by remember { mutableStateOf(false) }
-    var lastCharIndex by remember { mutableStateOf(0) }
+    var lastCharIndex by remember { mutableIntStateOf(0) }
     Box(modifier = Modifier
         .clickable(clickable) {
             isExpanded = !isExpanded

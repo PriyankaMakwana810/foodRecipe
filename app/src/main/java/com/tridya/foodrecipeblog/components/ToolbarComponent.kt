@@ -56,6 +56,9 @@ fun ToolbarComponent(
             )
         )*/
         SimpleTextComponent(
+            modifier = Modifier
+                .padding(10.dp)
+                .fillMaxWidth(),
             value = toolbarTitle,
             fontSize = 18.sp,
             fontWeight = FontWeight(600),

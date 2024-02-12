@@ -141,7 +141,7 @@ fun ProcedureTextField(
         shape = RoundedCornerShape(10.dp),
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Text,
-            imeAction = ImeAction.Next
+            imeAction = ImeAction.Done
         ),
         placeholder = {
             Text(
@@ -151,6 +151,7 @@ fun ProcedureTextField(
             )
         },
         colors = colorsOfTextFields,
+        singleLine = false,
         minLines = 3,
     )
 }

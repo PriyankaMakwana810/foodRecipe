@@ -16,6 +16,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -72,6 +73,15 @@ fun RegisterScreen(navController: NavController) {
     }
     val callbackManager = remember {
         CallbackManager.Factory.create()
+    }
+    LaunchedEffect(registrationState) {
+        if (registrationState.isRegistrationSuccessful) {
+            navController.navigate(Screen.HomeScreen.route) {
+                popUpTo(Screen.IntroScreen.route) {
+                    inclusive = false
+                }
+            }
+        }
     }
     val fbLauncher = rememberLauncherForActivityResult(
         LoginManager.getInstance().createLogInActivityResultContract(callbackManager)
@@ -159,8 +169,7 @@ fun RegisterScreen(navController: NavController) {
                 .background(white)
                 .verticalScroll(state = scrollState)
         ) {
-            Spacer(modifier = Modifier.height(40.dp))
-
+            Spacer(modifier = Modifier.height(20.dp))
             SimpleTextComponent(
                 value = stringResource(R.string.create_an_account),
                 fontSize = 20.sp,
@@ -240,7 +249,7 @@ fun RegisterScreen(navController: NavController) {
                 errorText = stringResource(id = registrationState.errorState.confirmPasswordErrorState.errorMessageStringResource)
             )
 
-            Spacer(modifier = Modifier.height(20.dp))
+//            Spacer(modifier = Modifier.height(10.dp))
 
             CheckboxComponent(value = "Accept terms & Condition")
 

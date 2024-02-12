@@ -75,7 +75,7 @@ fun LoginScreen(navController: NavController) {
         if (loginState.isLoginSuccessful) {
             navController.navigate(Screen.HomeScreen.route) {
                 popUpTo(Screen.IntroScreen.route) {
-                    inclusive = false
+                    inclusive = true
                 }
             }
         }
@@ -258,7 +258,7 @@ fun LoginScreen(navController: NavController) {
             loginViewModel.sharedPreferences.user = user1
             navController.navigate(Screen.HomeScreen.route) {
                 popUpTo(Screen.IntroScreen.route) {
-                    inclusive = false
+                    inclusive = true
                 }
             }
 

@@ -122,16 +122,14 @@ fun ProfileSectionOfRecipe(
             modifier = Modifier
                 .padding(horizontal = 10.dp)
                 .weight(1f),
-            verticalArrangement = Arrangement.spacedBy(5.dp),
+//            verticalArrangement = Arrangement.spacedBy(5.dp),
             horizontalAlignment = Alignment.Start
         ) {
             Text(
                 text = recipe.postedBy,
-                modifier = modifier
-                    .heightIn(),
                 style = TextStyle(
-                    fontSize = 16.sp,
-                    lineHeight = 40.sp,
+                    fontSize = 14.sp,
+                    fontFamily = poppinsFont,
                     fontWeight = FontWeight(600),
                     color = black,
                     textAlign = TextAlign.Start,
@@ -147,8 +145,8 @@ fun ProfileSectionOfRecipe(
                     modifier = modifier
                         .heightIn(),
                     style = TextStyle(
-                        fontSize = 12.sp,
-                        lineHeight = 40.sp,
+                        fontSize = 11.sp,
+                        fontFamily = poppinsFont,
                         fontWeight = FontWeight(400),
                         color = gray3,
                         textAlign = TextAlign.Start,
@@ -177,7 +175,7 @@ fun CustomRecipeDetailsTabs(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 10.dp, horizontal = 20.dp)
-            .clip(RoundedCornerShape(10)),
+            .clip(RoundedCornerShape(10.dp)),
         indicator = {
             Box {}
         },
@@ -187,7 +185,7 @@ fun CustomRecipeDetailsTabs(
             val selected = selectedIndex == index
             Tab(
                 modifier = if (selected) Modifier
-                    .clip(RoundedCornerShape(20))
+                    .clip(RoundedCornerShape(10.dp))
                     .background(
                         primary100
                     )
@@ -204,7 +202,14 @@ fun CustomRecipeDetailsTabs(
                         onProcedureClicked()
                     }
                 },
-                text = { Text(text = text, color = if (selected) white else primary80) }
+                text = {
+                    NormalTextComponent(
+                        value = text,
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight(600),
+                        textColor = if (selected) white else primary80
+                    )
+                }
             )
         }
     }
@@ -258,7 +263,15 @@ fun CustomNotificationTabs(
                     }
 
                 },
-                text = { Text(text = text, color = if (selected) white else primary80) }
+                text = {
+                    NormalTextComponent(
+                        value = text,
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight(600),
+                        textColor = if (selected) white else primary80
+                    )
+//                    Text(text = text, color = if (selected) white else primary80)
+                }
             )
         }
     }
@@ -467,7 +480,15 @@ fun CustomProfileTabs(
                     }
 
                 },
-                text = { Text(text = text, color = if (selected) white else primary80) }
+                text = {
+                    NormalTextComponent(
+                        value = text,
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight(600),
+                        textColor = if (selected) white else primary80
+                    )
+//                    Text(text = text, color = if (selected) white else primary80)
+                }
             )
         }
     }

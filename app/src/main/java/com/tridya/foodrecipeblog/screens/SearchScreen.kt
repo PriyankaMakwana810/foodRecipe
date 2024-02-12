@@ -33,6 +33,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -50,7 +51,6 @@ import com.tridya.foodrecipeblog.R
 import com.tridya.foodrecipeblog.api.ApiState
 import com.tridya.foodrecipeblog.components.CustomButtonComponent
 import com.tridya.foodrecipeblog.components.ListFilterCategory
-import com.tridya.foodrecipeblog.components.ListFilterIngredients
 import com.tridya.foodrecipeblog.components.ListFilterRate
 import com.tridya.foodrecipeblog.components.ListFilterTime
 import com.tridya.foodrecipeblog.components.NormalTextComponent
@@ -77,7 +77,8 @@ fun SearchScreen(
     val allSearchedRecipes by searchViewModel.allSearchedRecipes.collectAsState()
     val stateRecipeResult by searchViewModel.recipesByName.collectAsState()
     val stateCategoryResult by searchViewModel.categoryList.collectAsState()
-//    val stateIngredientResult by searchViewModel.ingredientList.collectAsState()
+    val focusManager = LocalFocusManager.current
+//    val recipesByCategory by searchViewModel.recipesByCategory.collectAsState()
 
     var searchPerformed by remember { mutableStateOf(false) }
 
@@ -113,11 +114,12 @@ fun SearchScreen(
 
         if (showBottomSheet) {
             FilterBottomSheet(
-                onDismiss = {
-                    showBottomSheet = false
-                },
-                recipeCategoryList
-            )
+                onDismiss = { showBottomSheet = false },
+                recipeCategoryList,
+                onFilterApplyClicked = { category ->
+                    searchPerformed = true
+                    searchViewModel.getRecipeByCategories(category)
+                })
         }
         Column(
             modifier = Modifier
@@ -133,6 +135,7 @@ fun SearchScreen(
             SearchBarWithFilter(onTextChange = {
                 searchString = it
             }, onSearchClicked = {
+                focusManager.clearFocus()
                 if (searchString.isEmpty() && searchString == "") {
                     showShortToast(context, context.getString(R.string.please_write_something))
                 } else {
@@ -169,7 +172,7 @@ fun SearchScreen(
                                         navController.navigate(Screen.RecipeDetailScreen.route + "/${item.idMeal}") {
                                             this.launchSingleTop = true
                                         }
-                                    })
+                                    }, padding = 10.dp)
                                 }
                             }
                         }
@@ -198,7 +201,7 @@ fun SearchScreen(
                             modifier = Modifier.padding(horizontal = 10.dp)
                         ) {
                             items(allSearchedRecipes) { item: RecipeCard ->
-                                RecipesItemsComponent(recipe = item)
+                                RecipesItemsComponent(recipe = item, padding = 10.dp)
                             }
                         }
                     } else {
@@ -208,12 +211,9 @@ fun SearchScreen(
                             verticalArrangement = Arrangement.Center
                         ) {
                             AsyncImage(
-                                model = Builder(LocalContext.current)
-                                    .data(R.drawable.nothing_found)
+                                model = Builder(LocalContext.current).data(R.drawable.nothing_found)
                                     .memoryCachePolicy(CachePolicy.ENABLED)
-                                    .diskCachePolicy(CachePolicy.ENABLED)
-                                    .crossfade(true)
-                                    .build(),
+                                    .diskCachePolicy(CachePolicy.ENABLED).crossfade(true).build(),
                                 modifier = Modifier
                                     .padding(top = 10.dp)
                                     .size(250.dp),
@@ -244,8 +244,10 @@ fun SearchScreen(
 @Composable
 fun FilterBottomSheet(
     onDismiss: () -> Unit = {},
-    categories: List<String>
+    categories: List<String>,
+    onFilterApplyClicked: (String) -> Unit,
 ) {
+    var selectedCategory by remember { mutableStateOf("") }
     val context = LocalContext.current
     ModalBottomSheet(containerColor = white,
         onDismissRequest = { onDismiss() },
@@ -288,7 +290,7 @@ fun FilterBottomSheet(
                 textAlign = TextAlign.Start
             )
             ListFilterCategory(categories, onItemSelected = {
-//                onDismiss()
+                selectedCategory = it
             })
             CustomButtonComponent(
                 modifier = Modifier
@@ -296,8 +298,11 @@ fun FilterBottomSheet(
                     .padding(20.dp)
                     .align(Alignment.CenterHorizontally), value = "Filter"
             ) {
+                if (!selectedCategory.isEmpty()) {
+                    onFilterApplyClicked(selectedCategory)
+                    showShortToast(context, "Filter applied Successfully.")
+                }
                 onDismiss()
-                showShortToast(context, "Filter applied Successfully.")
             }
         }
 

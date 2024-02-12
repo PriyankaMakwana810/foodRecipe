@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -51,6 +50,7 @@ fun ButtonComponent(modifier: Modifier = Modifier, value: String, onButtonClicke
             color = white,
             fontFamily = poppinsFont,
             textAlign = TextAlign.Center,
+            modifier = Modifier.padding(top = 3.dp)
         )
         Spacer(modifier = Modifier.width(8.dp))
         Icon(painter = painterResource(id = R.drawable.arrow_right), contentDescription = "",modifier = Modifier.padding(top = 4.dp))
@@ -96,7 +96,7 @@ fun CustomButtonComponent(
     ) {
         Text(
             text = if (isFollowing) "Following" else value,
-            fontSize = 16.sp,
+            fontSize = 14.sp,
             fontWeight = FontWeight(600),
             textAlign = TextAlign.Center,
 //            modifier = Modifier.padding(horizontal = 30.dp)

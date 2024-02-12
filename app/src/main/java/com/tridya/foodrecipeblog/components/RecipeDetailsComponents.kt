@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -34,8 +33,10 @@ import coil.request.ImageRequest
 import com.tridya.foodrecipeblog.R
 import com.tridya.foodrecipeblog.database.tables.RecipeCard
 import com.tridya.foodrecipeblog.ui.theme.black
+import com.tridya.foodrecipeblog.ui.theme.gray1
 import com.tridya.foodrecipeblog.ui.theme.gray3
 import com.tridya.foodrecipeblog.ui.theme.gray4
+import com.tridya.foodrecipeblog.ui.theme.poppinsFont
 import com.tridya.foodrecipeblog.ui.theme.white
 
 @Preview
@@ -48,7 +49,7 @@ fun ServeItemCount(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(20.dp),
+            .padding(horizontal = 20.dp, vertical = 10.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
@@ -59,39 +60,31 @@ fun ServeItemCount(
             Image(
                 painter = painterResource(id = R.drawable.v_ic_serve), contentDescription = ""
             )
-            Text(
-                text = stringResource(R.string._1_serve),
-                modifier = modifier.heightIn(),
-                style = TextStyle(
-                    fontSize = 12.sp,
-                    lineHeight = 40.sp,
-                    fontWeight = FontWeight(400),
-                    color = gray3,
-                    textAlign = TextAlign.Start,
-                )
-            )
-        }
-        Text(
-            text = if (!isProcedure) {
-                "$itemCount Items"
-            } else {
-                "1 Steps"
-            }, modifier = modifier.heightIn(), style = TextStyle(
+            NormalTextComponent(
+                value = stringResource(R.string._1_serve),
                 fontSize = 12.sp,
-                lineHeight = 40.sp,
                 fontWeight = FontWeight(400),
-                color = gray3,
-                textAlign = TextAlign.Start,
+                textColor = gray3
             )
+
+        }
+
+        NormalTextComponent(
+            value = if (!isProcedure) "$itemCount Items" else "1 Steps",
+            fontSize = 12.sp,
+            fontWeight = FontWeight(400),
+            textColor = gray3
         )
+
     }
 }
 
+@Preview
 @Composable
 fun IngredientItem(
     modifier: Modifier = Modifier,
-    ingredient: String,
-    measure: String,
+    ingredient: String = "tamatos",
+    measure: String = "500g",
 ) {
     Row(
         modifier = modifier
@@ -99,7 +92,7 @@ fun IngredientItem(
             .padding(vertical = 6.dp, horizontal = 20.dp)
             .clip(RoundedCornerShape(12.dp))
             .background(gray4)
-            .padding(vertical = 6.dp, horizontal = 10.dp),
+            .padding(vertical = 12.dp, horizontal = 15.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(15.dp)
     ) {
@@ -115,19 +108,13 @@ fun IngredientItem(
             contentDescription = "image description",
             contentScale = ContentScale.FillBounds,
         )
-        Text(
-            text = ingredient, style = TextStyle(
-                fontSize = 16.sp,
-                lineHeight = 40.sp,
-                fontWeight = FontWeight(600),
-                color = black,
-            ), modifier = Modifier.weight(1f)
+        NormalTextComponent(
+            modifier = Modifier.weight(1f),
+            value = ingredient,
+            fontSize = 16.sp,
+            fontWeight = FontWeight(600)
         )
-        Text(
-            text = measure, style = TextStyle(
-                fontSize = 14.sp, lineHeight = 40.sp, fontWeight = FontWeight.Normal, color = gray3
-            )
-        )
+        NormalTextComponent(value = measure, fontSize = 14.sp, textColor = gray3)
     }
 }
 
@@ -177,19 +164,20 @@ fun ProcedureItem(
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.spacedBy(5.dp)
     ) {
-        Text(
-            text = "Procedure", style = TextStyle(
-                fontSize = 18.sp,
-                fontWeight = FontWeight(600),
-                color = black,
-            )
+        NormalTextComponent(
+            value = "Procedure",
+            fontSize = 18.sp,
+            fontWeight = FontWeight(600),
+            textColor = black
         )
         Text(
             text = procedure,
             style = TextStyle(
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Normal,
-                color = black,
+                fontFamily = poppinsFont,
+                color = gray1,
+//                textAlign = TextAlign.Justify,
                 lineHeight = 20.sp,
             ),
         )

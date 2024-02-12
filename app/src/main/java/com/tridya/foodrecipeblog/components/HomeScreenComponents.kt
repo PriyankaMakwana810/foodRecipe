@@ -104,7 +104,7 @@ fun ProfileSection(
                 textAlign = TextAlign.Left
             )
             SimpleTextComponent(
-                modifier = Modifier.padding(vertical = 6.dp),
+                modifier = Modifier.padding(),
                 value = stringResource(R.string.what_are_you_cooking_today),
                 fontSize = 12.sp,
                 fontWeight = FontWeight(400),
@@ -391,7 +391,7 @@ fun ItemNewRecipe(recipe: RecipeCard, onRecipeClicked: () -> Unit = {}) {
                     overflow = TextOverflow.Ellipsis
                 )
                 RatingBar(
-                    modifier = Modifier.padding(vertical = 5.dp),
+                    modifier = Modifier.padding(top = 5.dp, bottom = 10.dp),
                     value = recipe.ratings,
                     style = RatingBarStyle.Fill(),
                     size = 12.dp,

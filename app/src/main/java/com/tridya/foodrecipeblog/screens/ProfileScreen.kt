@@ -136,13 +136,16 @@ fun ProfileScreen(
                 } else {
                     LazyColumn {
                         items(allPostedRecipes) { item ->
-                            RecipesItemsComponent(recipe = item,
+                            RecipesItemsComponent(
+                                recipe = item,
                                 isFromSaved = true,
                                 onRecipeItemClicked = {
                                     navController.navigate(Screen.RecipeDetailScreen.route + "/${item.idMeal}") {
                                         this.launchSingleTop = true
                                     }
-                                })
+                                },
+                                padding = 10.dp
+                            )
                         }
                     }
                 }

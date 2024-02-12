@@ -1,5 +1,6 @@
 package com.tridya.foodrecipeblog.screens
 
+import android.content.Intent
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
@@ -67,13 +68,19 @@ fun NewRecipeScreen(
 ) {
 
     var photoUri: Uri? by remember { mutableStateOf(null) }
+    val context = LocalContext.current
+
 
     val launcher =
         rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
             //When the user has selected a photo, its URL is returned here
-            photoUri = uri
+            if (uri != null) {
+                val flag = Intent.FLAG_GRANT_READ_URI_PERMISSION
+                context.contentResolver.takePersistableUriPermission(uri, flag)
+                photoUri = uri
+            }
+
         }
-    val context = LocalContext.current
 
     Surface(
         modifier = Modifier.fillMaxSize(), color = white
@@ -168,9 +175,8 @@ fun NewRecipeScreen(
                         placeholder = "Steps to cook recipe.."
                     )
 
-                    Spacer(modifier = Modifier.height(16.dp))
-
                     newRecipeViewModel.ingredientMeasurementPairs.value.forEachIndexed { index, (ingredient, measurement) ->
+                        Spacer(modifier = Modifier.height(16.dp))
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween
