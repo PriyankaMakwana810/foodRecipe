@@ -78,6 +78,7 @@ fun NormalTextComponent(
     fontWeight: FontWeight = FontWeight.Normal,
     textColor: Color = black,
     align: TextAlign = TextAlign.Start,
+    lineHeight: TextUnit = TextUnit.Unspecified
 ) {
     Text(
         text = value,
@@ -87,7 +88,8 @@ fun NormalTextComponent(
             fontWeight = fontWeight,
         ),
         color = textColor,
-        textAlign = align
+        textAlign = align,
+        lineHeight = lineHeight
     )
 }
 
@@ -168,8 +170,7 @@ fun ClickableTextLoginComponent(
     }
     ClickableText(modifier =
     Modifier
-        .fillMaxWidth()
-        .heightIn(min = 40.dp),
+        .fillMaxWidth(),
         style = TextStyle(
             fontSize = 14.sp,
             fontWeight = FontWeight(500),

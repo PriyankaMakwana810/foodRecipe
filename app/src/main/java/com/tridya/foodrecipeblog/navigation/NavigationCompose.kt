@@ -27,10 +27,10 @@ fun NavigationCompose(navController: NavHostController, paddingValues: PaddingVa
             IntroScreen(navController)
         }
         composable(route = Screen.LoginScreen.route) {
-            LoginScreen(navController)
+            LoginScreen(navController,paddingValues)
         }
         composable(route = Screen.RegisterScreen.route) {
-            RegisterScreen(navController = navController)
+            RegisterScreen(navController = navController,paddingValues)
         }
         composable(route = Screen.HomeScreen.route) {
             HomeScreen(navController = navController, paddingValues)

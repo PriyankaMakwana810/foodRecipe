@@ -85,7 +85,7 @@ fun ProfileScreen(
                     offset = DpOffset(x = (-66).dp, y = (-10).dp)
 
                 ) {
-                    DropdownMenuItem(text = { Text(text = "Share") }, leadingIcon = {
+                    DropdownMenuItem(text = { Text(text = "Logout") }, leadingIcon = {
                         Icon(
                             painter = painterResource(id = R.drawable.baseline_logout_24),
                             contentDescription = "Logout"

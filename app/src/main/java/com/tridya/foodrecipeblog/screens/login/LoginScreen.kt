@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -48,6 +49,7 @@ import com.tridya.foodrecipeblog.components.DividerTextComponent
 import com.tridya.foodrecipeblog.components.SimpleTextComponent
 import com.tridya.foodrecipeblog.components.SmallTextLabel
 import com.tridya.foodrecipeblog.components.SocialIcons
+import com.tridya.foodrecipeblog.components.SocialLoginSection
 import com.tridya.foodrecipeblog.components.TextFieldCustom
 import com.tridya.foodrecipeblog.components.TextFieldPassword
 import com.tridya.foodrecipeblog.components.YellowSmallText
@@ -63,7 +65,7 @@ import org.json.JSONException
 
 @SuppressLint("VisibleForTests")
 @Composable
-fun LoginScreen(navController: NavController) {
+fun LoginScreen(navController: NavController, paddingValues: PaddingValues) {
 
     val loginViewModel: LoginViewModel = hiltViewModel()
     val context = LocalContext.current
@@ -159,6 +161,7 @@ fun LoginScreen(navController: NavController) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .padding(paddingValues)
                 .padding(20.dp)
                 .background(white)
                 .verticalScroll(state = scrollState)
@@ -225,13 +228,13 @@ fun LoginScreen(navController: NavController) {
                 })
             Spacer(modifier = Modifier.height(20.dp))
             DividerTextComponent()
-            Spacer(modifier = Modifier.height(20.dp))
-            SocialIcons(onClickGoogle = {
+            Spacer(modifier = Modifier.height(10.dp))
+            SocialLoginSection(onClickGoogle = {
                 oneTapSignInState.open()
             }, onClickFacebook = {
                 fbLauncher.launch(listOf("email", "public_profile"))
             })
-            Spacer(modifier = Modifier.height(55.dp))
+            Spacer(modifier = Modifier.height(45.dp))
             ClickableTextLoginComponent(tryingToLogin = false, onTextSelected = {
                 navController.navigate(Screen.RegisterScreen.route)
             })
@@ -241,9 +244,9 @@ fun LoginScreen(navController: NavController) {
     OneTapSignInWithGoogle(
         state = oneTapSignInState,
         clientId = stringResource(id = R.string.google_one_tap_client_id),
-        rememberAccount = true,
+        rememberAccount = false,
         onTokenIdReceived = { tokenId ->
-            authenticated = true
+            authenticated = false
             Log.d("LoginScreen: ", tokenId)
             Log.e("LOG", tokenId)
             Log.e("LOG", "LoginScreen: ${getUserFromTokenId(tokenId)?.fullName}")
@@ -274,7 +277,7 @@ fun LoginScreen(navController: NavController) {
 @Preview
 @Composable
 fun PreviewLoginScreen() {
-    LoginScreen(navController = rememberNavController())
+    LoginScreen(navController = rememberNavController(), paddingValues = PaddingValues())
 }
 
 //val scope = rememberCoroutineScope()

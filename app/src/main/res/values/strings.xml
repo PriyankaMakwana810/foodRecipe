@@ -34,7 +34,7 @@
     <string name="registration_error_msg_password_mismatch">Please enter the same password here as above</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="retype_password">Retype Password</string>
-    <string name="let_s_help_you_set_up_your_account_it_won_t_take_long">Let’s help you set up your account, it won’t take long.</string>
+    <string name="let_s_help_you_set_up_your_account_it_won_t_take_long">Let’s help you set up your account, \nit won’t take long.</string>
     <string name="create_an_account">Create an account</string>
     <string name="name">Name</string>
     <string name="enter_name">Enter Name</string>

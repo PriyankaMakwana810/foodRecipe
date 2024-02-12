@@ -139,6 +139,7 @@ fun SearchScreen(
                 if (searchString.isEmpty() && searchString == "") {
                     showShortToast(context, context.getString(R.string.please_write_something))
                 } else {
+                    focusManager.clearFocus()
                     searchViewModel.getRecipesByName(searchString)
                     searchPerformed = true
                     coroutineScope.launch {

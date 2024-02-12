@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -22,6 +23,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -47,9 +49,10 @@ import com.tridya.foodrecipeblog.components.ButtonComponent
 import com.tridya.foodrecipeblog.components.CheckboxComponent
 import com.tridya.foodrecipeblog.components.ClickableTextLoginComponent
 import com.tridya.foodrecipeblog.components.DividerTextComponent
+import com.tridya.foodrecipeblog.components.NormalTextComponent
 import com.tridya.foodrecipeblog.components.SimpleTextComponent
 import com.tridya.foodrecipeblog.components.SmallTextLabel
-import com.tridya.foodrecipeblog.components.SocialIcons
+import com.tridya.foodrecipeblog.components.SocialLoginSection
 import com.tridya.foodrecipeblog.components.TextFieldCustom
 import com.tridya.foodrecipeblog.components.TextFieldPassword
 import com.tridya.foodrecipeblog.models.User
@@ -62,7 +65,7 @@ import org.json.JSONException
 
 @SuppressLint("VisibleForTests")
 @Composable
-fun RegisterScreen(navController: NavController) {
+fun RegisterScreen(navController: NavController, paddingValues: PaddingValues) {
 
     val registrationViewModel: RegisterViewModel = hiltViewModel()
     val scrollState = rememberScrollState()
@@ -165,11 +168,12 @@ fun RegisterScreen(navController: NavController) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .padding(paddingValues)
                 .padding(20.dp)
                 .background(white)
                 .verticalScroll(state = scrollState)
         ) {
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(10.dp))
             SimpleTextComponent(
                 value = stringResource(R.string.create_an_account),
                 fontSize = 20.sp,
@@ -177,13 +181,12 @@ fun RegisterScreen(navController: NavController) {
                 textColor = black,
                 textAlign = TextAlign.Left
             )
-
-            SimpleTextComponent(
+            NormalTextComponent(
                 value = stringResource(R.string.let_s_help_you_set_up_your_account_it_won_t_take_long),
                 fontSize = 12.sp,
                 fontWeight = FontWeight(400),
-                textColor = black,
-                textAlign = TextAlign.Left
+                textColor = Color(0xFF121212),
+                lineHeight = 18.sp
             )
 
             Spacer(modifier = Modifier.height(10.dp))
@@ -250,13 +253,11 @@ fun RegisterScreen(navController: NavController) {
             )
 
 //            Spacer(modifier = Modifier.height(10.dp))
-
             CheckboxComponent(value = "Accept terms & Condition")
 
-            Spacer(modifier = Modifier.height(25.dp))
-
+            Spacer(modifier = Modifier.height(10.dp))
             ButtonComponent(modifier = Modifier.fillMaxWidth(),
-                value = stringResource(R.string.sign_in),
+                value = stringResource(R.string.sign_up),
                 onButtonClicked = {
 //                    navController.navigate(Screen.RegisterScreen.route)
                     registrationViewModel.onUiEvent(registrationUiEvent = RegistrationUiEvent.Submit)
@@ -265,15 +266,15 @@ fun RegisterScreen(navController: NavController) {
                     }
 
                 })
-            Spacer(modifier = Modifier.height(15.dp))
+            Spacer(modifier = Modifier.height(5.dp))
             DividerTextComponent()
-            Spacer(modifier = Modifier.height(20.dp))
-            SocialIcons(onClickGoogle = {
+//            Spacer(modifier = Modifier.height(10.dp))
+            SocialLoginSection(onClickGoogle = {
                 oneTapSignInState.open()
             }, onClickFacebook = {
                 fbLauncher.launch(listOf("email", "public_profile"))
             })
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(10.dp))
             ClickableTextLoginComponent(tryingToLogin = true, onTextSelected = {
                 navController.navigate(Screen.LoginScreen.route)
             })
@@ -286,5 +287,5 @@ fun RegisterScreen(navController: NavController) {
 @Preview
 @Composable
 fun PreviewRegisterScreen() {
-    RegisterScreen(navController = rememberNavController())
+    RegisterScreen(navController = rememberNavController(), paddingValues = PaddingValues())
 }
