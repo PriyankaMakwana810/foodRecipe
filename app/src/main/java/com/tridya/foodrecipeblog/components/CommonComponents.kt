@@ -312,7 +312,12 @@ fun TitleSearchResults(
 
 @Preview
 @Composable
-fun UserProfileSectionUI(modifier: Modifier = Modifier, user: UserProfile = userProfile, userData: User = User(),recipePostedCount: Int = 0) {
+fun UserProfileSectionUI(
+    modifier: Modifier = Modifier,
+    user: UserProfile = userProfile,
+    userData: User = User(),
+    recipePostedCount: Int = 0,
+) {
     Column(modifier = modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -320,23 +325,23 @@ fun UserProfileSectionUI(modifier: Modifier = Modifier, user: UserProfile = user
             verticalAlignment = Alignment.CenterVertically
         ) {
 
-                AsyncImage(
-                    modifier = Modifier
-                        .padding(bottom = 10.dp)
-                        .clip(shape = CircleShape)
-                        .size(100.dp),
-                    model = ImageRequest.Builder(LocalContext.current)
-                        .data(userData?.profilePicPath)
-                        .allowHardware(true)
-                        .memoryCachePolicy(CachePolicy.ENABLED)
-                        .diskCachePolicy(CachePolicy.ENABLED)
-                        .error(R.drawable.img_user_profile_1)
-                        .crossfade(true)
-                        .build(),
-                    placeholder = painterResource(id = R.drawable.img_user_profile_1),
-                    contentDescription = "image description",
-                    contentScale = ContentScale.Crop,
-                )
+            AsyncImage(
+                modifier = Modifier
+                    .padding(bottom = 10.dp)
+                    .clip(shape = CircleShape)
+                    .size(100.dp),
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(userData.profilePicPath)
+                    .allowHardware(true)
+                    .memoryCachePolicy(CachePolicy.ENABLED)
+                    .diskCachePolicy(CachePolicy.ENABLED)
+                    .error(R.drawable.img_user_profile_1)
+                    .crossfade(true)
+                    .build(),
+                placeholder = painterResource(id = R.drawable.img_user_profile_1),
+                contentDescription = "image description",
+                contentScale = ContentScale.Crop,
+            )
 
             Spacer(modifier = Modifier.width(25.dp))
 
@@ -370,7 +375,7 @@ fun UserProfileSectionUI(modifier: Modifier = Modifier, user: UserProfile = user
             horizontalAlignment = Alignment.Start
         ) {
             NormalTextComponent(
-                value = userData?.userName!!,
+                value = userData.userName!!,
                 fontSize = 18.sp,
                 fontWeight = FontWeight(600)
             )
@@ -381,17 +386,13 @@ fun UserProfileSectionUI(modifier: Modifier = Modifier, user: UserProfile = user
                 textColor = gray3
             )
             Spacer(modifier = Modifier.height(15.dp))
-           /* ExpandableText(
-                text = "Private Chef\n" +
-                        "Passionate about food and life \uD83E\uDD58\uD83C\uDF72\uD83C\uDF5D\uD83C\uDF71\n"
-            )*/
-            NormalTextComponent(
-                value = "Private Chef\n" +
-                        "Passionate about food and life \uD83E\uDD58\uD83C\uDF72\uD83C\uDF5D\uD83C\uDF71\n" +
-                        "More...",
-                fontSize = 12.sp,
-                textColor = gray2
-            )
+             ExpandableText(
+                 text = "Private Chef\n" +
+                         "Passionate about food and life \uD83E\uDD58\uD83C\uDF72\uD83C\uDF5D\uD83C\uDF71\n" +
+                         "abc\n" +
+                         "Private Chef\n" +
+                         "Passionate about food and life \uD83E\uDD58\uD83C\uDF72\uD83C\uDF5D\uD83C\uDF71"
+             )
         }
     }
 }

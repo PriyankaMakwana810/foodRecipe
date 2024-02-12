@@ -47,7 +47,6 @@ import com.tridya.foodrecipeblog.R
 import com.tridya.foodrecipeblog.components.CustomProfileTabs
 import com.tridya.foodrecipeblog.components.NormalTextComponent
 import com.tridya.foodrecipeblog.components.RecipesItemsComponent
-import com.tridya.foodrecipeblog.components.ReusableDropdownMenu
 import com.tridya.foodrecipeblog.components.ToolbarComponent
 import com.tridya.foodrecipeblog.components.UserProfileSectionUI
 import com.tridya.foodrecipeblog.navigation.Screen

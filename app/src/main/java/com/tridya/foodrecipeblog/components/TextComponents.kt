@@ -39,8 +39,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tridya.foodrecipeblog.R
 import com.tridya.foodrecipeblog.ui.theme.black
+import com.tridya.foodrecipeblog.ui.theme.gray2
 import com.tridya.foodrecipeblog.ui.theme.gray4
 import com.tridya.foodrecipeblog.ui.theme.poppinsFont
+import com.tridya.foodrecipeblog.ui.theme.primary80
 import com.tridya.foodrecipeblog.ui.theme.secondary100
 import com.tridya.foodrecipeblog.ui.theme.white
 
@@ -78,7 +80,7 @@ fun NormalTextComponent(
     fontWeight: FontWeight = FontWeight.Normal,
     textColor: Color = black,
     align: TextAlign = TextAlign.Start,
-    lineHeight: TextUnit = TextUnit.Unspecified
+    lineHeight: TextUnit = TextUnit.Unspecified,
 ) {
     Text(
         text = value,
@@ -215,21 +217,29 @@ fun DividerTextComponent() {
         )
     }
 }
-
 const val DEFAULT_MINIMUM_TEXT_LINE = 2
-
 @Composable
 fun ExpandableText(
     modifier: Modifier = Modifier,
     textModifier: Modifier = Modifier,
-    style: TextStyle = LocalTextStyle.current,
     fontStyle: FontStyle? = null,
     text: String,
     collapsedMaxLine: Int = DEFAULT_MINIMUM_TEXT_LINE,
-    showMoreText: String = "More..",
-    showMoreStyle: SpanStyle = SpanStyle(fontWeight = FontWeight.W500),
-    showLessText: String = " Show Less",
+    showMoreText: String = "\nMore..",
+    showMoreStyle: SpanStyle = SpanStyle(
+        fontWeight = FontWeight.Normal,
+        fontFamily = poppinsFont,
+        color = primary80,
+        fontSize = 12.sp
+    ),
+    showLessText: String = "\nShow Less",
     showLessStyle: SpanStyle = showMoreStyle,
+    extraText: String = "Additional Text",
+    extraTextStyle: TextStyle = TextStyle(
+        fontFamily = poppinsFont,
+        fontSize = 12.sp,
+        color = gray2
+    ),
     textAlign: TextAlign? = null,
 ) {
     var isExpanded by remember { mutableStateOf(false) }
@@ -254,8 +264,11 @@ fun ExpandableText(
                         val adjustText = text.substring(startIndex = 0, endIndex = lastCharIndex)
                             .dropLast(showMoreText.length)
                             .dropLastWhile { Character.isWhitespace(it) || it == '.' }
-                        append("\n" + adjustText)
-                        withStyle(style = showMoreStyle) { append(showMoreText) }
+                        append(adjustText)
+                        withStyle(style = showMoreStyle) {
+                            append(showMoreText)
+                        }
+                        append("\n" + extraText) // Add extra text on a new line
                     }
                 } else {
                     append(text)
@@ -269,9 +282,12 @@ fun ExpandableText(
                     lastCharIndex = textLayoutResult.getLineEnd(collapsedMaxLine - 1)
                 }
             },
-            style = style,
+            style = TextStyle(
+                fontFamily = poppinsFont,
+                fontSize = 12.sp,
+                color = gray2
+            ),
             textAlign = textAlign
         )
     }
-
 }
