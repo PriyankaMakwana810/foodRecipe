@@ -47,6 +47,7 @@ import com.tridya.foodrecipeblog.R
 import com.tridya.foodrecipeblog.components.CustomProfileTabs
 import com.tridya.foodrecipeblog.components.NormalTextComponent
 import com.tridya.foodrecipeblog.components.RecipesItemsComponent
+import com.tridya.foodrecipeblog.components.ReusableDropdownMenu
 import com.tridya.foodrecipeblog.components.ToolbarComponent
 import com.tridya.foodrecipeblog.components.UserProfileSectionUI
 import com.tridya.foodrecipeblog.navigation.Screen
@@ -59,7 +60,7 @@ fun ProfileScreen(
     paddingValues: PaddingValues,
     profileViewModel: ProfileViewModel = hiltViewModel(),
 ) {
-
+    val user = profileViewModel.sharedPreferences.user
     var expanded by remember { mutableStateOf(false) }
     val allPostedRecipes by profileViewModel.allPostedRecipes.collectAsState()
 
@@ -102,7 +103,12 @@ fun ProfileScreen(
                 modifier = Modifier
                     .padding(horizontal = 20.dp)
             ) {
-                UserProfileSectionUI()
+                if (user != null) {
+                    UserProfileSectionUI(
+                        userData = user,
+                        recipePostedCount = allPostedRecipes.size
+                    )
+                }
                 CustomProfileTabs()
                 if (allPostedRecipes.isEmpty()) {
                     Column(
@@ -144,7 +150,8 @@ fun ProfileScreen(
                                         this.launchSingleTop = true
                                     }
                                 },
-                                padding = 10.dp
+                                padding = 5.dp,
+                                horizontalPadding = 0.dp
                             )
                         }
                     }

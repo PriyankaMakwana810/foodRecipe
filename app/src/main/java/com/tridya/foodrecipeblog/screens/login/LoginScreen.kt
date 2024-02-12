@@ -48,7 +48,6 @@ import com.tridya.foodrecipeblog.components.ClickableTextLoginComponent
 import com.tridya.foodrecipeblog.components.DividerTextComponent
 import com.tridya.foodrecipeblog.components.SimpleTextComponent
 import com.tridya.foodrecipeblog.components.SmallTextLabel
-import com.tridya.foodrecipeblog.components.SocialIcons
 import com.tridya.foodrecipeblog.components.SocialLoginSection
 import com.tridya.foodrecipeblog.components.TextFieldCustom
 import com.tridya.foodrecipeblog.components.TextFieldPassword
@@ -77,7 +76,7 @@ fun LoginScreen(navController: NavController, paddingValues: PaddingValues) {
         if (loginState.isLoginSuccessful) {
             navController.navigate(Screen.HomeScreen.route) {
                 popUpTo(Screen.IntroScreen.route) {
-                    inclusive = true
+                    inclusive = false
                 }
             }
         }
@@ -261,7 +260,7 @@ fun LoginScreen(navController: NavController, paddingValues: PaddingValues) {
             loginViewModel.sharedPreferences.user = user1
             navController.navigate(Screen.HomeScreen.route) {
                 popUpTo(Screen.IntroScreen.route) {
-                    inclusive = true
+                    inclusive = false
                 }
             }
 

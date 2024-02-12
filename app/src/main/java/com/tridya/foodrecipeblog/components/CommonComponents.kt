@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -47,8 +48,10 @@ import coil.request.CachePolicy
 import coil.request.ImageRequest
 import com.tridya.foodrecipeblog.R
 import com.tridya.foodrecipeblog.database.tables.RecipeCard
+import com.tridya.foodrecipeblog.models.User
 import com.tridya.foodrecipeblog.models.UserProfile
 import com.tridya.foodrecipeblog.ui.theme.black
+import com.tridya.foodrecipeblog.ui.theme.gray2
 import com.tridya.foodrecipeblog.ui.theme.gray3
 import com.tridya.foodrecipeblog.ui.theme.gray4
 import com.tridya.foodrecipeblog.ui.theme.poppinsFont
@@ -77,7 +80,9 @@ fun RatingBar(rating: String) {
                 .padding(vertical = 6.dp, horizontal = 6.dp)
         )
         Text(
-            modifier = Modifier.align(Alignment.CenterVertically).padding(top = 4.dp),
+            modifier = Modifier
+                .align(Alignment.CenterVertically)
+                .padding(top = 4.dp),
             text = rating,
             style = TextStyle(
                 fontSize = 11.sp,
@@ -307,47 +312,56 @@ fun TitleSearchResults(
 
 @Preview
 @Composable
-fun UserProfileSectionUI(modifier: Modifier = Modifier, user: UserProfile = userProfile) {
+fun UserProfileSectionUI(modifier: Modifier = Modifier, user: UserProfile = userProfile, userData: User = User(),recipePostedCount: Int = 0) {
     Column(modifier = modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            AsyncImage(
-                modifier = Modifier
-                    .padding(bottom = 10.dp)
-                    .clip(shape = CircleShape)
-                    .size(130.dp),
-                model = ImageRequest.Builder(LocalContext.current)
-                    .data(userProfile.profilePic)
-                    .allowHardware(true)
-                    .memoryCachePolicy(CachePolicy.ENABLED)
-                    .diskCachePolicy(CachePolicy.ENABLED)
-                    .error(R.drawable.img_user_profile_1)
-                    .crossfade(true)
-                    .build(),
-                placeholder = painterResource(id = R.drawable.img_user_profile_1),
-                contentDescription = "image description",
-                contentScale = ContentScale.Crop,
-            )
+
+                AsyncImage(
+                    modifier = Modifier
+                        .padding(bottom = 10.dp)
+                        .clip(shape = CircleShape)
+                        .size(100.dp),
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(userData?.profilePicPath)
+                        .allowHardware(true)
+                        .memoryCachePolicy(CachePolicy.ENABLED)
+                        .diskCachePolicy(CachePolicy.ENABLED)
+                        .error(R.drawable.img_user_profile_1)
+                        .crossfade(true)
+                        .build(),
+                    placeholder = painterResource(id = R.drawable.img_user_profile_1),
+                    contentDescription = "image description",
+                    contentScale = ContentScale.Crop,
+                )
+
+            Spacer(modifier = Modifier.width(25.dp))
+
             Row(
-                modifier = Modifier.weight(1f),
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 ProfileText(
                     stringResource(id = R.string.recipe),
-                    userProfile.numOfRecipes.toString()
+                    recipePostedCount.toString()
                 )
+                Spacer(modifier = Modifier.width(15.dp))
                 ProfileText(
                     stringResource(id = R.string.followers),
                     userProfile.followers.toString()
                 )
+                Spacer(modifier = Modifier.width(15.dp))
                 ProfileText(
                     stringResource(id = R.string.following),
                     userProfile.following.toString()
                 )
+
             }
         }
 
@@ -356,7 +370,7 @@ fun UserProfileSectionUI(modifier: Modifier = Modifier, user: UserProfile = user
             horizontalAlignment = Alignment.Start
         ) {
             NormalTextComponent(
-                value = "Afuwape Abiodun",
+                value = userData?.userName!!,
                 fontSize = 18.sp,
                 fontWeight = FontWeight(600)
             )
@@ -367,17 +381,17 @@ fun UserProfileSectionUI(modifier: Modifier = Modifier, user: UserProfile = user
                 textColor = gray3
             )
             Spacer(modifier = Modifier.height(15.dp))
-            ExpandableText(
+           /* ExpandableText(
                 text = "Private Chef\n" +
                         "Passionate about food and life \uD83E\uDD58\uD83C\uDF72\uD83C\uDF5D\uD83C\uDF71\n"
-            )
-            /*NormalTextComponent(
+            )*/
+            NormalTextComponent(
                 value = "Private Chef\n" +
                         "Passionate about food and life \uD83E\uDD58\uD83C\uDF72\uD83C\uDF5D\uD83C\uDF71\n" +
                         "More...",
                 fontSize = 12.sp,
                 textColor = gray2
-            )*/
+            )
         }
     }
 }
@@ -389,6 +403,7 @@ fun ProfileText(title: String, body: String) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         NormalTextComponent(value = title, fontSize = 12.sp, textColor = gray4)
+        Spacer(modifier = Modifier.height(8.dp))
         NormalTextComponent(
             value = body,
             fontSize = 20.sp,

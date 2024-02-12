@@ -115,6 +115,9 @@ dependencies {
     implementation("androidx.room:room-common:2.6.1")
     kapt("androidx.room:room-compiler:2.6.1")
 
+//    youtube media player
+    implementation("com.pierfrancescosoffritti.androidyoutubeplayer:core:12.1.0")
+
 }
 kapt {
     correctErrorTypes = true

@@ -17,7 +17,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -39,12 +38,12 @@ fun ButtonComponent(modifier: Modifier = Modifier, value: String, onButtonClicke
             containerColor = primary100,
             contentColor = white
         ),
-        onClick = { onButtonClicked.invoke() },
+        onClick = { onButtonClicked() },
         interactionSource = NoRippleInteractionSource(),
         modifier = modifier
             .fillMaxWidth()
             .height(54.dp)
-            .background(color = Color(0xFF129575), shape = RoundedCornerShape(size = 10.dp))
+            .background(color = primary100, shape = RoundedCornerShape(size = 10.dp))
     ) {
         Text(
             text = value, fontSize = 16.sp,
@@ -52,11 +51,16 @@ fun ButtonComponent(modifier: Modifier = Modifier, value: String, onButtonClicke
             color = white,
             fontFamily = poppinsFont,
             textAlign = TextAlign.Center,
-            modifier = Modifier.padding(top = 4.dp).widthIn(114.dp)
+            modifier = Modifier
+                .padding(top = 4.dp)
+                .widthIn(114.dp)
         )
         Spacer(modifier = Modifier.width(8.dp))
-        Icon(painter = painterResource(id = R.drawable.arrow_right), contentDescription = "",modifier = Modifier.padding(top = 4.dp))
-
+        Icon(
+            painter = painterResource(id = R.drawable.arrow_right),
+            contentDescription = "",
+            modifier = Modifier.padding(top = 4.dp)
+        )
     }
 }
 

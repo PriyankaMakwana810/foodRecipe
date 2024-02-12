@@ -168,7 +168,19 @@ fun RecipeDetailScreen(
                         )
                     }
                     ProfileSectionOfRecipe(recipe = recipe)
-
+//                    youtube video player
+                    /* AndroidView(factory = {
+                         val view = YouTubePlayerView(it)
+                         val fragment = view.addYouTubePlayerListener(
+                             object : AbstractYouTubePlayerListener(){
+                                 override fun onReady(youTubePlayer: YouTubePlayer) {
+                                     super.onReady(youTubePlayer)
+                                     youTubePlayer.loadVideo(recipe.strYoutube.toString(),0f)
+                                 }
+                             }
+                         )
+                         view
+                     })*/
                     CustomRecipeDetailsTabs(onIngredientClicked = {
                         showProcedure = false
                     }, onProcedureClicked = {
@@ -190,6 +202,8 @@ fun RecipeDetailScreen(
                                     recipe.strSource.toString(),
                                     context = context
                                 )
+                            }, onDismissClicked = {
+                                openShareDialog = false
                             })
                     }
                     if (openRatingDialog) {
@@ -199,6 +213,8 @@ fun RecipeDetailScreen(
                                 context,
                                 context.getString(R.string.thanks_for_rating_this_recipe)
                             )
+                        }, onDismissClicked = {
+                            openRatingDialog = false
                         })
                     }
                 }

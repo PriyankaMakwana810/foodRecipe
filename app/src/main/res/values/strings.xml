@@ -94,6 +94,9 @@
     <string name="you_haven_t_saved_any_recipe_yet">You haven\'t saved any Recipe yet!</string>
     <string name="start_cooking">Start Cooking</string>
     <string name="_13k_reviews">(13k Reviews)</string>
+    <string name="recipe_link">Recipe Link</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">ok</string>
 
 
 </resources>

@@ -79,11 +79,12 @@ fun RecipesItemsComponent(
     isFromDetail: Boolean = false,
     onRecipeItemClicked: () -> Unit = {},
     padding: Dp = 10.dp,
+    horizontalPadding: Dp = 10.dp
 ) {
     Box(
         modifier = modifier
             .height(180.dp)
-            .padding(horizontal = 10.dp, vertical = padding)
+            .padding(horizontal = horizontalPadding, vertical = padding)
             .background(
                 color = white,
                 shape = RoundedCornerShape(10.dp),

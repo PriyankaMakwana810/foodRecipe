@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -44,6 +45,7 @@ import com.tridya.foodrecipeblog.R
 import com.tridya.foodrecipeblog.ui.theme.black
 import com.tridya.foodrecipeblog.ui.theme.gray2
 import com.tridya.foodrecipeblog.ui.theme.gray4
+import com.tridya.foodrecipeblog.ui.theme.poppinsFont
 import com.tridya.foodrecipeblog.ui.theme.primary100
 import com.tridya.foodrecipeblog.ui.theme.ratingColor
 import com.tridya.foodrecipeblog.ui.theme.white
@@ -57,7 +59,10 @@ fun ShareDialogComponent(
     onDismissClicked: () -> Unit = {},
     onButtonClicked: () -> Unit = {},
 ) {
-    Dialog(onDismissRequest = { onDismissClicked() }) {
+    Dialog(
+        onDismissRequest = { onDismissClicked() },
+        properties = DialogProperties(dismissOnBackPress = true, dismissOnClickOutside = true)
+    ) {
         Card(
             modifier = Modifier.padding(16.dp),
             shape = RoundedCornerShape(20.dp),
@@ -74,7 +79,9 @@ fun ShareDialogComponent(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     NormalTextComponent(
-                        value = "Recipe Link", fontSize = 20.sp, fontWeight = FontWeight(600)
+                        value = stringResource(R.string.recipe_link),
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight(600)
                     )
                     Icon(painter = painterResource(id = R.drawable.baseline_clear_24),
                         contentDescription = "clear",
@@ -128,6 +135,74 @@ fun ShareDialogComponent(
                             color = white,
                             textAlign = TextAlign.Center,
                             modifier = Modifier.padding(vertical = 10.dp)
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Preview
+@Composable
+fun CommonDialogComponent(
+    title: String = stringResource(R.string.recipe_share),
+    subTitle: String = stringResource(R.string.copy_recipe_link_and_share_your_recipe_link_with_friends_and_family),
+    onDismissClicked: () -> Unit = {},
+    onButtonClicked: () -> Unit = {},
+) {
+    Dialog(
+        onDismissRequest = { onDismissClicked() },
+        properties = DialogProperties(dismissOnBackPress = true, dismissOnClickOutside = true)
+    ) {
+        Card(
+            modifier = Modifier.padding(16.dp),
+            shape = RoundedCornerShape(20.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = white
+            )
+        ) {
+            Column(
+                modifier = Modifier.padding(16.dp),
+            ) {
+
+                NormalTextComponent(
+                    value = title,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight(600)
+                )
+                NormalTextComponent(
+                    modifier = Modifier.padding(vertical = 10.dp),
+                    value = subTitle,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Normal,
+                    textColor = gray2,
+                )
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    Button(
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = primary100, contentColor = white
+                        ),
+                        onClick = { onButtonClicked() },
+                        interactionSource = NoRippleInteractionSource(),
+                        modifier = Modifier
+                            .background(
+                                color = primary100, shape = RoundedCornerShape(size = 10.dp)
+                            )
+                            .height(40.dp)
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.ok),
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight(600),
+                            fontFamily = poppinsFont,
+                            color = white,
+                            textAlign = TextAlign.Center
                         )
                     }
                 }
