@@ -217,14 +217,13 @@ fun DividerTextComponent() {
         )
     }
 }
-const val DEFAULT_MINIMUM_TEXT_LINE = 2
 @Composable
 fun ExpandableText(
     modifier: Modifier = Modifier,
     textModifier: Modifier = Modifier,
     fontStyle: FontStyle? = null,
     text: String,
-    collapsedMaxLine: Int = DEFAULT_MINIMUM_TEXT_LINE,
+    collapsedMaxLine: Int = 3,
     showMoreText: String = "\nMore..",
     showMoreStyle: SpanStyle = SpanStyle(
         fontWeight = FontWeight.Normal,

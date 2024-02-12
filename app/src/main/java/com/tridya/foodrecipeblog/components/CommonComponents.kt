@@ -51,7 +51,6 @@ import com.tridya.foodrecipeblog.database.tables.RecipeCard
 import com.tridya.foodrecipeblog.models.User
 import com.tridya.foodrecipeblog.models.UserProfile
 import com.tridya.foodrecipeblog.ui.theme.black
-import com.tridya.foodrecipeblog.ui.theme.gray2
 import com.tridya.foodrecipeblog.ui.theme.gray3
 import com.tridya.foodrecipeblog.ui.theme.gray4
 import com.tridya.foodrecipeblog.ui.theme.poppinsFont
@@ -386,13 +385,14 @@ fun UserProfileSectionUI(
                 textColor = gray3
             )
             Spacer(modifier = Modifier.height(15.dp))
-             ExpandableText(
-                 text = "Private Chef\n" +
-                         "Passionate about food and life \uD83E\uDD58\uD83C\uDF72\uD83C\uDF5D\uD83C\uDF71\n" +
-                         "abc\n" +
-                         "Private Chef\n" +
-                         "Passionate about food and life \uD83E\uDD58\uD83C\uDF72\uD83C\uDF5D\uD83C\uDF71"
-             )
+            ExpandableText(
+                text = "Private Chef\n" +
+                        "Passionate about food and life \uD83E\uDD58\uD83C\uDF72\uD83C\uDF5D\uD83C\uDF71\n" +
+                        "abc\n" +
+                        "Private Chef\n" +
+                        "Passionate about food and life \uD83E\uDD58\uD83C\uDF72\uD83C\uDF5D\uD83C\uDF71"
+            )
+            Spacer(modifier = Modifier.height(10.dp))
         }
     }
 }
