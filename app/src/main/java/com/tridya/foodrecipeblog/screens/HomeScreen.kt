@@ -68,10 +68,10 @@ fun HomeScreen(
     val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
-        if (!homeViewModel.isAreaLoaded.value) {
+        if (!homeViewModel.isAreaLoaded.value){
             homeViewModel.getAreas()
         }
-        if (!homeViewModel.isNewRecipe.value) {
+        if (!homeViewModel.isNewRecipe.value){
             homeViewModel.getNewRecipe()
         }
         /*if (homeViewModel.loaded.value) {
@@ -120,11 +120,11 @@ fun HomeScreen(
                     }
                     LaunchedEffect(Unit) {
                         selectedArea = listOfArea.first()
-                        if (!homeViewModel.isRecipeByCountryLoaded.value) {
+                        if (!homeViewModel.isRecipeByCountryLoaded.value){
                             homeViewModel.getRecipeByArea(listOfArea.first())
                         }
-                        /*                        if (!homeViewModel.loaded.value)
-                                                    homeViewModel.getRecipeByArea(listOfArea.first())*/
+/*                        if (!homeViewModel.loaded.value)
+                            homeViewModel.getRecipeByArea(listOfArea.first())*/
                         homeViewModel.getAllSavedRecipes()
                     }
 
@@ -134,13 +134,13 @@ fun HomeScreen(
                         coroutineScope.launch {
                             recipeScrollState.animateScrollToItem(index = 0)
                         }
-                        if (selectedArea != listOfArea.first()) {
+                        if (selectedArea != listOfArea.first()){
                             homeViewModel.getRecipeByArea(selectedArea)
                         }
                     }
                     when (recipeByArea) {
                         is ApiState.Loading -> {
-                            ShowProgress()
+//                            ShowProgress()
                         }
 
                         is ApiState.Success -> {
@@ -204,9 +204,8 @@ fun HomeScreen(
                     )
                     when (newRecipes) {
                         is ApiState.Loading -> {
-                            ShowProgress()
+//                            ShowProgress()
                         }
-
                         is ApiState.Success -> {
                             val listNewRecipes: List<RecipeCard> =
                                 (newRecipes as ApiState.Success<List<RecipeCard>>).data

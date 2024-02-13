@@ -75,7 +75,7 @@ fun LoginScreen(navController: NavController, paddingValues: PaddingValues) {
         if (loginState.isLoginSuccessful) {
             navController.navigate(Screen.HomeScreen.route) {
                 popUpTo(Screen.IntroScreen.route) {
-                    inclusive = false
+                    inclusive = true
                 }
             }
         }
