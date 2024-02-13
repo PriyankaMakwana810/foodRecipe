@@ -14,7 +14,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -23,7 +22,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -37,10 +35,10 @@ import androidx.navigation.compose.rememberNavController
 import com.tridya.foodrecipeblog.R
 import com.tridya.foodrecipeblog.api.ApiState
 import com.tridya.foodrecipeblog.api.response.Areas
+import com.tridya.foodrecipeblog.components.CommonDialogComponent
 import com.tridya.foodrecipeblog.components.ItemNewRecipe
 import com.tridya.foodrecipeblog.components.ItemRecipeCard
 import com.tridya.foodrecipeblog.components.ListSelectCountry
-import com.tridya.foodrecipeblog.components.NormalTextComponent
 import com.tridya.foodrecipeblog.components.ProfileSection
 import com.tridya.foodrecipeblog.components.SearchBarWithFilter
 import com.tridya.foodrecipeblog.components.ShowProgress
@@ -166,11 +164,23 @@ fun HomeScreen(
 
                         is ApiState.Error -> {
                             val error = (recipeByArea as ApiState.Error).message
-                            NormalTextComponent(
+                            var openDialog by remember { mutableStateOf(true) }
+                            if (openDialog) {
+                                CommonDialogComponent(
+                                    subTitle = error,
+                                    onDismissClicked = {
+                                        openDialog = false
+                                    },
+                                    onButtonClicked = {
+                                        openDialog = false
+                                    }
+                                )
+                            }
+                            /*NormalTextComponent(
                                 value = error,
                                 fontSize = 20.sp,
                                 align = TextAlign.Center
-                            )
+                            )*/
                         }
                     }
                     SimpleTextComponent(
@@ -213,8 +223,21 @@ fun HomeScreen(
                         }
 
                         is ApiState.Error -> {
-                            val error = (recipeByArea as ApiState.Error).message
-                            LazyRow(
+                            val error = (newRecipes as ApiState.Error).message
+                            var openDialog by remember { mutableStateOf(true) }
+                            if (openDialog) {
+                                CommonDialogComponent(
+                                    subTitle = error,
+                                    onDismissClicked = {
+                                        openDialog = false
+                                    },
+                                    onButtonClicked = {
+                                        openDialog = false
+                                    }
+                                )
+                            }
+
+                            /*LazyRow(
                                 modifier = Modifier.padding(start = 15.dp),
                                 horizontalArrangement = Arrangement.spacedBy(5.dp),
                             ) {
@@ -226,21 +249,34 @@ fun HomeScreen(
                                         align = TextAlign.Center
                                     )
                                 }
-                            }
+                            }*/
                         }
                     }
                 }
 
                 is ApiState.Error -> {
                     val error = (areaState as ApiState.Error).message
+                    var openDialog by remember { mutableStateOf(true) }
+                    if (openDialog) {
+                        CommonDialogComponent(
+                            subTitle = error,
+                            onDismissClicked = {
+                                openDialog = false
+                            },
+                            onButtonClicked = {
+                                openDialog = false
+                            }
+                        )
+                    }
+
                     // Show error message
-                    Text(
+                    /*Text(
                         text = "Failed to fetch data: $error",
                         modifier = Modifier
                             .padding(16.dp)
                             .fillMaxWidth(),
                         textAlign = TextAlign.Center
-                    )
+                    )*/
                 }
             }
         }

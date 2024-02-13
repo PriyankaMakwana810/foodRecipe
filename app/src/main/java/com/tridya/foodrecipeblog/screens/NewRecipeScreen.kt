@@ -104,7 +104,7 @@ fun NewRecipeScreen(
             ) {
                 item {
                     SimpleTextComponent(
-                        value = "Share your Favorite Recipe with others",
+                        value = stringResource(R.string.share_your_favorite_recipe_with_others),
                         fontSize = 16.sp,
                         fontWeight = FontWeight(600),
                         textColor = black,
@@ -121,7 +121,7 @@ fun NewRecipeScreen(
                     )
                     Spacer(modifier = Modifier.height(10.dp))
 
-                    LabelText(title = "Image of Recipe*")
+                    LabelText(title = stringResource(R.string.image_of_recipe))
                     Column(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalAlignment = Alignment.CenterHorizontally
@@ -135,44 +135,44 @@ fun NewRecipeScreen(
                         })
                     }
 
-                    LabelText(title = "Name of Recipe*")
+                    LabelText(title = stringResource(R.string.name_of_recipe))
                     CustomOutlinedTextField(
                         value = newRecipeViewModel.recipeNameState.value,
                         onValueChange = { newRecipeViewModel.recipeNameState.value = it },
-                        placeholder = "Name of Recipe"
+                        placeholder = stringResource(R.string._name_of_recipe)
                     )
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    LabelText(title = "Category*")
+                    LabelText(title = stringResource(R.string._category))
                     CustomOutlinedTextField(
                         value = newRecipeViewModel.categoryState.value,
                         onValueChange = { newRecipeViewModel.categoryState.value = it },
-                        placeholder = "Category"
+                        placeholder = stringResource(R.string.category)
                     )
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    LabelText(title = "Time to cook*")
+                    LabelText(title = stringResource(R.string.time_to_cook))
 
                     CustomOutlinedTextField(
                         value = newRecipeViewModel.timeToCookState.value,
                         onValueChange = { newRecipeViewModel.timeToCookState.value = it },
-                        placeholder = "Time to Cook",
+                        placeholder = stringResource(R.string._time_to_cook),
                         keyboardOptions = KeyboardOptions(
-                            keyboardType = KeyboardType.Number,
+                            keyboardType = KeyboardType.NumberPassword,
                             imeAction = ImeAction.Next
                         )
                     )
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    LabelText(title = "Procedure *")
+                    LabelText(title = stringResource(R.string.procedure))
 
                     ProcedureTextField(
                         value = newRecipeViewModel.procedureState.value,
                         onValueChange = { newRecipeViewModel.procedureState.value = it },
-                        placeholder = "Steps to cook recipe.."
+                        placeholder = stringResource(R.string.steps_to_cook_recipe)
                     )
 
                     newRecipeViewModel.ingredientMeasurementPairs.value.forEachIndexed { index, (ingredient, measurement) ->
@@ -231,11 +231,11 @@ fun NewRecipeScreen(
                         // Leading icon
                         Icon(
                             imageVector = Icons.Default.AddCircle,
-                            contentDescription = "Add",
+                            contentDescription = stringResource(R.string.add),
                             tint = secondary100,
                         )
                         Text(
-                            text = "Add Ingredient and Measurement",
+                            text = stringResource(R.string.add_ingredient_and_measurement),
                             modifier = Modifier
                                 .padding(start = 8.dp)
                                 .heightIn(),
@@ -250,30 +250,30 @@ fun NewRecipeScreen(
                     }
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    LabelText(title = "Area")
+                    LabelText(title = stringResource(R.string.area))
                     CustomOutlinedTextField(
                         value = newRecipeViewModel.area.value,
                         onValueChange = { newRecipeViewModel.area.value = it },
-                        placeholder = "Name of Recipe"
+                        placeholder = stringResource(R.string._area)
                     )
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    LabelText(title = "Source")
+                    LabelText(title = stringResource(R.string.source))
                     CustomOutlinedTextField(
                         value = newRecipeViewModel.source.value,
                         onValueChange = { newRecipeViewModel.source.value = it },
-                        placeholder = "Source of Recipe"
+                        placeholder = stringResource(R.string.source_of_recipe)
                     )
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    LabelText(title = "YouTube Link")
+                    LabelText(title = stringResource(R.string.youtube_link))
 
                     CustomOutlinedTextField(
                         value = newRecipeViewModel.youtubeLink.value,
                         onValueChange = { newRecipeViewModel.youtubeLink.value = it },
-                        placeholder = "link of youtube",
+                        placeholder = stringResource(R.string.link_of_youtube),
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Text,
                             imeAction = ImeAction.Done
@@ -289,7 +289,10 @@ fun NewRecipeScreen(
                             if (photoUri != null) {
                                 newRecipeViewModel.validateAndSaveRecipe(navController, photoUri!!)
                             } else {
-                                showShortToast(context, "Please add image of Recipe!!")
+                                showShortToast(
+                                    context,
+                                    context.getString(R.string.please_add_image_of_recipe)
+                                )
                             }
                         }
                     )

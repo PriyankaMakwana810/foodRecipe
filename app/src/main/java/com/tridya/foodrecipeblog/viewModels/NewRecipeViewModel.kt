@@ -8,6 +8,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
+import com.tridya.foodrecipeblog.R
 import com.tridya.foodrecipeblog.api.repo.CommonRepository
 import com.tridya.foodrecipeblog.database.tables.RecipeCard
 import com.tridya.foodrecipeblog.navigation.Screen
@@ -32,9 +33,11 @@ class NewRecipeViewModel @Inject constructor(
     val categoryState: MutableState<String> = mutableStateOf("")
     val timeToCookState: MutableState<String> = mutableStateOf("")
     val procedureState: MutableState<String> = mutableStateOf("")
-    var ingredient: MutableState<String> = mutableStateOf("")
-    var measurement: MutableState<String> = mutableStateOf("")
-    var photoUri: MutableState<Uri?> = mutableStateOf(null)
+    /*
+        var ingredient: MutableState<String> = mutableStateOf("")
+        var measurement: MutableState<String> = mutableStateOf("")
+        var photoUri: MutableState<Uri?> = mutableStateOf(null)
+    */
 
 
     //    var ingredientsList by remember { mutableStateOf(listOf<Pair<String, String>>()) }
@@ -58,9 +61,6 @@ class NewRecipeViewModel @Inject constructor(
             updatedList.add("" to "")
             ingredientMeasurementPairs.value = updatedList
         }
-//        val updatedList = ingredientMeasurementPairs.value.toMutableList()
-//        updatedList.add("" to "")
-//        ingredientMeasurementPairs.value = updatedList
     }
 
     fun addRecipe(recipe: RecipeCard) {
@@ -85,8 +85,7 @@ class NewRecipeViewModel @Inject constructor(
             return "$uuid$randomNumber"
         }
 
-        if (recipeName.isNotEmpty() && category.isNotEmpty() && timeToCook.toString()
-                .isNotEmpty() && procedure.isNotEmpty()
+        if (recipeName.isNotEmpty() && category.isNotEmpty() && timeToCook.isNotEmpty() && procedure.isNotEmpty()
             && ingredients.isNotEmpty() && ingredients.all { it.first.isNotEmpty() && it.second.isNotEmpty() }
         ) {
             val ingredientList = mutableListOf<String>()
@@ -162,7 +161,7 @@ class NewRecipeViewModel @Inject constructor(
             viewModelScope.launch {
                 repository.addRecipe(newRecipe)
             }
-            showShortToast(context = context, "Added Successfully!!")
+            showShortToast(context = context, context.getString(R.string.added_successfully))
             navController.navigate(Screen.ProfileScreen.route) {
                 this.launchSingleTop = true
                 popUpTo(Screen.HomeScreen.route) {
@@ -170,7 +169,8 @@ class NewRecipeViewModel @Inject constructor(
                 }
             }
         } else {
-            showShortToast(context = context, "Please fill all non-optional fields")
+            showShortToast(context = context,
+                context.getString(R.string.please_fill_all_non_optional_fields))
         }
     }
 }

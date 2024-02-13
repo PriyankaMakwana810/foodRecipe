@@ -123,7 +123,6 @@ fun IntroScreen(
 
                             }
                         })
-
                     Spacer(modifier = Modifier.height(50.dp))
                 }
             }

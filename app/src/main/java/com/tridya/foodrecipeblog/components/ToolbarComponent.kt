@@ -28,12 +28,13 @@ fun ToolbarComponent(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 14.dp, start = 10.dp, end = 10.dp, bottom = 14.dp)
+            .padding(top = 10.dp,start = 10.dp, end = 10.dp)
     ) {
         if (showBackArrow) {
             Icon(
                 modifier = Modifier
                     .padding(10.dp)
+                    .align(Alignment.CenterStart)
                     .clickable {
                         onBackClicked()
                     },
@@ -41,20 +42,6 @@ fun ToolbarComponent(
                 contentDescription = "arrow"
             )
         }
-        /*Text(
-            text = toolbarTitle,
-            modifier = Modifier
-                .padding(10.dp)
-                .fillMaxWidth()
-                .align(Alignment.Center),
-            style = TextStyle(
-                fontSize = 18.sp,
-                fontFamily = poppinsFont,
-                fontWeight = FontWeight(600),
-                color = black,
-                textAlign = TextAlign.Center
-            )
-        )*/
         SimpleTextComponent(
             modifier = Modifier
                 .padding(10.dp)

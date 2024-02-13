@@ -146,7 +146,7 @@ fun ShareDialogComponent(
 @Preview
 @Composable
 fun CommonDialogComponent(
-    title: String = stringResource(R.string.recipe_share),
+    title: String = stringResource(R.string.app_name),
     subTitle: String = stringResource(R.string.copy_recipe_link_and_share_your_recipe_link_with_friends_and_family),
     onDismissClicked: () -> Unit = {},
     onButtonClicked: () -> Unit = {},

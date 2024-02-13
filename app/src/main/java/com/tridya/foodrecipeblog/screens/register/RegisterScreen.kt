@@ -59,7 +59,9 @@ import com.tridya.foodrecipeblog.models.User
 import com.tridya.foodrecipeblog.navigation.Screen
 import com.tridya.foodrecipeblog.screens.register.state.RegistrationUiEvent
 import com.tridya.foodrecipeblog.ui.theme.black
+import com.tridya.foodrecipeblog.ui.theme.textColor
 import com.tridya.foodrecipeblog.ui.theme.white
+import com.tridya.foodrecipeblog.utils.showShortToast
 import com.tridya.foodrecipeblog.viewModels.RegisterViewModel
 import org.json.JSONException
 
@@ -156,10 +158,24 @@ fun RegisterScreen(navController: NavController, paddingValues: PaddingValues) {
             Log.e("LOG", tokenId)
             Log.e("LOG", "LoginScreen: ${getUserFromTokenId(tokenId)?.fullName}")
             val user = getUserFromTokenId(tokenId)
+            val user1 =
+                User(
+                    userId = user?.sub,
+                    userName = user?.fullName,
+                    emailId = user?.email,
+                    profilePicPath = user?.picture
+                )
+            registrationViewModel.sharedPreferences.user = user1
+            navController.navigate(Screen.HomeScreen.route) {
+                popUpTo(Screen.IntroScreen.route) {
+                    inclusive = false
+                }
+            }
             Toast.makeText(context, user?.fullName, Toast.LENGTH_SHORT).show()
         },
         onDialogDismissed = { message ->
             Log.d("LOG", message)
+            showShortToast(context, message)
         })
 
     Surface(
@@ -185,7 +201,7 @@ fun RegisterScreen(navController: NavController, paddingValues: PaddingValues) {
                 value = stringResource(R.string.let_s_help_you_set_up_your_account_it_won_t_take_long),
                 fontSize = 12.sp,
                 fontWeight = FontWeight(400),
-                textColor = Color(0xFF121212),
+                textColor = textColor,
                 lineHeight = 18.sp
             )
 

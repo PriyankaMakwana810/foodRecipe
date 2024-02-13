@@ -1,13 +1,9 @@
 package com.tridya.foodrecipeblog.screens.login
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.ActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -42,9 +38,6 @@ import com.facebook.FacebookException
 import com.facebook.GraphRequest
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.tasks.Task
 import com.stevdzasan.onetap.OneTapSignInWithGoogle
 import com.stevdzasan.onetap.getUserFromTokenId
 import com.stevdzasan.onetap.rememberOneTapSignInState
@@ -63,7 +56,6 @@ import com.tridya.foodrecipeblog.navigation.Screen
 import com.tridya.foodrecipeblog.screens.login.state.LoginUiEvent
 import com.tridya.foodrecipeblog.ui.theme.black
 import com.tridya.foodrecipeblog.ui.theme.white
-import com.tridya.foodrecipeblog.utils.CommonProvider.getGoogleSignInClient
 import com.tridya.foodrecipeblog.utils.showShortToast
 import com.tridya.foodrecipeblog.utils.toToast
 import com.tridya.foodrecipeblog.viewModels.LoginViewModel
@@ -79,8 +71,6 @@ fun LoginScreen(navController: NavController, paddingValues: PaddingValues) {
     val loginState by remember { loginViewModel.loginState }
     val callbackManager = remember { CallbackManager.Factory.create() }
 
-    val googleSignInClient = getGoogleSignInClient(LocalContext.current.applicationContext)
-
     LaunchedEffect(loginState) {
         if (loginState.isLoginSuccessful) {
             navController.navigate(Screen.HomeScreen.route) {
@@ -90,17 +80,7 @@ fun LoginScreen(navController: NavController, paddingValues: PaddingValues) {
             }
         }
     }
-    val startForResult =
-        rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                val intent = result.data
-                if (result.data != null) {
-                    val task: Task<GoogleSignInAccount> =
-                        GoogleSignIn.getSignedInAccountFromIntent(intent)
-                    loginViewModel.handleResult(task)
-                }
-            }
-        }
+
     val fbLauncher = rememberLauncherForActivityResult(
         LoginManager.getInstance().createLogInActivityResultContract(callbackManager)
     ) { result ->
@@ -249,8 +229,7 @@ fun LoginScreen(navController: NavController, paddingValues: PaddingValues) {
             DividerTextComponent()
             Spacer(modifier = Modifier.height(10.dp))
             SocialLoginSection(onClickGoogle = {
-                startForResult.launch(googleSignInClient.signInIntent)
-//                oneTapSignInState.open()
+                oneTapSignInState.open()
             }, onClickFacebook = {
                 fbLauncher.launch(listOf("email", "public_profile"))
             })
@@ -284,8 +263,7 @@ fun LoginScreen(navController: NavController, paddingValues: PaddingValues) {
                     inclusive = false
                 }
             }
-
-            Toast.makeText(context, user?.fullName, Toast.LENGTH_SHORT).show()
+//            Toast.makeText(context, user?.fullName, Toast.LENGTH_SHORT).show()
         },
         onDialogDismissed = { message ->
             Log.d("LOG", message)
@@ -299,74 +277,3 @@ fun LoginScreen(navController: NavController, paddingValues: PaddingValues) {
 fun PreviewLoginScreen() {
     LoginScreen(navController = rememberNavController(), paddingValues = PaddingValues())
 }
-
-//val scope = rememberCoroutineScope()
-//val loginManager = LoginManager.getInstance()
-
-/*    val fbLauncher = rememberLauncherForActivityResult(
-        loginManager.createLogInActivityResultContract(callbackManager, null)
-    ) {
-        // nothing to do. handled in FacebookCallback
-    }
-    DisposableEffect(Unit) {
-        loginManager.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
-            override fun onCancel() {
-                // do nothing
-                Log.d("TAG- FacebookLogin", "onCancel: " + "cancel")
-            }
-
-            override fun onError(error: FacebookException) {
-                Log.d("TAG- FacebookLogin", "onCancel: " + error.message)
-            }
-
-            override fun onSuccess(result: LoginResult) {
-                // user signed in successfully
-                val graphRequest =
-                    GraphRequest.newMeRequest(
-                        result.accessToken
-                    ) { obj, _ ->
-                        try {
-                            val userName =
-                                obj!!.getString("first_name") + obj.getString("last_name")
-                            val id = obj.getString("id")
-                            val emailId = if (obj.has("email")) {
-                                obj.getString("email")
-                            } else {
-                                null
-                            }
-                            val profilePicUrl =
-                                obj.getJSONObject("picture").getJSONObject("data").getString("url")
-                            Log.e("TAG", "onSuccess: $userName $id $emailId")
-                            val user =
-                                User(
-                                    userId = id,
-                                    userName = userName,
-                                    emailId = emailId,
-                                    profilePicPath = profilePicUrl
-                                )
-                            loginViewModel.sharedPreferences.user = user
-
-                            *//*loginViewModel.onUiEvent(
-                                loginUiEvent = LoginUiEvent.EmailChanged(
-                                    inputValue = emailId
-                                )
-                            )*//*
-                            navController.navigate(Screen.HomeScreen.route)
-                        } catch (e: JSONException) {
-                            e.printStackTrace()
-                        }
-                    }
-                val bundle1 = Bundle()
-                bundle1.putString(
-                    "fields",
-                    "first_name,last_name,email,id,link, picture.type(large)"
-                )
-                graphRequest.parameters = bundle1
-                graphRequest.executeAsync()
-
-            }
-        })
-        onDispose {
-            loginManager.unregisterCallback(callbackManager)
-        }
-    }*/
