@@ -124,12 +124,12 @@ fun ProfileScreen(
                                 .diskCachePolicy(CachePolicy.ENABLED).crossfade(true).build(),
                             modifier = Modifier
                                 .padding(top = 10.dp)
-                                .size(300.dp),
+                                .size(150.dp),
                             placeholder = painterResource(id = R.drawable.nothing_found),
                             contentDescription = "You haven't Posted any Recipe yet!",
                             contentScale = ContentScale.Fit,
                         )
-                        Spacer(modifier = Modifier.height(20.dp))
+                        Spacer(modifier = Modifier.height(16.dp))
                         NormalTextComponent(
                             modifier = Modifier,
                             value = "You haven't Posted any Recipe yet!",

@@ -18,6 +18,7 @@ object Constants {
     const val SHARED_COMMON = "SharedCommon"
     const val USER = "user"
 
+    const val CLIENT_ID = "567930687823-8g419u2eg5rom36u5dc3u078j0a6ppq3.apps.googleusercontent.com"
     const val SIGN_IN_WITH_GOOGLE = "Sign in with Google"
 
     //screens
