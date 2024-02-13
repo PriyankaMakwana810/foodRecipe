@@ -93,7 +93,11 @@ fun ProfileScreen(
                     }, onClick = {
                         expanded = false
                         profileViewModel.sharedPreferences.logout()
-                        navController.navigate(Screen.IntroScreen.route)
+                        navController.navigate(Screen.IntroScreen.route) {
+                            popUpTo(0) {
+                                inclusive = true
+                            }
+                        }
                     })
                 }
             }

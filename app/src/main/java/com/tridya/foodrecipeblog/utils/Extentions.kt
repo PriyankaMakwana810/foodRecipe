@@ -4,6 +4,8 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.widget.Toast
+import androidx.navigation.NavController
+import androidx.navigation.NavOptionsBuilder
 import com.tridya.foodrecipeblog.api.response.ResponseOfRecipes
 import com.tridya.foodrecipeblog.database.tables.RecipeCard
 import com.tridya.foodrecipeblog.database.tables.RecipeDetails
@@ -121,6 +123,7 @@ fun convertDateTimeToLong(dateTime: String): Long? {
         null
     }
 }
+
 
 fun isInternetAvailable(context: Context): Boolean {
     val result: Boolean

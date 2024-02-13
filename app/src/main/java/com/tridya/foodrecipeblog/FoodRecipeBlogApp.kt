@@ -21,7 +21,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.tridya.foodrecipeblog.models.BottomNavigationItem
@@ -63,7 +62,7 @@ fun FoodRecipeBlogApp() {
                             FloatingActionButton(
 //                                    modifier = Modifier.size(40.dp),
                                 onClick = {
-                                          navController.navigate(Screen.NewRecipeScreen.route)
+                                    navController.navigate(Screen.NewRecipeScreen.route)
                                 },
                                 containerColor = primary100,
                                 contentColor = white,
@@ -78,7 +77,8 @@ fun FoodRecipeBlogApp() {
                         selectedItem.intValue = BottomNavigationItem().bottomNavigationItems()
                             .indexOfFirst { it.route == currentRoute }
                         val isSelected = index == selectedItem.intValue
-                        NavigationBarItem(selected = currentRoute == navigationItem.route,
+                        NavigationBarItem(
+                            selected = currentRoute == navigationItem.route,
                             icon = {
                                 Image(
                                     painter = painterResource(id = if (isSelected) navigationItem.icon else navigationItem.disableIcon),
@@ -88,7 +88,7 @@ fun FoodRecipeBlogApp() {
                             onClick = {
                                 navigationSelectedItem = index
                                 navController.navigate(navigationItem.route) {
-                                    popUpTo(navController.graph.findStartDestination().id) {
+                                    popUpTo(Screen.HomeScreen.route) {
                                         saveState = true
                                     }
                                     launchSingleTop = true
