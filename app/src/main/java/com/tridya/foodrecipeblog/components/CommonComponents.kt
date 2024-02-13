@@ -285,7 +285,7 @@ fun CustomNotificationTabs(
 @Composable
 fun TitleSearchResults(
     modifier: Modifier = Modifier,
-    title: String = "Recent Search",
+    title: String = stringResource(R.string.recent_search),
     results: String = "",
 ) {
     Row(
@@ -338,7 +338,7 @@ fun UserProfileSectionUI(
                     .crossfade(true)
                     .build(),
                 placeholder = painterResource(id = R.drawable.img_user_profile_1),
-                contentDescription = "image description",
+                contentDescription = "",
                 contentScale = ContentScale.Crop,
             )
 
@@ -490,7 +490,6 @@ fun CustomProfileTabs(
                         0 -> {
                             onRecipeClicked()
                         }
-
                         1 -> {}
                         else -> {}
                     }
@@ -503,7 +502,6 @@ fun CustomProfileTabs(
                         fontWeight = FontWeight(600),
                         textColor = if (selected) white else primary80
                     )
-//                    Text(text = text, color = if (selected) white else primary80)
                 }
             )
         }

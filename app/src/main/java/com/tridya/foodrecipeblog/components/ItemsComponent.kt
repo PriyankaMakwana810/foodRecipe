@@ -44,6 +44,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -102,7 +103,7 @@ fun RecipesItemsComponent(
                 .fillMaxSize()
                 .clip(RoundedCornerShape(10.dp)),
             placeholder = painterResource(id = R.drawable.img_recipe_background),
-            contentDescription = "image description",
+            contentDescription = "",
             contentScale = ContentScale.Crop,
         )
         Box(
@@ -169,7 +170,7 @@ fun RecipesItemsComponent(
                     ) {
                         Image(
                             painter = painterResource(id = R.drawable.v_ic_timer),
-                            contentDescription = "time"
+                            contentDescription = stringResource(id = R.string.time)
                         )
                         Text(
                             text = "${recipe.timeToCook} Mins",

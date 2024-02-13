@@ -15,10 +15,10 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.tridya.foodrecipeblog.models.ProcedureModel
 import com.tridya.foodrecipeblog.ui.theme.black
 import com.tridya.foodrecipeblog.ui.theme.gray2
 import com.tridya.foodrecipeblog.ui.theme.gray4
+import com.tridya.foodrecipeblog.ui.theme.poppinsFont
 import com.tridya.foodrecipeblog.ui.theme.white
 
 @Composable
@@ -29,42 +29,6 @@ fun LabelText(modifier: Modifier = Modifier, title: String = "") {
         modifier = modifier.padding(bottom = 8.dp)
     )
 }
-
-
-/*
-@Composable
-fun TextInputForField(){
-    val colorsOfTextFields = OutlinedTextFieldDefaults.colors(
-        cursorColor = black,
-        unfocusedContainerColor = white,
-        focusedContainerColor = white,
-        unfocusedBorderColor = gray4,
-        focusedBorderColor = gray4,
-        focusedTextColor = black,
-        disabledTextColor = gray2,
-        unfocusedTextColor = black
-    )
-    OutlinedTextField(
-        value = newRecipeViewModel.recipeNameState.value,
-        onValueChange = { newRecipeViewModel.recipeNameState.value = it },
-        textStyle = TextStyle(
-            fontSize = 12.sp
-        ),
-        modifier = Modifier
-            .fillMaxWidth()
-            .border(width = 2.dp, color = gray4, shape = RoundedCornerShape(10.dp)),
-        shape = RoundedCornerShape(10.dp),
-        placeholder = {
-            Text(
-                "Name of Recipe",
-                fontSize = 12.sp,
-                color = gray4
-            )
-        },
-        colors = colorsOfTextFields
-    )
-}
-*/
 
 @Composable
 fun CustomOutlinedTextField(
@@ -91,7 +55,8 @@ fun CustomOutlinedTextField(
         value = value,
         onValueChange = onValueChange,
         textStyle = TextStyle(
-            fontSize = 12.sp
+            fontSize = 12.sp,
+            fontFamily = poppinsFont
         ),
         modifier = modifier
             .fillMaxWidth()
@@ -102,6 +67,7 @@ fun CustomOutlinedTextField(
             Text(
                 placeholder,
                 fontSize = 12.sp,
+                fontFamily = poppinsFont,
                 color = gray4
             )
         },
@@ -117,7 +83,7 @@ fun ProcedureTextField(
     value: String,
     onValueChange: (String) -> Unit,
     placeholder: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val colorsOfTextFields = OutlinedTextFieldDefaults.colors(
         cursorColor = black,

@@ -14,7 +14,9 @@ import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -48,6 +50,16 @@ fun ReviewByUserComponent(
     modifier: Modifier = Modifier,
     review: ReviewModel = listOfReviews.first(),
 ) {
+    var likeSelected by remember { mutableStateOf(false) }
+    var dislikeSelected by remember { mutableStateOf(false) }
+
+    var likeCount by remember { mutableIntStateOf(review.likedCount) }
+    var dislikeCount by remember { mutableIntStateOf(review.disLikedCount) }
+
+    LaunchedEffect(review.likedCount, review.disLikedCount) {
+        likeCount = review.likedCount
+        dislikeCount = review.disLikedCount
+    }
     Column {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -71,7 +83,9 @@ fun ReviewByUserComponent(
                 verticalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 NormalTextComponent(
-                    value = review.userName, fontSize = 14.sp, fontWeight = FontWeight.Bold
+                    value = review.userName,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Bold
                 )
                 NormalTextComponent(value = review.time, fontSize = 10.sp, textColor = gray3)
             }
@@ -83,11 +97,6 @@ fun ReviewByUserComponent(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            var likeSelected by remember { mutableStateOf(false) }
-            var dislikeSelected by remember { mutableStateOf(false) }
-
-            var likeCount by remember { mutableStateOf(review.likedCount) }
-            var dislikeCount by remember { mutableStateOf(review.disLikedCount) }
 
             FilterChip(
                 modifier = Modifier.height(25.dp),
@@ -99,10 +108,10 @@ fun ReviewByUserComponent(
                         likeCount++
                         // If dislike was selected before, decrement dislike count
                         if (dislikeCount > 0) dislikeCount--
-                    } else {
+                    }/* else {
                         likeSelected = false
                         likeCount--
-                    }
+                    }*/
                 },
                 label = {
                     Text(
@@ -129,10 +138,10 @@ fun ReviewByUserComponent(
                         dislikeCount++
                         // If like was selected before, decrement like count
                         if (likeCount > 0) likeCount--
-                    } else {
+                    }/* else {
                         dislikeSelected = false
                         dislikeCount--
-                    }
+                    }*/
                 },
                 label = {
                     Text(

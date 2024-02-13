@@ -2,7 +2,6 @@ package com.tridya.foodrecipeblog.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -14,23 +13,18 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
 import com.tridya.foodrecipeblog.ui.theme.black
 import com.tridya.foodrecipeblog.ui.theme.gray2
 import com.tridya.foodrecipeblog.ui.theme.gray3
 import com.tridya.foodrecipeblog.ui.theme.poppinsFont
 import com.tridya.foodrecipeblog.ui.theme.primary80
-import com.tridya.foodrecipeblog.ui.theme.secondary100
 import com.tridya.foodrecipeblog.ui.theme.white
 
 @Composable
@@ -155,76 +149,6 @@ fun TextFieldPassword(
         )
     )
 }
-
-@Composable
-fun AccountQueryComponent(
-    textQuery: String,
-    textClickable: String,
-    navController: NavHostController,
-) {
-    val annonatedString = buildAnnotatedString {
-        withStyle(style = SpanStyle(color = black, fontSize = 15.sp)) {
-            append(textQuery)
-        }
-        withStyle(style = SpanStyle(color = secondary100, fontSize = 15.sp)) {
-            pushStringAnnotation(tag = textClickable, annotation = textClickable)
-            append(textClickable)
-        }
-    }
-
-    ClickableText(text = annonatedString, onClick = {
-        annonatedString.getStringAnnotations(it, it)
-            .firstOrNull()?.also { annonation ->
-                if (annonation.item == "Login") {
-                    navController.navigate("Login")
-                } else if (annonation.item == "Register") {
-                    navController.navigate("Signup")
-                }
-            }
-    })
-}
-
-@Composable
-fun EmailTextField(
-    modifier: Modifier = Modifier,
-    value: String,
-    onValueChange: (String) -> Unit,
-    label: String,
-    isError: Boolean = false,
-    errorText: String = "",
-    imeAction: ImeAction = ImeAction.Next,
-) {
-
-    OutlinedTextField(
-        modifier = modifier,
-        shape = RoundedCornerShape(10.dp),
-        value = value,
-        onValueChange = onValueChange,
-
-        maxLines = 1,
-        keyboardOptions = KeyboardOptions(
-            keyboardType = KeyboardType.Email,
-            imeAction = imeAction
-        ),
-        placeholder = {
-            Text(
-                text = label, style = TextStyle(
-                    fontSize = 10.sp,
-                    fontWeight = FontWeight(400),
-                    color = gray3
-                )
-            )
-        },
-        isError = isError,
-        supportingText = {
-            if (isError) {
-                ErrorTextInputField(text = errorText)
-            }
-        }
-    )
-
-}
-
 
 @Composable
 fun ErrorTextInputField(

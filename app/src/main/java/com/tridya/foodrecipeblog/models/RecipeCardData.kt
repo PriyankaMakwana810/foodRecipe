@@ -2,24 +2,6 @@ package com.tridya.foodrecipeblog.models
 
 import com.tridya.foodrecipeblog.database.tables.RecipeCard
 
-/*@Entity(tableName = "recipe_table")
-data class RecipeCard(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
-    val idMeal: String = "",
-    val strMeal: String,
-    val strMealThumb: String,
-    val timeToCook: Long = 10L,
-    val tagline: String = "tagline",
-    val isSaved: Boolean = false,
-    val isSearched: Boolean = false,
-    val area: String = "",
-    val category: String = "",
-    val ratings: Float = 4.0f,
-    var postedBy: String = "James Milner",
-    val userProfilePhoto: String = "https://images.unsplash.com/photo-1705582033498-e7384d494759?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-)*/
-
 val recipesByCountry = listOf(
     RecipeCard(
         id = 0,

@@ -118,6 +118,18 @@
     <string name="youtube_link">YouTube Link</string>
     <string name="link_of_youtube">link of youtube</string>
     <string name="please_add_image_of_recipe">Please add image of Recipe!!</string>
+    <string name="recent_search">Recent Search</string>
+    <string name="app_recipe_co_jollof_rice">app.Recipe.co/jollof_rice</string>
+    <string name="search_recipe">Search Recipe</string>
+    <string name="filter">filter</string>
+    <string name="_procedure">Procedure</string>
+    <string name="after_logout_you_want_to_able_to_see_recipe_added_by_you_are_you_sure_you_want_to_logout">"After logout you want to able to see recipe Added by you. \nAre you sure you want to Logout? "</string>
+    <string name="logout">Logout</string>
+    <string name="you_haven_t_posted_any_recipe_yet">You haven\'t Posted any Recipe yet!</string>
+    <string name="share">Share</string>
+    <string name="review">Review</string>
+    <string name="unsave">Unsave</string>
+    <string name="save">Save</string>
 
 
 </resources>

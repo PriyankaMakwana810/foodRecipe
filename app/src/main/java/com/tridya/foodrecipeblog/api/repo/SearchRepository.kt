@@ -2,9 +2,8 @@ package com.tridya.foodrecipeblog.api.repo
 
 import com.tridya.foodrecipeblog.api.ApiConstants
 import com.tridya.foodrecipeblog.api.ApiInterface
-import com.tridya.foodrecipeblog.database.tables.RecipeCard
 import com.tridya.foodrecipeblog.database.dao.RecipeDao
-import com.tridya.foodrecipeblog.database.dao.RecipeDetailsDao
+import com.tridya.foodrecipeblog.database.tables.RecipeCard
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
@@ -14,12 +13,8 @@ import javax.inject.Named
 class SearchRepository @Inject constructor(
     @Named(ApiConstants.MEALDB_API_SERVICE) private val mealDbApiInterface: ApiInterface,
     private val recipeDao: RecipeDao,
-    private val recipeDetailsDao: RecipeDetailsDao,
 ) {
-    val getAllRecipes: Flow<List<RecipeCard>> = recipeDao.getAllRecipes()
-
     val getAllSearchedRecipe: Flow<List<RecipeCard>> = recipeDao.getSearchedRecipes(true)
-
     suspend fun addRecipe(recipe: RecipeCard) {
         withContext(Dispatchers.IO) {
             val isAlreadyAdded = recipeDao.getSelectedRecipe(recipe.idMeal)

@@ -9,30 +9,14 @@ import javax.inject.Inject
 import javax.inject.Named
 
 class HomeRepository @Inject constructor(
-    @Named(ApiConstants.RECIPE_API_SERVICE) private val apiInterface: ApiInterface,
     @Named(ApiConstants.MEALDB_API_SERVICE) private val mealDbApiInterface: ApiInterface,
-    private val recipeDao: RecipeDao,
+    recipeDao: RecipeDao,
 ) {
-    val getAllRecipes: Flow<List<RecipeCard>> = recipeDao.getAllRecipes()
-    suspend fun getCountries() = apiInterface.getCountries()
     suspend fun getAreas() = mealDbApiInterface.getAreaList()
     suspend fun getRecipesByArea(area: String) = mealDbApiInterface.getRecipesByArea(area)
-    /* fun getSelectedTask(recipeId: Int): Flow<RecipeCard> {
-         return recipeDao.getSelectedRecipe(recipeId = recipeId)
-     }*/
 
     val getAllSavedRecipe: Flow<List<RecipeCard>> = recipeDao.getSavedRecipes(true)
 
     suspend fun getNewRecipe(category: String = "Miscellaneous") =
         mealDbApiInterface.getRecipesByCategories(category = category)
-
-
-    suspend fun addAllRecipe(recipes: List<RecipeCard>) {
-        recipeDao.addAllRecipes(recipes = recipes)
-    }
-
-    suspend fun updateRecipe(recipe: RecipeCard) {
-        recipeDao.updateRecipe(recipe = recipe)
-    }
-
 }

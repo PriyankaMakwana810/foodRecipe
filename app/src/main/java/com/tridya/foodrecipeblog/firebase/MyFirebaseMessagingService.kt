@@ -55,7 +55,10 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             remoteMessage.sentTime,
             false
         )
-        CoroutineScope(Dispatchers.IO).launch {
+
+        sharedPref.putDataClass("notification", notification)
+
+        CoroutineScope(Dispatchers.Main).launch {
             notificationId = notificationDao.addNotification(notification).toInt()
         }
         sendNotification(
@@ -109,9 +112,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         val notificationManager =
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-
         notificationManager.createNotificationChannel(channel)
-
         val notificationId = 0
         notificationManager.notify(notificationId, notificationBuilder.build())
 

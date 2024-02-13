@@ -45,6 +45,7 @@ import com.tridya.foodrecipeblog.models.ReviewModel
 import com.tridya.foodrecipeblog.ui.theme.black
 import com.tridya.foodrecipeblog.ui.theme.gray3
 import com.tridya.foodrecipeblog.ui.theme.gray4
+import com.tridya.foodrecipeblog.ui.theme.poppinsFont
 import com.tridya.foodrecipeblog.ui.theme.white
 import com.tridya.foodrecipeblog.utils.StaticData.listOfReviews
 import com.tridya.foodrecipeblog.utils.TimeStamp.millisToFormat
@@ -68,7 +69,8 @@ fun ReviewScreen(
                 userName = reviewViewModel.sharedPreferences.user?.userName!!,
                 profilePicPath = reviewViewModel.sharedPreferences.user?.profilePicPath!!,
                 time = millisToFormat(System.currentTimeMillis().toString()),
-                comment = reviewText
+                comment = reviewText,
+                0,0
             )
             listOfReviews = listOfReviews + newReview
             reviewText = "" // Clear the text field after adding the review
@@ -116,10 +118,11 @@ fun ReviewScreen(
                         onValueChange = {
                             reviewText = it
                         },
+                        textStyle = TextStyle(fontFamily = poppinsFont),
                         placeholder = {
                             Text(
                                 text = stringResource(R.string.say_something), style = TextStyle(
-                                    fontSize = 10.sp,
+                                    fontSize = 12.sp,
                                     fontWeight = FontWeight(400),
                                     color = gray4
                                 )

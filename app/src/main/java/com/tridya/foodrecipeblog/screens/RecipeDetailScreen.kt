@@ -96,24 +96,27 @@ fun RecipeDetailScreen(
                     Box {
                         ReusableDropdownMenu(
                             items = listOf(
-                                Triple("Share", painterResource(id = R.drawable.v_ic_menu_share)) {
+                                Triple(
+                                    stringResource(R.string.share),
+                                    painterResource(id = R.drawable.v_ic_menu_share)
+                                ) {
                                     openShareDialog = true
                                 },
                                 Triple(
-                                    "Rate Recipe",
+                                    stringResource(R.string.rate_recipe),
                                     painterResource(id = R.drawable.v_ic_menu_star)
                                 ) {
                                     openRatingDialog = true
                                 },
                                 Triple(
-                                    "Review",
+                                    stringResource(R.string.review),
                                     painterResource(id = R.drawable.v_ic_menu_review)
                                 ) {
                                     navController.navigate(Screen.ReviewScreen.route)
                                 },
                                 if (recipe.isSaved)
                                     Triple(
-                                        "Unsave",
+                                        stringResource(R.string.unsave),
                                         painterResource(id = R.drawable.v_ic_menu_unsave)
                                     ) {
                                         recipeDetailsViewModel.updateRecipeIsSaved(
@@ -123,7 +126,7 @@ fun RecipeDetailScreen(
                                     }
                                 else
                                     Triple(
-                                        "Save",
+                                        stringResource(R.string.save),
                                         painterResource(id = R.drawable.v_ic_menu_unsave)
                                     ) {
                                         recipeDetailsViewModel.updateRecipeIsSaved(

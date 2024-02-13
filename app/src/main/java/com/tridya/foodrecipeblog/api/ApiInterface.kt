@@ -1,6 +1,5 @@
 package com.tridya.foodrecipeblog.api
 
-import com.tridya.foodrecipeblog.api.response.CuisinesResponse
 import com.tridya.foodrecipeblog.api.response.GetAreaResponse
 import com.tridya.foodrecipeblog.api.response.GetCategoriesResponse
 import com.tridya.foodrecipeblog.api.response.GetIngredientsResponse
@@ -17,9 +16,6 @@ interface ApiInterface {
 
     @GET(ApiConstants.END_POINTS_REGISTER)
     fun register(): Single<LoginResponse>
-
-    @GET("/cuisines")
-    suspend fun getCountries(): CuisinesResponse
 
     @GET("api/json/v1/1/list.php")
     suspend fun getAreaList(
@@ -64,5 +60,5 @@ interface ApiInterface {
     @GET("api/json/v1/1/lookup.php")
     suspend fun getRecipeDetailsByID(
         @Query("i") recipeId: String,
-    ):RecipeDetailsResponse
+    ): RecipeDetailsResponse
 }

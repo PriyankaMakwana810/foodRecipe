@@ -2,14 +2,14 @@ package com.tridya.foodrecipeblog.api.repo
 
 import com.tridya.foodrecipeblog.api.ApiConstants
 import com.tridya.foodrecipeblog.api.ApiInterface
-import com.tridya.foodrecipeblog.database.tables.RecipeCard
 import com.tridya.foodrecipeblog.database.dao.RecipeDao
+import com.tridya.foodrecipeblog.database.tables.RecipeCard
 import javax.inject.Inject
 import javax.inject.Named
 
 class RecipeDetailsRepository @Inject constructor(
-    @Named(ApiConstants.RECIPE_API_SERVICE) private val apiInterface: ApiInterface,
-    @Named(ApiConstants.MEALDB_API_SERVICE) private val mealDbApiInterface: ApiInterface,
+    @Named(ApiConstants.MEALDB_API_SERVICE)
+    private val mealDbApiInterface: ApiInterface,
     private val recipeDao: RecipeDao,
 ) {
     suspend fun getRecipeDetailsByID(recipeId: String) =
@@ -27,7 +27,4 @@ class RecipeDetailsRepository @Inject constructor(
         recipeDao.addRecipe(recipe = recipe)
     }
 
-    suspend fun updateRecipe(recipe: RecipeCard) {
-        recipeDao.updateRecipe(recipe = recipe)
-    }
 }

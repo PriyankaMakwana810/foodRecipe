@@ -55,7 +55,7 @@ import com.tridya.foodrecipeblog.ui.theme.white
 fun ShareDialogComponent(
     title: String = stringResource(R.string.recipe_share),
     subTitle: String = stringResource(R.string.copy_recipe_link_and_share_your_recipe_link_with_friends_and_family),
-    link: String = "app.Recipe.co/jollof_rice",
+    link: String = stringResource(R.string.app_recipe_co_jollof_rice),
     onDismissClicked: () -> Unit = {},
     onButtonClicked: () -> Unit = {},
 ) {
@@ -84,7 +84,7 @@ fun ShareDialogComponent(
                         fontWeight = FontWeight(600)
                     )
                     Icon(painter = painterResource(id = R.drawable.baseline_clear_24),
-                        contentDescription = "clear",
+                        contentDescription = "",
                         modifier = Modifier
                             .size(18.dp)
                             .clickable { onDismissClicked() })

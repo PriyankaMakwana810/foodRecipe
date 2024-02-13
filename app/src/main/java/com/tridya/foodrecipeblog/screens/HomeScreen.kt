@@ -74,12 +74,6 @@ fun HomeScreen(
         if (!homeViewModel.isNewRecipe.value){
             homeViewModel.getNewRecipe()
         }
-        /*if (homeViewModel.loaded.value) {
-            return@LaunchedEffect
-        } else {
-            homeViewModel.getAreas()
-            homeViewModel.getNewRecipe()
-        }*/
     }
 
     Surface(
@@ -123,8 +117,6 @@ fun HomeScreen(
                         if (!homeViewModel.isRecipeByCountryLoaded.value){
                             homeViewModel.getRecipeByArea(listOfArea.first())
                         }
-/*                        if (!homeViewModel.loaded.value)
-                            homeViewModel.getRecipeByArea(listOfArea.first())*/
                         homeViewModel.getAllSavedRecipes()
                     }
 
@@ -139,9 +131,7 @@ fun HomeScreen(
                         }
                     }
                     when (recipeByArea) {
-                        is ApiState.Loading -> {
-//                            ShowProgress()
-                        }
+                        is ApiState.Loading -> {}
 
                         is ApiState.Success -> {
                             val recipeByCountry =
@@ -187,11 +177,6 @@ fun HomeScreen(
                                     }
                                 )
                             }
-                            /*NormalTextComponent(
-                                value = error,
-                                fontSize = 20.sp,
-                                align = TextAlign.Center
-                            )*/
                         }
                     }
                     SimpleTextComponent(
@@ -203,9 +188,7 @@ fun HomeScreen(
                         textAlign = TextAlign.Left
                     )
                     when (newRecipes) {
-                        is ApiState.Loading -> {
-//                            ShowProgress()
-                        }
+                        is ApiState.Loading -> {}
                         is ApiState.Success -> {
                             val listNewRecipes: List<RecipeCard> =
                                 (newRecipes as ApiState.Success<List<RecipeCard>>).data
@@ -246,20 +229,6 @@ fun HomeScreen(
                                     }
                                 )
                             }
-
-                            /*LazyRow(
-                                modifier = Modifier.padding(start = 15.dp),
-                                horizontalArrangement = Arrangement.spacedBy(5.dp),
-                            ) {
-                                item {
-                                    NormalTextComponent(
-                                        modifier = Modifier.align(Alignment.CenterHorizontally),
-                                        value = error,
-                                        fontSize = 20.sp,
-                                        align = TextAlign.Center
-                                    )
-                                }
-                            }*/
                         }
                     }
                 }
@@ -278,15 +247,6 @@ fun HomeScreen(
                             }
                         )
                     }
-
-                    // Show error message
-                    /*Text(
-                        text = "Failed to fetch data: $error",
-                        modifier = Modifier
-                            .padding(16.dp)
-                            .fillMaxWidth(),
-                        textAlign = TextAlign.Center
-                    )*/
                 }
             }
         }

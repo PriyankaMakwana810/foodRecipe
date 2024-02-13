@@ -23,7 +23,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -105,7 +104,7 @@ fun IngredientItem(
                 .memoryCachePolicy(CachePolicy.ENABLED).diskCachePolicy(CachePolicy.ENABLED)
                 .crossfade(true).build(),
             placeholder = painterResource(id = R.drawable.tomato),
-            contentDescription = "image description",
+            contentDescription = "",
             contentScale = ContentScale.FillBounds,
         )
         NormalTextComponent(
@@ -165,7 +164,7 @@ fun ProcedureItem(
         verticalArrangement = Arrangement.spacedBy(5.dp)
     ) {
         NormalTextComponent(
-            value = "Procedure",
+            value = stringResource(R.string._procedure),
             fontSize = 18.sp,
             fontWeight = FontWeight(600),
             textColor = black
@@ -177,7 +176,6 @@ fun ProcedureItem(
                 fontWeight = FontWeight.Normal,
                 fontFamily = poppinsFont,
                 color = gray1,
-//                textAlign = TextAlign.Justify,
                 lineHeight = 20.sp,
             ),
         )

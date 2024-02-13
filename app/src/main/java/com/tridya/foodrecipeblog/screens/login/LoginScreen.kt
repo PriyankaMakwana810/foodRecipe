@@ -263,7 +263,6 @@ fun LoginScreen(navController: NavController, paddingValues: PaddingValues) {
                     inclusive = false
                 }
             }
-//            Toast.makeText(context, user?.fullName, Toast.LENGTH_SHORT).show()
         },
         onDialogDismissed = { message ->
             Log.d("LOG", message)

@@ -24,7 +24,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -270,23 +269,16 @@ fun RegisterScreen(navController: NavController, paddingValues: PaddingValues) {
                 errorText = stringResource(id = registrationState.errorState.confirmPasswordErrorState.errorMessageStringResource)
             )
 
-//            Spacer(modifier = Modifier.height(10.dp))
             CheckboxComponent(value = "Accept terms & Condition")
 
             Spacer(modifier = Modifier.height(10.dp))
             ButtonComponent(modifier = Modifier.fillMaxWidth(),
                 value = stringResource(R.string.sign_up),
                 onButtonClicked = {
-//                    navController.navigate(Screen.RegisterScreen.route)
                     registrationViewModel.onUiEvent(registrationUiEvent = RegistrationUiEvent.Submit)
-                    if (registrationState.isRegistrationSuccessful) {
-                        navController.navigate(Screen.HomeScreen.route)
-                    }
-
                 })
             Spacer(modifier = Modifier.height(5.dp))
             DividerTextComponent()
-//            Spacer(modifier = Modifier.height(10.dp))
             SocialLoginSection(onClickGoogle = {
                 oneTapSignInState.open()
             }, onClickFacebook = {

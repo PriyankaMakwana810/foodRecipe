@@ -1,7 +1,5 @@
 package com.tridya.foodrecipeblog.models
 
-import java.security.cert.CertPath
-
 data class ReviewModel(
     val id: Int,
     val userName: String,

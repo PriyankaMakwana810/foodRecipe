@@ -124,7 +124,7 @@ fun ProfileSection(
                 .crossfade(true)
                 .build(),
             placeholder = painterResource(id = R.drawable.img_profile),
-            contentDescription = "image description",
+            contentDescription = "",
             contentScale = ContentScale.Crop,
         )
     }
@@ -236,7 +236,7 @@ fun ItemRecipeCard(
                     .clip(shape = CircleShape)
                     .size(125.dp),
                 placeholder = painterResource(id = R.drawable.food_image),
-                contentDescription = "image description",
+                contentDescription = "",
                 contentScale = ContentScale.Crop,
             )
             Card(
@@ -361,7 +361,7 @@ fun ItemNewRecipe(recipe: RecipeCard, onRecipeClicked: () -> Unit = {}) {
                 .crossfade(true)
                 .build(),
             placeholder = painterResource(id = R.drawable.food_image),
-            contentDescription = "image description",
+            contentDescription = "",
             contentScale = ContentScale.Crop,
         )
         Card(
@@ -422,7 +422,7 @@ fun ItemNewRecipe(recipe: RecipeCard, onRecipeClicked: () -> Unit = {}) {
                                 .diskCachePolicy(CachePolicy.ENABLED)
                                 .build(),
                             placeholder = painterResource(id = R.drawable.img_profile),
-                            contentDescription = "image description",
+                            contentDescription = "",
                             contentScale = ContentScale.Crop,
                         )
                         Text(
@@ -479,7 +479,7 @@ fun PreviewSearchSection() {
 @Composable
 fun PreviewProfileSection() {
     ProfileSection(userName = "Hello Priyanka")
-//    SearchBarSection()
+    SearchBarSection()
 }
 
 @Preview
@@ -535,7 +535,6 @@ fun SearchBarWithFilter(
                 Image(
                     painter = painterResource(id = R.drawable.v_ic_search),
                     contentDescription = stringResource(R.string.search),
-//                    modifier = Modifier.size(20.dp)
                 )
             },
 
@@ -569,7 +568,7 @@ fun SearchBarWithFilter(
                 .clickable { onFilterClicked() }
         ) {
             Image(
-                contentDescription = "filter",
+                contentDescription = stringResource(R.string.filter),
                 painter = painterResource(id = R.drawable.v_ic_filter),
                 contentScale = ContentScale.FillBounds,
             )
@@ -580,7 +579,7 @@ fun SearchBarWithFilter(
 @Composable
 fun SearchBarSection(
     modifier: Modifier = Modifier,
-    hint: String = "Search Recipe",
+    hint: String = stringResource(R.string.search_recipe),
     isEnabled: (Boolean) = true,
     elevation: Dp = 3.dp,
     cornerShape: RoundedCornerShape = RoundedCornerShape(8.dp),
@@ -676,7 +675,7 @@ fun SearchBarSection(
                 .clickable { onFilterClicked() }
         ) {
             Image(
-                contentDescription = "filter",
+                contentDescription = stringResource(R.string.filter),
                 painter = painterResource(id = R.drawable.v_ic_filter),
                 contentScale = ContentScale.FillBounds,
             )

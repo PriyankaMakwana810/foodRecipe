@@ -44,6 +44,7 @@ import coil.compose.AsyncImage
 import coil.request.CachePolicy
 import coil.request.ImageRequest
 import com.tridya.foodrecipeblog.R
+import com.tridya.foodrecipeblog.components.CommonDialogComponent
 import com.tridya.foodrecipeblog.components.CustomProfileTabs
 import com.tridya.foodrecipeblog.components.NormalTextComponent
 import com.tridya.foodrecipeblog.components.RecipesItemsComponent
@@ -62,6 +63,7 @@ fun ProfileScreen(
     val user = profileViewModel.sharedPreferences.user
     var expanded by remember { mutableStateOf(false) }
     val allPostedRecipes by profileViewModel.allPostedRecipes.collectAsState()
+    var openDialog by remember { mutableStateOf(false) }
 
     Surface(
         modifier = Modifier.fillMaxSize(), color = white
@@ -85,31 +87,26 @@ fun ProfileScreen(
                     offset = DpOffset(x = (-66).dp, y = (-10).dp)
 
                 ) {
-                    DropdownMenuItem(text = { Text(text = "Logout") }, leadingIcon = {
-                        Icon(
-                            painter = painterResource(id = R.drawable.baseline_logout_24),
-                            contentDescription = "Logout"
-                        )
-                    }, onClick = {
-                        expanded = false
-                        profileViewModel.sharedPreferences.logout()
-                        navController.navigate(Screen.IntroScreen.route) {
-                            popUpTo(0) {
-                                inclusive = true
-                            }
-                        }
-                    })
+                    DropdownMenuItem(text = { Text(text = stringResource(R.string.logout)) },
+                        leadingIcon = {
+                            Icon(
+                                painter = painterResource(id = R.drawable.baseline_logout_24),
+                                contentDescription = stringResource(R.string.logout)
+                            )
+                        },
+                        onClick = {
+                            expanded = false
+                            openDialog = true
+                        })
                 }
             }
 
             Column(
-                modifier = Modifier
-                    .padding(horizontal = 20.dp)
+                modifier = Modifier.padding(horizontal = 20.dp)
             ) {
                 if (user != null) {
                     UserProfileSectionUI(
-                        userData = user,
-                        recipePostedCount = allPostedRecipes.size
+                        userData = user, recipePostedCount = allPostedRecipes.size
                     )
                 }
                 CustomProfileTabs()
@@ -130,31 +127,42 @@ fun ProfileScreen(
                                 .padding(top = 10.dp)
                                 .size(150.dp),
                             placeholder = painterResource(id = R.drawable.nothing_found),
-                            contentDescription = "You haven't Posted any Recipe yet!",
+                            contentDescription = stringResource(R.string.you_haven_t_posted_any_recipe_yet),
                             contentScale = ContentScale.Fit,
                         )
                         Spacer(modifier = Modifier.height(16.dp))
                         NormalTextComponent(
                             modifier = Modifier,
-                            value = "You haven't Posted any Recipe yet!",
+                            value = stringResource(R.string.you_haven_t_posted_any_recipe_yet),
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Medium,
                             align = TextAlign.Center
                         )
                     }
                 } else {
+                    if (openDialog) {
+                        CommonDialogComponent(title = stringResource(R.string.logout),
+                            subTitle = stringResource(R.string.after_logout_you_want_to_able_to_see_recipe_added_by_you_are_you_sure_you_want_to_logout),
+                            onButtonClicked = {
+                                profileViewModel.sharedPreferences.logout()
+                                navController.navigate(Screen.IntroScreen.route) {
+                                    popUpTo(0) {
+                                        inclusive = true
+                                    }
+                                }
+                            },
+                            onDismissClicked = {
+                                openDialog = false
+                            })
+                    }
                     LazyColumn {
                         items(allPostedRecipes) { item ->
                             RecipesItemsComponent(
-                                recipe = item,
-                                isFromSaved = true,
-                                onRecipeItemClicked = {
+                                recipe = item, isFromSaved = true, onRecipeItemClicked = {
                                     navController.navigate(Screen.RecipeDetailScreen.route + "/${item.idMeal}") {
                                         this.launchSingleTop = true
                                     }
-                                },
-                                padding = 5.dp,
-                                horizontalPadding = 0.dp
+                                }, padding = 5.dp, horizontalPadding = 0.dp
                             )
                         }
                     }
