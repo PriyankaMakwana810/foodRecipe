@@ -68,12 +68,18 @@ fun HomeScreen(
     val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
-        if (homeViewModel.loaded.value) {
+        if (!homeViewModel.isAreaLoaded.value) {
+            homeViewModel.getAreas()
+        }
+        if (!homeViewModel.isNewRecipe.value) {
+            homeViewModel.getNewRecipe()
+        }
+        /*if (homeViewModel.loaded.value) {
             return@LaunchedEffect
         } else {
             homeViewModel.getAreas()
             homeViewModel.getNewRecipe()
-        }
+        }*/
     }
 
     Surface(
@@ -114,9 +120,12 @@ fun HomeScreen(
                     }
                     LaunchedEffect(Unit) {
                         selectedArea = listOfArea.first()
-                        if (!homeViewModel.loaded.value)
-                            homeViewModel.getAllSavedRecipes()
-                        homeViewModel.getRecipeByArea(listOfArea.first())
+                        if (!homeViewModel.isRecipeByCountryLoaded.value) {
+                            homeViewModel.getRecipeByArea(listOfArea.first())
+                        }
+                        /*                        if (!homeViewModel.loaded.value)
+                                                    homeViewModel.getRecipeByArea(listOfArea.first())*/
+                        homeViewModel.getAllSavedRecipes()
                     }
 
                     ListSelectCountry(listOfCountries = listOfArea) { selectedItem ->
@@ -125,7 +134,9 @@ fun HomeScreen(
                         coroutineScope.launch {
                             recipeScrollState.animateScrollToItem(index = 0)
                         }
-                        homeViewModel.getRecipeByArea(selectedArea)
+                        if (selectedArea != listOfArea.first()) {
+                            homeViewModel.getRecipeByArea(selectedArea)
+                        }
                     }
                     when (recipeByArea) {
                         is ApiState.Loading -> {

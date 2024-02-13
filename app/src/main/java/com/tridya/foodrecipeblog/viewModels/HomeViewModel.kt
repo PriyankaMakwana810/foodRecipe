@@ -1,6 +1,5 @@
 package com.tridya.foodrecipeblog.viewModels
 
-import android.annotation.SuppressLint
 import android.content.Context
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
@@ -24,12 +23,11 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Named
 
-@SuppressLint("StaticFieldLeak")
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val repository: HomeRepository,
     @Named(Constants.SHARED_COMMON) val sharedPreferences: PrefUtils,
-    private val context: Context,
+    private val applicationContext: Context,
 ) : ViewModel() {
 
     private val _areas = MutableStateFlow<ApiState<List<Areas>>>(ApiState.Loading)
@@ -49,24 +47,32 @@ class HomeViewModel @Inject constructor(
     private val _loaded: MutableState<Boolean> = mutableStateOf(false)
     val loaded: State<Boolean> get() = _loaded
 
+    var isAreaLoaded: MutableState<Boolean> = mutableStateOf(false)
+    var isRecipeByCountryLoaded: MutableState<Boolean> = mutableStateOf(false)
+    var isNewRecipe: MutableState<Boolean> = mutableStateOf(false)
+
     init {
         getAllSavedRecipes()
     }
 
     fun getAreas() {
-        if (isInternetAvailable(context = context)) {
+        if (isInternetAvailable(context = applicationContext)) {
             viewModelScope.launch {
                 try {
                     val response = repository.getAreas()
                     _areas.value = ApiState.Success(response.meals)
-
+                    isAreaLoaded.value = true
                 } catch (e: Exception) {
                     _areas.value = ApiState.Error("API Error: ${e.message}")
                 }
             }
         } else {
-            _areas.value = ApiState.Error(context.getString(R.string.no_internet_connection))
-            showShortToast(context, context.getString(R.string.no_internet_connection))
+            _areas.value =
+                ApiState.Error(applicationContext.getString(R.string.no_internet_connection))
+            showShortToast(
+                applicationContext,
+                applicationContext.getString(R.string.no_internet_connection)
+            )
         }
     }
 
@@ -83,11 +89,12 @@ class HomeViewModel @Inject constructor(
     }
 
     fun getRecipeByArea(area: String) {
-        if (isInternetAvailable(context)) {
+        if (isInternetAvailable(applicationContext)) {
             viewModelScope.launch {
                 try {
                     _loaded.value = true
                     val response = repository.getRecipesByArea(area)
+                    isRecipeByCountryLoaded.value = true
                     val actualResponse = response.meals.map {
                         it.toEntity(
                             area = area
@@ -100,8 +107,11 @@ class HomeViewModel @Inject constructor(
             }
         } else {
             _recipesByArea.value =
-                ApiState.Error(context.getString(R.string.no_internet_connection))
-            showShortToast(context, context.getString(R.string.no_internet_connection))
+                ApiState.Error(applicationContext.getString(R.string.no_internet_connection))
+            showShortToast(
+                applicationContext,
+                applicationContext.getString(R.string.no_internet_connection)
+            )
         }
 
     }
@@ -116,6 +126,7 @@ class HomeViewModel @Inject constructor(
                     )
                 }
                 _newRecipes.value = ApiState.Success(actualResponse)
+                isNewRecipe.value = true
 
             } catch (e: Exception) {
                 _newRecipes.value = ApiState.Error("API Error: ${e.message}")

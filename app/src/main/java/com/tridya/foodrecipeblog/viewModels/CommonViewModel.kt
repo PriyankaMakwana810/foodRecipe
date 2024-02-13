@@ -21,12 +21,9 @@ class CommonViewModel @Inject constructor(
     private val _allSavedRecipes =
         MutableStateFlow<List<RecipeCard>>(emptyList())
     val allSavedRecipes: StateFlow<List<RecipeCard>> = _allSavedRecipes
-
-
     init {
         getAllSavedRecipes()
     }
-
     private fun getAllSavedRecipes() {
         try {
             viewModelScope.launch {

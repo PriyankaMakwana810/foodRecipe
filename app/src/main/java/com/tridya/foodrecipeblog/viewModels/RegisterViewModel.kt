@@ -1,5 +1,6 @@
 package com.tridya.foodrecipeblog.viewModels
 
+import android.content.Context
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -16,6 +17,7 @@ import com.tridya.foodrecipeblog.screens.register.state.passwordEmptyErrorState
 import com.tridya.foodrecipeblog.screens.register.state.passwordMismatchErrorState
 import com.tridya.foodrecipeblog.utils.Constants
 import com.tridya.foodrecipeblog.utils.PrefUtils
+import com.tridya.foodrecipeblog.utils.showShortToast
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -27,6 +29,7 @@ import javax.inject.Named
 class RegisterViewModel @Inject constructor(
     private val repository: LoginRepository,
     @Named(Constants.SHARED_COMMON) val sharedPreferences: PrefUtils,
+    private val applicationContext: Context,
 ) : ViewModel() {
     var registrationState = mutableStateOf(RegistrationState())
         private set
@@ -210,6 +213,7 @@ class RegisterViewModel @Inject constructor(
                 }
             },/* onError = */ { errorData ->
                 error.postValue(errorData.toString())
+                showShortToast(applicationContext, errorData.toString())
             })
     }
 }
