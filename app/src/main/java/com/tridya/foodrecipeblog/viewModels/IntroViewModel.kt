@@ -17,6 +17,4 @@ import javax.inject.Named
 class IntroViewModel @Inject constructor(
     private val repository: CommonRepository,
     @Named(Constants.SHARED_COMMON) val sharedPreferences: PrefUtils,
-) : ViewModel() {
-
-}
+) : ViewModel()

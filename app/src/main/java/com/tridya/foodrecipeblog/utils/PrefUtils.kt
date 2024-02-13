@@ -1,4 +1,4 @@
-package com.tridya.foodrecipeblog.utils;
+package com.tridya.foodrecipeblog.utils
 
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
