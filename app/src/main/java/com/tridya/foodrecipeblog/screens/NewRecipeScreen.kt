@@ -50,6 +50,7 @@ import com.tridya.foodrecipeblog.components.CustomButtonComponent
 import com.tridya.foodrecipeblog.components.CustomOutlinedTextField
 import com.tridya.foodrecipeblog.components.ImageAddingPreview
 import com.tridya.foodrecipeblog.components.LabelText
+import com.tridya.foodrecipeblog.components.NonOptionalLabelText
 import com.tridya.foodrecipeblog.components.NormalTextComponent
 import com.tridya.foodrecipeblog.components.ProcedureTextField
 import com.tridya.foodrecipeblog.components.SimpleTextComponent
@@ -123,7 +124,7 @@ fun NewRecipeScreen(
                     )
                     Spacer(modifier = Modifier.height(10.dp))
 
-                    LabelText(title = stringResource(R.string.image_of_recipe))
+                    NonOptionalLabelText(title = stringResource(R.string.image_of_recipe))
                     Column(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalAlignment = Alignment.CenterHorizontally
@@ -137,7 +138,7 @@ fun NewRecipeScreen(
                         })
                     }
 
-                    LabelText(title = stringResource(R.string.name_of_recipe))
+                    NonOptionalLabelText(title = stringResource(R.string._name_of_recipe))
                     CustomOutlinedTextField(
                         value = newRecipeViewModel.recipeNameState.value,
                         onValueChange = { newRecipeViewModel.recipeNameState.value = it },
@@ -146,7 +147,7 @@ fun NewRecipeScreen(
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    LabelText(title = stringResource(R.string._category))
+                    NonOptionalLabelText(title = stringResource(R.string.category))
                     CustomOutlinedTextField(
                         value = newRecipeViewModel.categoryState.value,
                         onValueChange = { newRecipeViewModel.categoryState.value = it },
@@ -155,7 +156,7 @@ fun NewRecipeScreen(
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    LabelText(title = stringResource(R.string.time_to_cook))
+                    NonOptionalLabelText(title = stringResource(R.string._time_to_cook))
 
                     CustomOutlinedTextField(
                         value = newRecipeViewModel.timeToCookState.value,
@@ -169,7 +170,7 @@ fun NewRecipeScreen(
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    LabelText(title = stringResource(R.string.procedure))
+                    NonOptionalLabelText(title = stringResource(R.string.procedure))
 
                     ProcedureTextField(
                         value = newRecipeViewModel.procedureState.value,
@@ -187,7 +188,7 @@ fun NewRecipeScreen(
                                 modifier = Modifier.weight(0.5f),
                                 verticalArrangement = Arrangement.Top
                             ) {
-                                LabelText(title = "Ingredient ${index + 1}*")
+                                NonOptionalLabelText(title = "Ingredient ${index + 1}")
                                 CustomOutlinedTextField(
                                     value = ingredient,
                                     onValueChange = { updatedIngredient ->
@@ -206,7 +207,7 @@ fun NewRecipeScreen(
                                 modifier = Modifier.weight(0.5f),
                                 verticalArrangement = Arrangement.Top
                             ) {
-                                LabelText(title = "Measurement ${index + 1}*")
+                                NonOptionalLabelText(title = "Measurement ${index + 1}")
                                 CustomOutlinedTextField(
                                     value = measurement,
                                     onValueChange = { updatedMeasurement ->

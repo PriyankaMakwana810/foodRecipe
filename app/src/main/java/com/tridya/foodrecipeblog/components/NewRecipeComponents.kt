@@ -10,11 +10,15 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.tridya.foodrecipeblog.ui.theme.Warning1
 import com.tridya.foodrecipeblog.ui.theme.black
 import com.tridya.foodrecipeblog.ui.theme.gray2
 import com.tridya.foodrecipeblog.ui.theme.gray4
@@ -26,6 +30,25 @@ fun LabelText(modifier: Modifier = Modifier, title: String = "") {
     Text(
         text = title,
         fontSize = 14.sp,
+        fontFamily = poppinsFont,
+        modifier = modifier.padding(bottom = 8.dp)
+    )
+}
+
+@Composable
+fun NonOptionalLabelText(modifier: Modifier = Modifier, title: String = "") {
+    val annotatedString = buildAnnotatedString {
+        // Append the title text
+        withStyle(style = SpanStyle(fontSize = 14.sp)) {
+            append(title)
+        }
+        // Append the red asterisk
+        withStyle(style = SpanStyle(color = Warning1, fontSize = 14.sp)) {
+            append("*")
+        }
+    }
+    Text(
+        text = annotatedString,
         modifier = modifier.padding(bottom = 8.dp)
     )
 }

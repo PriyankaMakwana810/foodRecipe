@@ -90,6 +90,16 @@ Follow these steps to set up the FoodRecipeApp App:
 3. **Build and Run**:
     - Build and run the app on an Android emulator or device.
 
+### Technologies Used:
+
+- **Jetpack Compose**: UI toolkit for building native Android apps.
+- **Dagger Hilt**: Dependency injection library for Android.
+- **Coroutines**: For asynchronous programming.
+- **Flow**: For handling reactive streams.
+- **MVVM Architecture**: Design pattern for separation of concerns and easier maintenance.
+
+This app is designed to provide you with a seamless and enjoyable cooking experience. Whether you're a seasoned chef or a novice cook, FoodRecipeApp has something for everyone to explore and enjoy.
+
 ## **Usage**
 
 To make the most out of FoodRecipeApp, follow these simple steps:
@@ -168,6 +178,3 @@ Download Apk from [Here](APK/FoodRecipe_1.0_14_02.apk)
 <img src="screenshots/share_recipe.JPEG" alt="share recipes" width="260" height="600"/>
 <img src="screenshots/rate_recipe.JPEG" alt="rate recipes" width="260" height="600"/>
 <img src="screenshots/reviews.JPEG" alt="review recipes" width="260" height="600"/>
-
-
-

@@ -6,7 +6,7 @@
     <!--    web client id google signIn-->
     <!--    <string name="google_cloud_web_client_id">567930687823-6rl4rv9bclio2i5gu9ni6a340b9bu9k7.apps.googleusercontent.com</string>-->
 
-<!--    567930687823-8g419u2eg5rom36u5dc3u078j0a6ppq3.apps.googleusercontent.com-->
+    <!--    567930687823-8g419u2eg5rom36u5dc3u078j0a6ppq3.apps.googleusercontent.com-->
     <string name="google_one_tap_client_id">567930687823-g9a34crs1poo7lumn6gb2hvn8dp7k94r.apps.googleusercontent.com</string>
     <string name="_100k_premium_recipe">"100K+ Premium Recipe "</string>
     <string name="get_cooking">Get\nCooking</string>
@@ -101,13 +101,13 @@
     <string name="please_fill_all_non_optional_fields">Please fill all non-optional fields</string>
     <string name="added_successfully">Added Successfully!!</string>
     <string name="share_your_favorite_recipe_with_others">Share your Favorite Recipe with others</string>
-    <string name="image_of_recipe">Image of Recipe*</string>
+    <string name="image_of_recipe">Image of Recipe</string>
     <string name="name_of_recipe">Name of Recipe*</string>
     <string name="_name_of_recipe">Name of Recipe</string>
     <string name="_category">Category*</string>
     <string name="time_to_cook">Time to cook*</string>
     <string name="_time_to_cook">Time to Cook</string>
-    <string name="procedure">Procedure*</string>
+    <string name="procedure">Procedure</string>
     <string name="steps_to_cook_recipe">Steps to cook recipe..</string>
     <string name="add">Add</string>
     <string name="add_ingredient_and_measurement">Add Ingredient and Measurement</string>
