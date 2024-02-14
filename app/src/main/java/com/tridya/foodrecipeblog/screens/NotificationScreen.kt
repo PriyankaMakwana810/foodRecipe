@@ -151,7 +151,7 @@ fun NotificationScreen(
                                 .atZone(ZoneId.systemDefault())
                                 .toLocalDate()
                         }
-                        items(sortedNotifications.reversed()) { notification ->
+                        items(sortedNotifications) { notification ->
                             val notificationDate = Instant.ofEpochMilli(notification.time ?: 0)
                                 .atZone(ZoneId.systemDefault())
                                 .toLocalDate()

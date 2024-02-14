@@ -55,9 +55,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             remoteMessage.sentTime,
             false
         )
-
-        sharedPref.putDataClass("notification", notification)
-
+        Log.e(TAG, "onMessageReceived: $notification ", )
         CoroutineScope(Dispatchers.Main).launch {
             notificationId = notificationDao.addNotification(notification).toInt()
         }
@@ -66,18 +64,15 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             title = title ?: getString(R.string.app_name),
             messageBody = body ?: ""
         )
-
     }
 
     override fun onNewToken(token: String) {
-
         Log.e(TAG, "Refreshed token: $token")
         sharedPref.putString(TOKEN, token)
     }
 
 
     private fun sendNotification(title: String, messageBody: String, id: Int) {
-
         val intent = Intent(this, MainActivity::class.java)
         intent.putExtra(TAP_ON_NOTIFICATION, true)
         intent.putExtra(NOTIFICATION_ID, id)
