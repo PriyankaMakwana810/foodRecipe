@@ -63,14 +63,14 @@ Before using the app, make sure you have the following:
 1. **Internet Access**:
     - Ensure you have an active internet connection to access online sources and download books.
 
-Certainly! Here's a simplified version of the API usage section:
-
 ## **API Usage**
 
 FoodRecipeApp utilizes the following API:
 
 1. **TheMealDB API**:
+
     - **API Endpoint**: [https://www.themealdb.com/api.php](https://www.themealdb.com/api.php)
+    - 
     - **Description**: Provides access to a vast collection of meal recipes, including ingredients,
       instructions, and images.
 
@@ -161,8 +161,6 @@ Download Apk from [Here](APK/FoodRecipe_1.0_14_02.apk)
 <img src="screenshots/saved_Recipe.JPEG" alt="Saved Screen" width="260" height="600"/>
 <img src="screenshots/add_new_recipe.JPEG" alt="Add new Recipe Screen" width="260" height="600"/>
 <img src="screenshots/all_notification.JPEG" alt="All notification Screen" width="260" height="600"/>
-<img src="screenshots/read_notification.JPEG" alt="read notification Screen" width="260" height="600"/>
-<img src="screenshots/unread_notification.JPEG" alt="unread notification Screen" width="260" height="600"/>
 <img src="screenshots/profile.JPEG" alt="Profile Screen" width="260" height="600"/>
 <img src="screenshots/ingredients.JPEG" alt="RecipeDetails Screen" width="260" height="600"/>
 <img src="screenshots/recipe_procedure.JPEG" alt="Procedure Screen" width="260" height="600"/>
