@@ -130,6 +130,7 @@
     <string name="review">Review</string>
     <string name="unsave">Unsave</string>
     <string name="save">Save</string>
+    <string name="filter_applied_successfully">Filter applied Successfully.</string>
 
 
 </resources>

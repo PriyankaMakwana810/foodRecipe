@@ -1,5 +1,11 @@
 package com.tridya.foodrecipeblog.navigation
 
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
@@ -22,15 +28,31 @@ import com.tridya.foodrecipeblog.screens.register.RegisterScreen
 @Composable
 fun NavigationCompose(navController: NavHostController, paddingValues: PaddingValues) {
 
-    NavHost(navController = navController, startDestination = Screen.IntroScreen.route) {
+    NavHost(navController = navController, startDestination = Screen.IntroScreen.route,
+        enterTransition = { fadeIn(animationSpec = tween(400)) },
+        exitTransition = {
+            slideOutHorizontally(
+                targetOffsetX = { -300 }, animationSpec = tween(
+                    durationMillis = 300, easing = FastOutSlowInEasing
+                )
+            ) + fadeOut(animationSpec = tween(300))
+        },
+        popEnterTransition = {
+            slideInHorizontally(
+                initialOffsetX = { -300 }, animationSpec = tween(
+                    durationMillis = 300, easing = FastOutSlowInEasing
+                )
+            ) + fadeIn(animationSpec = tween(300))
+        },
+        popExitTransition = { fadeOut(animationSpec = tween(400)) }) {
         composable(route = Screen.IntroScreen.route) {
             IntroScreen(navController)
         }
         composable(route = Screen.LoginScreen.route) {
-            LoginScreen(navController,paddingValues)
+            LoginScreen(navController, paddingValues)
         }
         composable(route = Screen.RegisterScreen.route) {
-            RegisterScreen(navController = navController,paddingValues)
+            RegisterScreen(navController = navController, paddingValues)
         }
         composable(route = Screen.HomeScreen.route) {
             HomeScreen(navController = navController, paddingValues)

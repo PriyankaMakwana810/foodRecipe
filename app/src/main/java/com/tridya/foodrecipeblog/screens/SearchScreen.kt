@@ -299,9 +299,10 @@ fun FilterBottomSheet(
                     .padding(20.dp)
                     .align(Alignment.CenterHorizontally), value = "Filter"
             ) {
-                if (!selectedCategory.isEmpty()) {
+                if (selectedCategory.isNotEmpty()) {
                     onFilterApplyClicked(selectedCategory)
-                    showShortToast(context, "Filter applied Successfully.")
+                    showShortToast(context, context.getString(R.string.filter_applied_successfully)
+                    )
                 }
                 onDismiss()
             }
