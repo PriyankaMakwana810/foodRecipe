@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tridya.foodrecipeblog.R
 import com.tridya.foodrecipeblog.api.ApiState
-import com.tridya.foodrecipeblog.api.repo.HomeRepository
+import com.tridya.foodrecipeblog.repo.HomeRepository
 import com.tridya.foodrecipeblog.api.response.Areas
 import com.tridya.foodrecipeblog.database.tables.RecipeCard
 import com.tridya.foodrecipeblog.utils.Constants

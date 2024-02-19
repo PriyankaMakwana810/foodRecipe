@@ -1,7 +1,7 @@
 package com.tridya.foodrecipeblog.viewModels
 
 import androidx.lifecycle.ViewModel
-import com.tridya.foodrecipeblog.api.repo.CommonRepository
+import com.tridya.foodrecipeblog.repo.CommonRepository
 import com.tridya.foodrecipeblog.utils.Constants
 import com.tridya.foodrecipeblog.utils.PrefUtils
 import dagger.hilt.android.lifecycle.HiltViewModel

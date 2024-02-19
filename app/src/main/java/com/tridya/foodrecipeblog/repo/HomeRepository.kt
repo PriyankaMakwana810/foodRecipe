@@ -1,4 +1,4 @@
-package com.tridya.foodrecipeblog.api.repo
+package com.tridya.foodrecipeblog.repo
 
 import com.tridya.foodrecipeblog.api.ApiConstants
 import com.tridya.foodrecipeblog.api.ApiInterface

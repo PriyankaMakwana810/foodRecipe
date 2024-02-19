@@ -4,7 +4,7 @@ import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tridya.foodrecipeblog.api.ApiState
-import com.tridya.foodrecipeblog.api.repo.RecipeDetailsRepository
+import com.tridya.foodrecipeblog.repo.RecipeDetailsRepository
 import com.tridya.foodrecipeblog.database.tables.RecipeCard
 import com.tridya.foodrecipeblog.utils.Constants
 import com.tridya.foodrecipeblog.utils.PrefUtils

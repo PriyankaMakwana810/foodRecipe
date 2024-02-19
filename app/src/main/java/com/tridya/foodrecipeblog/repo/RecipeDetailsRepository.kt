@@ -1,24 +1,30 @@
-package com.tridya.foodrecipeblog.api.repo
+package com.tridya.foodrecipeblog.repo
 
 import com.tridya.foodrecipeblog.api.ApiConstants
 import com.tridya.foodrecipeblog.api.ApiInterface
 import com.tridya.foodrecipeblog.database.dao.RecipeDao
 import com.tridya.foodrecipeblog.database.tables.RecipeCard
-import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import javax.inject.Named
 
-class CommonRepository @Inject constructor(
+class RecipeDetailsRepository @Inject constructor(
     @Named(ApiConstants.MEALDB_API_SERVICE)
     private val mealDbApiInterface: ApiInterface,
     private val recipeDao: RecipeDao,
 ) {
-    val getAllRecipes: Flow<List<RecipeCard>> = recipeDao.getAllRecipes()
+    suspend fun getRecipeDetailsByID(recipeId: String) =
+        mealDbApiInterface.getRecipeDetailsByID(recipeId = recipeId)
 
-    val getAllSavedRecipe: Flow<List<RecipeCard>> = recipeDao.getSavedRecipes(true)
+    fun getSelectedRecipe(recipeId: String): RecipeCard {
+        return recipeDao.getSelectedRecipe(recipeId = recipeId)
+    }
 
-    val getAllPostedRecipe: Flow<List<RecipeCard>> = recipeDao.getPostedRecipes(true)
+    suspend fun updateIsSaved(isSaved: Boolean, recipeId: String) {
+        recipeDao.updateRecipeSaved(isSaved = isSaved, idMeal = recipeId)
+    }
+
     suspend fun addRecipe(recipe: RecipeCard) {
         recipeDao.addRecipe(recipe = recipe)
     }
+
 }

@@ -2,7 +2,7 @@ package com.tridya.foodrecipeblog.viewModels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tridya.foodrecipeblog.api.repo.NotificationRepository
+import com.tridya.foodrecipeblog.repo.NotificationRepository
 import com.tridya.foodrecipeblog.database.tables.Notifications
 import com.tridya.foodrecipeblog.utils.Constants
 import com.tridya.foodrecipeblog.utils.PrefUtils

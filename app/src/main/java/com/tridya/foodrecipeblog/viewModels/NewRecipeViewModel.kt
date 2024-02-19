@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.tridya.foodrecipeblog.R
-import com.tridya.foodrecipeblog.api.repo.CommonRepository
+import com.tridya.foodrecipeblog.repo.CommonRepository
 import com.tridya.foodrecipeblog.database.tables.RecipeCard
 import com.tridya.foodrecipeblog.navigation.Screen
 import com.tridya.foodrecipeblog.utils.Constants

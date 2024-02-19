@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.tridya.foodrecipeblog.api.repo.LoginRepository
+import com.tridya.foodrecipeblog.repo.LoginRepository
 import com.tridya.foodrecipeblog.models.ErrorState
 import com.tridya.foodrecipeblog.models.User
 import com.tridya.foodrecipeblog.screens.register.state.RegistrationErrorState
