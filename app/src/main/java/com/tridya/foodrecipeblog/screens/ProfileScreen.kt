@@ -104,6 +104,21 @@ fun ProfileScreen(
             Column(
                 modifier = Modifier.padding(horizontal = 20.dp)
             ) {
+                if (openDialog) {
+                    CommonDialogComponent(title = stringResource(R.string.logout),
+                        subTitle = stringResource(R.string.after_logout_you_want_to_able_to_see_recipe_added_by_you_are_you_sure_you_want_to_logout),
+                        onButtonClicked = {
+                            profileViewModel.sharedPreferences.logout()
+                            navController.navigate(Screen.IntroScreen.route) {
+                                popUpTo(0) {
+                                    inclusive = true
+                                }
+                            }
+                        },
+                        onDismissClicked = {
+                            openDialog = false
+                        })
+                }
                 if (user != null) {
                     UserProfileSectionUI(
                         userData = user, recipePostedCount = allPostedRecipes.size
